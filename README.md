@@ -1,3 +1,7 @@
 # praktikum-rpl-a-10
-Nama : Ghazi F.R
-NIM : L0124130
+
+# -...
+# Ayu Saniatus Sholihah_L012005
+# Ghazi F.R_L0124130
+
+
