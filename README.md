@@ -1,8 +1,10 @@
 # praktikum-rpl-a-10
 
 Anggota Kelompok:
-- APRILIA ALFA GUSASTI CIPTANINGTYAS_L0124003
-- AYU SANIATUS SHOLIHAH_L0124005
-- Ghazi Fahmi Ramadhan_L0124130
+| No | Nama                              | NIM      |
+|----|-----------------------------------|----------|
+| 1  | APRILIA ALFA GUSASTI CIPTANINGTYAS | L0124003 |
+| 2  | AYU SANIATUS SHOLIHAH             | L0124005 |
+| 3  | GHAZI FAHMI RAMADHAN              | L0124130 |
 
 
