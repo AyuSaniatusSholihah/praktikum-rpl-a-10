@@ -1,6 +1,7 @@
 # praktikum-rpl-a-10
 
-- 
+Anggota Kelompok:
+- APRILIA ALFA GUSASTI CIPTANINGTYAS_L0124003
 - AYU SANIATUS SHOLIHAH_L0124005
 - 
 
