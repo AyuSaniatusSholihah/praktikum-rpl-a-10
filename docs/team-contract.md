@@ -2,15 +2,14 @@
 
 ## 1. Identitas Kelompok
 
-|   Keterangan   |                     Detail                    |
-|----------------|-----------------------------------------------|
-| Kelompok       | 10                                            |
-| Nama Kelompok  | SewaDev
-| Topik          | Sewain: Platform Penyewaan Barang Berbasis Web 
-                   dengan Sistem Manajemen Transaksi Terintegrasi|
-| Kelas          | A                                             |
-| Mata Kuliah    | Rekayasa Perangkat Lunak                      |
-| Repositori     | praktikum-rpl-a-10                            |
+|   Keterangan   |                                             Detail                                           |
+|----------------|----------------------------------------------------------------------------------------------|
+| Kelompok       | 10                                                                                           |
+| Nama Kelompok  | SewaDev                                                                                      |
+| Topik          | Sewain: Platform Penyewaan Barang Berbasis Web dengan Sistem Manajemen Transaksi Terintegrasi|
+| Kelas          | A                                                                                            |
+| Mata Kuliah    | Rekayasa Perangkat Lunak                                                                     |
+| Repositori     | praktikum-rpl-a-10                                                                           |
 
 ## 2. Anggota Kelompok
 |                 Nama               |    NIM   |
