@@ -2,33 +2,31 @@
 
 ## 1. Identitas Kelompok
 
-| Keterangan | Detail |
-|---|---|
-| Kelompok | 10 |
-| Nama Kelompok | SewaDev |
-| Topik | Sewain: Platform Penyewaan Barang Berbasis Web dengan Sistem Manajemen Transaksi Terintegrasi |
-| Kelas | A |
-| Mata Kuliah | Rekayasa Perangkat Lunak |
-| Repositori | praktikum-rpl-a-10 |
+|   Keterangan   | Detail
+| Kelompok       |  10 
+| Nama Kelompok  | SewaDev
+| Topik          | Sewain: Platform Penyewaan Barang Berbasis Web 
+                   dengan Sistem Manajemen Transaksi Terintegrasi
+| Kelas          | A 
+| Mata Kuliah    | Rekayasa Perangkat Lunak
+| Repositori     | praktikum-rpl-a-10 
 
 ## 2. Anggota Kelompok
-
-| Nama | NIM |
-|---|---|
-| Aprilia Alfa Gusasti Ciptaningtyas | L0124003 |
-| Ayu Saniatus Sholihah | L0124005 |
-| Ghazi Fahmi Ramadhan | L0124130 |
+|                 Nama               |  NIM   |
+| Aprilia Alfa Gusasti Ciptaningtyas (L0124003)
+| Ayu Saniatus Sholihah              (L0124005)
+| Ghazi Fahmi Ramadhan               (L0124130)
 
 ## 3. Pembagian Peran Anggota
 
 Untuk memastikan pekerjaan merata, setiap anggota menjadi PIC (Person In Charge) pada area tertentu. Seluruh anggota tetap saling membantu lintas area saat dibutuhkan.
 
-| Area Pengerjaan | PIC Utama | Dukungan |
-|---|---|---|
-| Desain Web (UI/UX dan struktur halaman) |  |  |
-| Pengembangan Source Code (web/aplikasi) |  |  |
-| Pengembangan Fitur (implementasi fitur inti) |  |  |
-| Dokumentasi (laporan praktikum dan berkas pendukung) |  |  |
+| Area Pengerjaan                                       | PIC Utama | Dukungan |
+--------------------------------------------------------------------------------
+| Desain Web (UI/UX dan struktur halaman)               |           |          |
+| Pengembangan Source Code (web/aplikasi)               |           |          |
+| Pengembangan Fitur (implementasi fitur inti)          |           |          |
+| Dokumentasi (laporan praktikum dan berkas pendukung)  |           |          |
 
 Peran khusus koordinasi:
 - Lead Repository (pengelolaan branch, pull request, dan merge): Ayu Saniatus Sholihah.
