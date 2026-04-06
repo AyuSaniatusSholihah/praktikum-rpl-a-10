@@ -32,7 +32,7 @@ Definisi peran tim:
 | Pertemuan | Fokus Kegiatan | PIC Utama (PM Pertemuan) | Peran Developer Lain |
 |---|---|---|---|
 | P1 - Kontrak Tim & Setup Repo | Kontrak tim dan persiapan repositori | Ayu Saniatus Sholihah | Aprilia Alfa Gusasti Ciptaningtyas, Ghazi Fahmi Ramadhan |
-| P2 - Requirements & SRS | Penyusunan kebutuhan dan dokumen SRS | Ayu Saniatus Sholihah | Aprilia Alfa Gusasti Ciptaningtyas, Ghazi Fahmi Ramadhan |
+| P2 - Requirements & SRS | Penyusunan kebutuhan dan dokumen SRS | Aprilia Alfa Gusasti Ciptaningtyas | Ayu Saniatus Sholihah, Ghazi Fahmi Ramadhan |
 | P3 - Analisis & Diagram | Analisis sistem dan penyusunan diagram | Ghazi Fahmi Ramadhan | Aprilia Alfa Gusasti Ciptaningtyas, Ayu Saniatus Sholihah |
 | P4 - ERD & UI Design | Perancangan ERD dan desain antarmuka | Aprilia Alfa Gusasti Ciptaningtyas | Ayu Saniatus Sholihah, Ghazi Fahmi Ramadhan |
 | P5 - Architecture & Boilerplate | Penyusunan arsitektur awal dan kerangka proyek | Ayu Saniatus Sholihah | Aprilia Alfa Gusasti Ciptaningtyas, Ghazi Fahmi Ramadhan |
@@ -40,7 +40,7 @@ Definisi peran tim:
 | P7 - Development II | Pengembangan tahap lanjutan | Ghazi Fahmi Ramadhan | Aprilia Alfa Gusasti Ciptaningtyas, Ayu Saniatus Sholihah |
 | P8 - Advanced Feature | Pengembangan fitur lanjutan | Ayu Saniatus Sholihah | Aprilia Alfa Gusasti Ciptaningtyas, Ghazi Fahmi Ramadhan |
 | P9 - Testing | Pengujian dan evaluasi sistem | Ghazi Fahmi Ramadhan | Aprilia Alfa Gusasti Ciptaningtyas, Ayu Saniatus Sholihah |
-| P10 - Finalisasi | Penyelesaian akhir proyek | Semua developer (kolaboratif) | Aprilia Alfa Gusasti Ciptaningtyas, Ayu Saniatus Sholihah, Ghazi Fahmi Ramadhan |
+| P10 - Finalisasi | Penyelesaian akhir proyek | Ayu Saniatus Sholihah | Aprilia Alfa Gusasti Ciptaningtyas, Ghazi Fahmi Ramadhan |
 
 Peran khusus koordinasi:
 - Lead Repository (pengelolaan branch, pull request, dan merge): Ayu Saniatus Sholihah.
