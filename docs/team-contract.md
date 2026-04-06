@@ -20,22 +20,36 @@
 
 ## 3. Pembagian Peran Anggota
 
-Untuk memastikan pekerjaan merata, setiap anggota menjadi PIC (Person In Charge) pada area tertentu. Seluruh anggota tetap saling membantu lintas area saat dibutuhkan.
+Untuk memastikan pekerjaan merata, setiap developer dapat menjadi PIC (Person In Charge) pada area tertentu. Seluruh developer tetap saling membantu lintas area saat dibutuhkan.
 
-| Area Pengerjaan                                       | PIC Utama | Dukungan |
-|-------------------------------------------------------|-----------|----------|
-| Desain Web (UI/UX dan struktur halaman)               |           |          |
-| Pengembangan Source Code (web/aplikasi)               |           |          |
-| Pengembangan Fitur (implementasi fitur inti)          |           |          |
-| Dokumentasi (laporan praktikum dan berkas pendukung)  |           |          |
+Definisi peran tim:
+- PIC Utama pada pertemuan tertentu berperan sebagai Project Manager (PM) per pertemuan: mengarahkan alur kerja, menetapkan prioritas, membagi tugas detail, memantau progres, memastikan output selesai, serta menyusun pembagian tugas lanjutan pada spreadsheet tim.
+- Developer non-PIC pada pertemuan tersebut berperan sebagai pelaksana utama pekerjaan: menyusun artefak, mengerjakan implementasi, melakukan pengujian, serta menyelesaikan tugas teknis/nonteknis yang dibutuhkan.
+- Tidak ada developer yang bekerja sendiri; seluruh target dikerjakan bersama dengan pembagian kerja aktif, sementara PIC/PM memastikan arah, ritme, dan kualitas kerja tim.
+
+### 3.1 PIC (PM) per Pertemuan
+
+| Pertemuan | Fokus Kegiatan | PIC Utama (PM Pertemuan) | Peran Developer Lain |
+|---|---|---|---|
+| P1 - Kontrak Tim & Setup Repo | Kontrak tim dan persiapan repositori | Ayu Saniatus Sholihah | Aprilia Alfa Gusasti Ciptaningtyas, Ghazi Fahmi Ramadhan |
+| P2 - Requirements & SRS | Penyusunan kebutuhan dan dokumen SRS | Ayu Saniatus Sholihah | Aprilia Alfa Gusasti Ciptaningtyas, Ghazi Fahmi Ramadhan |
+| P3 - Analisis & Diagram | Analisis sistem dan penyusunan diagram | Ghazi Fahmi Ramadhan | Aprilia Alfa Gusasti Ciptaningtyas, Ayu Saniatus Sholihah |
+| P4 - ERD & UI Design | Perancangan ERD dan desain antarmuka | Aprilia Alfa Gusasti Ciptaningtyas | Ayu Saniatus Sholihah, Ghazi Fahmi Ramadhan |
+| P5 - Architecture & Boilerplate | Penyusunan arsitektur awal dan kerangka proyek | Ayu Saniatus Sholihah | Aprilia Alfa Gusasti Ciptaningtyas, Ghazi Fahmi Ramadhan |
+| P6 - Development I | Pengembangan tahap awal | Aprilia Alfa Gusasti Ciptaningtyas | Ayu Saniatus Sholihah, Ghazi Fahmi Ramadhan |
+| P7 - Development II | Pengembangan tahap lanjutan | Ghazi Fahmi Ramadhan | Aprilia Alfa Gusasti Ciptaningtyas, Ayu Saniatus Sholihah |
+| P8 - Advanced Feature | Pengembangan fitur lanjutan | Ayu Saniatus Sholihah | Aprilia Alfa Gusasti Ciptaningtyas, Ghazi Fahmi Ramadhan |
+| P9 - Testing | Pengujian dan evaluasi sistem | Ghazi Fahmi Ramadhan | Aprilia Alfa Gusasti Ciptaningtyas, Ayu Saniatus Sholihah |
+| P10 - Finalisasi | Penyelesaian akhir proyek | Semua developer (kolaboratif) | Aprilia Alfa Gusasti Ciptaningtyas, Ayu Saniatus Sholihah, Ghazi Fahmi Ramadhan |
 
 Peran khusus koordinasi:
 - Lead Repository (pengelolaan branch, pull request, dan merge): Ayu Saniatus Sholihah.
-- Koordinator pembagian tugas di spreadsheet tim: Aprilia Alfa Gusasti Ciptaningtyas.
+- Koordinator pembagian tugas di spreadsheet tim: PM pada masing-masing pertemuan.
 
 Catatan:
 - Pembagian detail tugas per sprint/pertemuan disepakati saat koordinasi mingguan.
-- Jika ada kendala, anggota lain wajib membantu agar progres tim tetap berjalan.
+- Pada setiap pertemuan, PIC bertindak sebagai PM pertemuan (fokus memimpin dan mengarahkan), termasuk menetapkan pembagian tugas lanjutan di spreadsheet tim, sedangkan developer lain menjadi pelaksana utama pekerjaan.
+- Jika ada kendala, developer lain wajib membantu agar progres tim tetap berjalan.
 
 ## 4. Jadwal Kerja Kelompok
 
@@ -90,7 +104,7 @@ Jika tim mengalami kendala yang tidak dapat diselesaikan bersama, langkah eskala
 
 1. Diskusikan terlebih dahulu di grup tim.
 2. Jika belum menemukan solusi, lakukan diskusi singkat saat kerja kelompok.
-3. Jika masih deadlock/kebuntuan, ketua tim atau perwakilan anggota menghubungi asisten praktikum.
+3. Jika masih deadlock/kebuntuan, PM menghubungi asisten praktikum.
 4. Jika diperlukan, masalah dikonsultasikan kepada dosen pengampu.
 
 Mekanisme ini dibuat agar setiap masalah dapat diselesaikan dengan tertib dan tidak menghambat progres tugas.
