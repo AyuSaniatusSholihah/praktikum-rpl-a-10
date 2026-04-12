@@ -11,8 +11,9 @@
 | 7 | Filter Pencarian | Pengguna dapat mencari barang berdasarkan harga dan lokasi | Should Have |
 | 8 | Review Barang | Pengguna dapat memberikan ulasan setelah menyewa barang | Should Have |
 | 9 | Lupa Password | Pengguna dapat mereset password melalui OTP | Should Have |
-| 10 | AI Chatbot | Sistem menyediakan chatbot untuk membantu pengguna | Could Have |
-| 11 | History Sewa | Menampilkan riwayat penyewaan pengguna | Could Have |
-| 12 | Notifikasi | Memberikan notifikasi terkait status transaksi | Won’t Have |
-| 13 | Pembayaran QRIS | Mendukung pembayaran menggunakan QRIS dan e-wallet | Won’t Have |
-| 14 | Lokasi Spesifik | Filter lokasi berdasarkan jarak spesifik | Won’t Have |
+| 10 | keranjang | pengguna dapat menyimpan barang yang ingin disewanya | Should Have |
+| 11 | AI Chatbot | Sistem menyediakan chatbot untuk membantu pengguna | Could Have |
+| 12 | History Sewa | Menampilkan riwayat penyewaan pengguna | Could Have |
+| 13 | Notifikasi | Memberikan notifikasi terkait status transaksi | Won’t Have |
+| 14 | Pembayaran QRIS | Mendukung pembayaran menggunakan QRIS dan e-wallet | Won’t Have |
+| 15 | Lokasi Spesifik | Filter lokasi berdasarkan jarak spesifik | Won’t Have |
