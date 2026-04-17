@@ -51,14 +51,13 @@ Platform ini melibatkan:
 
 ---
 
-## BAB II - Deskripsi Sistem
+## BAB II - Deskripsi Umum
 
-### 2.1 Deskripsi Umum
 
-#### 2.1.1 Perspektif Produk
+### 2.1 Perspektif Produk
 Sistem ini merupakan aplikasi web mandiri yang digunakan untuk mengelola penyewaan barang secara digital dan tidak terintegrasi dengan sistem eksternal lainnya.
 
-#### 2.1.2 Fungsi Produk
+### 2.2 Fungsi Produk
 Fungsi utama sistem:
 - Registrasi dan login pengguna  
 - Reset password dengan OTP  
@@ -69,7 +68,7 @@ Fungsi utama sistem:
 - Riwayat transaksi sewa pengguna
 - Dashboard admin untuk monitoring  
 
-#### 2.1.3 Karakteristik Pengguna
+### 2.3 Karakteristik Pengguna
 
 | Pengguna | Deskripsi |
 |---------|----------|
@@ -77,7 +76,7 @@ Fungsi utama sistem:
 | USER ()Pemilik Barang | Pengguna yang menyewakan barang |
 | Admin | memiliki akses penuh terhadap ringkasan data dan aktivitas platform |
 
-#### 2.1.4 Batasan
+### 2.4 Batasan
 - Sistem hanya menggunakan simulasi pembayaran, tidak pembayaran secara nyata.
 - Lokasi hanya berdasarkan kota / wilayah umum (bukan GPS)  
 - Sistem hanya bisa diakses berbasis web (belum mobile app)  
@@ -85,7 +84,7 @@ Fungsi utama sistem:
 
 ---
 
-### 2.2 Functional Requirements (FR)
+## BAB III - Functional Requirements (FR)
 
 - **FR-01:** Registrasi Akun
     Sistem memungkinkan pengguna untuk mendaftarkan akun menggunakan nama, email, nomor telepon, dan password
@@ -125,7 +124,7 @@ Fungsi utama sistem:
 
 ---
 
-### 2.3 Non-Functional Requirements (NFR)
+## BAB IV - Non-Functional Requirements (NFR)
 
 - **NFR-01 (Performance):**  
     Halaman utama dan dashboard sistem harus dapat dimuat dalam waktu kurang dari 5 detik pada koneksi internet standar.
@@ -145,18 +144,18 @@ Fungsi utama sistem:
 
 ---
 
-### 2.4 Catatan & Asumsi
+## BAB V - Catatan dan Asumsi
 
-#### 2.4.1 Asumsi
+### 5.1 Asumsi
 - Setiap user (Penyewa dan Pemilik Barang) diasumsikan memiliki alamat email yang aktif dan valid untuk keperluan registrasi dan proses reset password melalui OTP.
 - Harga sewa dan tarif denda harian (jika berlaku) ditetapkan dan sudah dimasukkan oleh Pemilik Barang (user) saat menambahkan barang ke katalog.
 - Semua perhitungan waktu, termasuk tanggal sewa dan penentuan keterlambatan pengembalian, didasarkan pada zona waktu sistem yang seragam.
 
-#### 2.4.2 Dependensi
+### 5.2 Dependensi
 - Fungsi Reset Password bergantung pada ketersediaan dan keandalan layanan pengiriman OTP via email.
 - Ketersediaan barang ditentukan berdasarkan tanggal sewa yang dipilih, sistem harus dapat mengelola jadwal peminjaman untuk mencegah double booking.
 
-#### 2.4.2 Batasan Teknis
+### 5.3 Batasan Teknis
 - Implementasi pembayaran hanya berupa simulasi, tidakada integrasi dengan *payment gateway* pihak ketiga (misalnya QRIS, Bank, E-Wallet) pada iterasi ini.
 - Filter lokasi pencarian barang hanya mencakup wilayah atau kota umum, tanpa menggunakan kalkulasi jarak spesifik berbasis GPS.
 - Sistem tidak menyediakan notifikasi *push* (melalui email atau SMS) untuk perubahan status transaksi.
