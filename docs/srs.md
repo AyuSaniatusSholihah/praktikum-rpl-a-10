@@ -20,7 +20,7 @@ Permasalahan yang dihadapi saat ini meliputi:
 - Sering terjadi miskomunikasi antara penyewa dan pemilik barang  
 
 Platform ini melibatkan:
-- **USER (Penyewa)** → Sistem akan menyediakan fitur pencarian barang, proses penyewaan, simulasi pembayaran, serta riwayat sewa.  
+- **USER (Penyewa)** → Sistem akan menyediakan fitur pencarian barang, proses penyewaan, simulasi pembayaran serta riwayat sewa.  
 - **USER (Pemilik Barang)** → Sistem menyediakan fitur pengelolaan katalog barang pribadi, menyewakan barang beserta pengaturan harga dan denda. 
 - **Admin** → Sistem menyediakan dashboard untuk memantau aktivitas platform.
 
