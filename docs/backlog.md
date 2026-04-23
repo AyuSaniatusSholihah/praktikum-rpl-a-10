@@ -15,8 +15,9 @@
 | 11 | Approval Sewa (Owner) | Owner dapat approve/reject permintaan sewa & pembayaran | Should Have |
 | 12 | Konfirmasi Pengembalian | Owner memverifikasi pengembalian dan pelunasan denda | Should Have |
 | 13 | Approval Barang (Admin) | Admin dapat approve/reject barang sebelum tampil di katalog | Should Have |
-| 14 | AI Chatbot | Sistem menyediakan chatbot untuk membantu pengguna | Could Have |
-| 15 | History Sewa | Menampilkan riwayat penyewaan pengguna | Could Have |
-| 16 | Notifikasi | Memberikan notifikasi terkait status transaksi | Won’t Have |
-| 17 | Pembayaran QRIS/E-Wallet | Mendukung pembayaran digital seperti QRIS | Won’t Have |
-| 18 | Lokasi Spesifik | Filter lokasi berdasarkan jarak spesifik | Won’t Have |
+| 14 | Menambahkan Barang ke Keranjang Sewa (User) | Penyewa dapat memilih dan mengumpulkan barang yang akan disewa sebelum melanjutkan checkout dan pembayaran | Should Have |
+| 15 | AI Chatbot | Sistem menyediakan chatbot untuk membantu pengguna | Could Have |
+| 16 | History Sewa | Menampilkan riwayat penyewaan pengguna | Could Have |
+| 17 | Notifikasi | Memberikan notifikasi terkait status transaksi | Won’t Have |
+| 18 | Pembayaran QRIS/E-Wallet | Mendukung pembayaran digital seperti QRIS | Won’t Have |
+| 19 | Lokasi Spesifik | Filter lokasi berdasarkan jarak spesifik | Won’t Have |
