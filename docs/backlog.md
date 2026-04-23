@@ -10,10 +10,9 @@
 | 6 | Pengembalian Barang | Pengguna dapat mengembalikan barang dan sistem menghitung denda otomatis | Must Have |
 | 7 | Dashboard Admin | Admin dapat memonitor jumlah user, barang aktif, dan total saldo owner | Must Have |
 | 8 | Filter Pencarian | Pengguna dapat mencari barang berdasarkan harga dan lokasi umum | Must Have |
-| 9 | Approval Sewa (Owner) | Owner dapat approve/reject permintaan sewa & pembayaran | Must Have |
-| 10 | Review & Rating | Pengguna dapat memberikan ulasan setelah menyewa barang | Should Have |
-| 11 | Lupa Password (OTP) | Pengguna dapat mereset password menggunakan OTP | Should Have |
-
+| 9 | Review & Rating | Pengguna dapat memberikan ulasan setelah menyewa barang | Should Have |
+| 10 | Lupa Password (OTP) | Pengguna dapat mereset password menggunakan OTP | Should Have |
+| 11 | Approval Sewa (Owner) | Owner dapat approve/reject permintaan sewa & pembayaran | Should Have |
 | 12 | Konfirmasi Pengembalian | Owner memverifikasi pengembalian dan pelunasan denda | Should Have |
 | 13 | Approval Barang (Admin) | Admin dapat approve/reject barang sebelum tampil di katalog | Should Have |
 | 14 | Menambahkan Barang ke Keranjang Sewa (User) | Penyewa dapat memilih dan mengumpulkan barang yang akan disewa sebelum melanjutkan checkout dan pembayaran | Should Have |
