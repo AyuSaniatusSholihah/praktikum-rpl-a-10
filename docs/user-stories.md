@@ -53,12 +53,14 @@ As a user, I want mengembalikan barang, so that transaksi selesai
 
 ---
 
-### 🟢 US-06 – Denda Keterlambatan
+### 🟢 US-06 – Pengembalian Barang
 **User Story**  
-As a user, I want melihat denda keterlambatan, so that saya memahami konsekuensi keterlambatan  
+As a user, I want mengembalikan barang ke pemilik toko tepat waktu, so that   saya terhindar dari denda akibat keterlambatan pengembalian.  
 
 **Acceptance Criteria**
-- Given terlambat mengembalikan, When cek pengembalian, Then denda ditampilkan  
+- Given saya mengembalikan barang sebelum atau tepat pada tanggal jatuh tempo, When saya klik 'Pengembalian Barang', Then sistem menampilkan konfirmasi pengembalian tanpa denda, dan status peminjaman berubah menjadi "Selesai".
+- Given saya terlambat mengembalikan barang melewati tanggal jatuh tempo, When saya klik 'Pengembalian Barang', Then sistem menampilkan rincian denda yang harus dibayar (jumlah hari terlambat & total denda), dan user harus menyelesaikan pembayaran denda sebelum status berubah menjadi "Selesai".
+ 
 
 ---
 
