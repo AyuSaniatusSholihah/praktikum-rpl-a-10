@@ -13,6 +13,7 @@
 | alamat | VARCHAR(255) | NOT NULL | Alamat pengguna |
 | saldo | DECIMAL(10,2) | DEFAULT 0 | Saldo simulasi |
 | foto_profil | VARCHAR(255) | NULL | Foto profil |
+| is_banned | BOOLEAN | DEFAULT FALSE | Status banned akun user |
 | role | ENUM | DEFAULT 'user' | Role user/admin |
 | created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu registrasi |
 
@@ -106,14 +107,16 @@
 | User_id | INT | FK, NOT NULL | Relasi ke user |
 | kode_OTP | VARCHAR(10) | NOT NULL | Kode OTP |
 | expired_at | TIMESTAMP | NOT NULL | Waktu kadaluarsa |
-| is_used | BOOLEAN | DEFAULT FALSE | Status penggunaan |
+| is_used | BOOLEAN | DEFAULT FALSE | Status penggunaan OTP |
 
 ---
 
 ## Relasi Utama
 
 - Pengguna → Barang (1 : N)
-- Pengguna → Transaksi (1 : N)
-- Barang → Transaksi (1 : N)
-- Transaksi → Pembayaran (1 : 1)
-- Transaksi → Review (1 : 1)
+- Pengguna → Transaksi_Penyewaan (1 : N)
+- Barang → Transaksi_Penyewaan (1 : N)
+- Kategori → Barang (1 : N)
+- Pengguna → OTP(1 : N)
+- Transaksi_Penyewaan → Pembayaran (1 : 1)
+- Transaksi_Penyewaan → Review (1 : 1)
