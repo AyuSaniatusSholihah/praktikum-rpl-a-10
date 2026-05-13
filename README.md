@@ -47,10 +47,13 @@ praktikum-rpl-a-10/
 |-- README.md
 |-- docs/
 |   |-- backlog.md
+|   |-- data-dictionary.md
 |   |-- problem-statement.md
 |   |-- srs.md
 |   |-- team-contract.md
-|   `-- user-stories.md
+|   |-- user-stories.md
+|   |-- wireframe.md
+|   `-- uml/
 |-- src/
 |   `-- regist.js
 `-- tests/
@@ -66,23 +69,39 @@ Dokumen utama proyek berada di folder `docs`:
 - `docs/backlog.md`: daftar pekerjaan pengembangan.
 - `docs/srs.md`: spesifikasi kebutuhan perangkat lunak.
 - `docs/team-contract.md`: aturan kerja tim.
+- `docs/data-dictionary.md`: kamus data dan definisi atribut.
+- `docs/wireframe.md`: desain antarmuka pengguna.
+- `docs/uml/`: diagram UML sistem (use case, class diagram, sequence diagram, dll).
 
 ## Status Proyek
 
-Saat ini proyek berada pada tahap perancangan dan inisialisasi repositori.
+Proyek berada pada tahap desain lanjut dan implementasi awal.
 
-- Dokumen analisis kebutuhan sudah mulai disusun.
-- Implementasi kode pada folder `src` masih tahap awal.
+**Progress yang sudah selesai:**
+- ✅ Dokumen analisis kebutuhan (problem statement, user stories, backlog)
+- ✅ Spesifikasi perangkat lunak (SRS)
+- ✅ Data dictionary dan wireframe desain UI
+- ✅ Diagram UML sistem
+- ✅ Kontrak kerja tim
+- ✅ Implementasi awal fitur registrasi (`src/regist.js`)
+
+**Progress yang sedang dikerjakan:**
+- 🔄 Implementasi fitur-fitur utama (login, pencarian, sewa, pembayaran, dll)
+- 🔄 Pengembangan backend sistem
+
+**Progress yang akan dikerjakan:**
+- ⏳ Pengujian (unit test, integration test)
+- ⏳ Integrasi front-end dan backend
+- ⏳ Deployment dan dokumentasi teknis
 
 ## Cara Menjalankan
 
-Belum ada aplikasi yang siap dijalankan pada tahap ini.
+Panduan lengkap akan ditambahkan seiring kelengkapan implementasi.
 
-Langkah sementara:
-
-1. Baca dokumen kebutuhan di folder `docs`.
-2. Lanjutkan pengembangan fitur pada folder `src`.
-3. Tambahkan pengujian bertahap di folder `tests`.
+**Saat ini:**
+1. Baca dokumen kebutuhan dan desain di folder `docs`.
+2. Ikuti perkembangan implementasi fitur di folder `src`.
+3. Periksa test cases yang ada di folder `tests` untuk referensi pengujian.
 
 ## Kontribusi
 
@@ -95,6 +114,6 @@ Untuk kontribusi dari anggota tim:
 
 ## Catatan
 
-README ini akan diperbarui seiring progres implementasi fitur dan penambahan detail teknis (stack, setup, dan deployment).
+README ini akan terus diperbarui seiring progres implementasi fitur. Stack teknologi dan instruksi setup akan ditambahkan pada tahap pengembangan lebih lanjut.
 
 
