@@ -78,21 +78,21 @@ Dokumen utama proyek berada di folder `docs`:
 Proyek berada pada tahap desain lanjut dan implementasi awal.
 
 **Progress yang sudah selesai:**
-- ✅ Dokumen analisis kebutuhan (problem statement, user stories, backlog)
-- ✅ Spesifikasi perangkat lunak (SRS)
-- ✅ Data dictionary dan wireframe desain UI
-- ✅ Diagram UML sistem
-- ✅ Kontrak kerja tim
-- ✅ Implementasi awal fitur registrasi (`src/regist.js`)
+- Dokumen analisis kebutuhan (problem statement, user stories, backlog)
+- Spesifikasi perangkat lunak (SRS)
+- Data dictionary dan wireframe desain UI
+- Diagram UML sistem
+- Kontrak kerja tim
+- Implementasi awal fitur registrasi (`src/regist.js`)
 
 **Progress yang sedang dikerjakan:**
-- 🔄 Implementasi fitur-fitur utama (login, pencarian, sewa, pembayaran, dll)
-- 🔄 Pengembangan backend sistem
+- Implementasi fitur-fitur utama (login, pencarian, sewa, pembayaran, dll)
+- Pengembangan backend sistem
 
 **Progress yang akan dikerjakan:**
-- ⏳ Pengujian (unit test, integration test)
-- ⏳ Integrasi front-end dan backend
-- ⏳ Deployment dan dokumentasi teknis
+- Pengujian (unit test, integration test)
+- Integrasi front-end dan backend
+- Deployment dan dokumentasi teknis
 
 ## Cara Menjalankan
 
