@@ -134,8 +134,8 @@
 
             <h2 class="text-2xl font-semibold text-slate-800 mb-8">Create Account</h2>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <a href="{{ route('auth.redirect') }}" class="social-btn">
+            <div class="mb-8">
+                <a href="{{ route('auth.redirect') }}" class="social-btn w-full">
                     <svg class="w-5 h-5" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -144,12 +144,6 @@
                     </svg>
                     Sign up with Google
                 </a>
-                <button class="social-btn">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
-                    Sign up with Email
-                </button>
             </div>
 
             <div class="divider">OR</div>
