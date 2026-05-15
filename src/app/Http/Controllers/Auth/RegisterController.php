@@ -21,9 +21,16 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $request->validate([
+            'email' => 'required|string|email|max:255',
+        ]);
+
+        if (User::where('email', $request->email)->exists()) {
+            return redirect()->route('login')->with('warning', 'Akun ini telah terdaftar, silahkan login.');
+        }
+
+        $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'nullable|string|max:20',
             'password' => 'required|string|min:8|confirmed',
         ]);
