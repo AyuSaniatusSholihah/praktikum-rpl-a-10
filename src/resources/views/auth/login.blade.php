@@ -142,10 +142,38 @@
                 <h1 class="logo-text">SEWA<span class="logo-accent">IN</span></h1>
             </div>
 
+            @if (session('success'))
+                <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl mb-6 flex items-center gap-3">
+                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span class="text-sm font-medium">{{ session('success') }}</span>
+                </div>
+            @endif
+
+            @if (session('warning'))
+                <div class="bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded-xl mb-6 flex items-center gap-3">
+                    <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <span class="text-sm font-medium">{{ session('warning') }}</span>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl mb-6">
+                    <ul class="list-disc list-inside text-sm font-medium">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <h2 class="text-2xl font-semibold text-slate-800 mb-8">Sign In To SEWA<span class="logo-accent">IN</span></h2>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <a href="{{ route('auth.redirect') }}" class="social-btn">
+            <div class="mb-8">
+                <a href="{{ route('auth.redirect') }}" class="social-btn w-full">
                     <svg class="w-5 h-5" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -154,30 +182,30 @@
                     </svg>
                     Sign in with Google
                 </a>
-                <button class="social-btn">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
-                    Sign in with Email
-                </button>
             </div>
 
             <div class="divider">OR</div>
 
-            <form action="#" method="POST">
+            <form action="{{ route('login.post') }}" method="POST">
                 @csrf
                 <div class="input-group mb-6">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email">
+                    <input type="email" id="email" name="email" class="input-field @error('email') border-rose-500 @enderror" placeholder="Enter your email" value="{{ old('email') }}" required>
+                    @error('email')
+                        <p class="text-rose-500 text-xs font-semibold mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="input-group mb-2">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" class="input-field" placeholder="Enter your password">
+                    <input type="password" id="password" name="password" class="input-field @error('password') border-rose-500 @enderror" placeholder="Enter your password" required>
+                    @error('password')
+                        <p class="text-rose-500 text-xs font-semibold mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="text-right mb-6">
-                    <a href="#" class="footer-link">Forget Password?</a>
+                    <a href="{{ route('password.request') }}" class="footer-link">Forget Password?</a>
                 </div>
 
                 <button type="submit" class="btn-primary shadow-lg shadow-slate-200">Sign In</button>
