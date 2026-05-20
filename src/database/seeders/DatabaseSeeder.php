@@ -36,21 +36,5 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
             'email_verified_at' => now(),
         ]);
-
-        // 2. Buat Kategori Dummy
-        \App\Models\Kategori::create([
-            'nama_kategori' => 'Alat Fotografi',
-            'deskripsi' => 'Kamera, Lensa, Tripod, Lighting, dll.'
-        ]);
-
-        \App\Models\Kategori::create([
-            'nama_kategori' => 'Alat Gunung',
-            'deskripsi' => 'Tenda, Carrier, Sepatu Gunung, Sleeping Bag, dll.'
-        ]);
-        
-        \App\Models\Kategori::create([
-            'nama_kategori' => 'Elektronik & Gadget',
-            'deskripsi' => 'Laptop, Proyektor, Konsol Game, dll.'
-        ]);
     }
 }
