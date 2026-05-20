@@ -81,8 +81,6 @@ class RegisterController extends Controller
         $user->otp_expires_at = null;
         $user->save();
 
-        Auth::login($user);
-
-        return redirect('/dashboard')->with('success', 'Account verified and logged in!');
+        return redirect()->route('login')->with('success', 'Akun berhasil diverifikasi! Silakan login untuk melanjutkan.');
     }
 }
