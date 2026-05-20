@@ -19,7 +19,12 @@ class ForgotPasswordController extends Controller
 
     public function sendResetOtp(Request $request)
     {
-        $request->validate(['email' => 'required|email|exists:users,email']);
+        $request->validate([
+            'email' => ['required', 'email', 'exists:users,email', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/']
+        ], [
+            'email.exists' => 'Email ini belum terdaftar di sistem kami.',
+            'email.regex' => 'Format email tidak valid. Pastikan menggunakan domain yang benar (contoh: .com, .id).',
+        ]);
 
         $otp = rand(1000, 9999);
         $user = User::where('email', $request->email)->first();
@@ -43,9 +48,11 @@ class ForgotPasswordController extends Controller
     public function verifyOtp(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => ['required', 'email', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
             'otp' => 'required|array|size:4',
             'otp.*' => 'required|string|size:1',
+        ], [
+            'email.regex' => 'Format email tidak valid. Pastikan menggunakan domain yang benar (contoh: .com, .id).',
         ]);
 
         $otpCode = implode('', $request->otp);
@@ -81,9 +88,11 @@ class ForgotPasswordController extends Controller
     public function reset(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => ['required', 'email', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
             'code' => 'required',
             'password' => 'required|string|min:8|confirmed',
+        ], [
+            'email.regex' => 'Format email tidak valid. Pastikan menggunakan domain yang benar (contoh: .com, .id).',
         ]);
 
         $user = User::where('email', $request->email)
