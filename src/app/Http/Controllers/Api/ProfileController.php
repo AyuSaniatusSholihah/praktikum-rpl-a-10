@@ -24,9 +24,13 @@ class ProfileController extends Controller
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'name' => 'sometimes|string|max:100',
             'username' => 'sometimes|string|max:100|unique:users,username,' . $user->id,
-            'phone_number' => 'sometimes|string|max:25',
+            'phone_number' => 'sometimes|string|min:9|max:15|regex:/^\+?[0-9]+$/',
             'alamat' => 'nullable|string|max:255',
             'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ], [
+            'phone_number.regex' => 'Nomor HP hanya boleh berisi angka dan diawali dengan + (opsional).',
+            'phone_number.min' => 'Nomor HP minimal 9 karakter.',
+            'phone_number.max' => 'Nomor HP maksimal 15 karakter.',
         ]);
 
         if ($validator->fails()) {
