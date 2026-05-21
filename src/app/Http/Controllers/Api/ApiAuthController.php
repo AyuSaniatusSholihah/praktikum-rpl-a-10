@@ -19,7 +19,9 @@ class ApiAuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'email' => 'required|string|email|max:255',
+            'email' => ['required', 'string', 'email', 'max:255', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
+        ], [
+            'email.regex' => 'Format email tidak valid. Pastikan menggunakan domain yang benar (contoh: .com, .id).',
         ]);
 
         // Check if email already exists
@@ -34,8 +36,12 @@ class ApiAuthController extends Controller
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|min:9|max:15|regex:/^\+?[0-9]+$/',
             'password' => 'required|string|min:8|confirmed',
+        ], [
+            'phone.regex' => 'Nomor HP hanya boleh berisi angka dan diawali dengan + (opsional).',
+            'phone.min' => 'Nomor HP minimal 9 karakter.',
+            'phone.max' => 'Nomor HP maksimal 15 karakter.',
         ]);
 
         $otp = rand(1000, 9999);
@@ -108,8 +114,10 @@ class ApiAuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => ['required', 'email', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
             'password' => 'required|string',
+        ], [
+            'email.regex' => 'Format email tidak valid. Pastikan menggunakan domain yang benar (contoh: .com, .id).',
         ]);
 
         $user = User::where('email', $request->email)->first();
