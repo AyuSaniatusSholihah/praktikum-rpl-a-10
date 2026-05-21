@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\ApiAuthController;
+use App\Http\Controllers\Api\KeranjangController;
 
 // Public Routes for Mobile App
 Route::post('/register', [ApiAuthController::class, 'register']);
@@ -27,4 +28,11 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // CRUD API untuk Katalog Barang (Khusus User tersebut)
     Route::apiResource('katalog', App\Http\Controllers\Api\KatalogController::class);
+
+    // API Keranjang Penyewaan
+    Route::get('/keranjang', [KeranjangController::class, 'index']);
+    Route::post('/keranjang/items', [KeranjangController::class, 'store']);
+    Route::patch('/keranjang/items/{id}', [KeranjangController::class, 'update']);
+    Route::delete('/keranjang/items/{id}', [KeranjangController::class, 'destroy']);
+    Route::delete('/keranjang', [KeranjangController::class, 'clear']);
 });
