@@ -55,6 +55,26 @@ class KeranjangController extends Controller
 
         $validated = $validator->validated();
 
+        $barang = \App\Models\Barang::find($validated['barang_id']);
+        if (!$barang || $barang->status !== 'tersedia' || $barang->stok <= 0) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Barang tidak tersedia atau stok habis.',
+            ], 400);
+        }
+
+        // Hitung total jumlah barang ini yang sudah ada di keranjang user
+        $jumlahDiKeranjang = Keranjang::where('user_id', $request->user()->id)
+            ->where('barang_id', $validated['barang_id'])
+            ->sum('jumlah');
+
+        if (($jumlahDiKeranjang + $validated['jumlah']) > $barang->stok) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Jumlah barang di keranjang melebihi stok yang tersedia. Stok saat ini: ' . $barang->stok,
+            ], 400);
+        }
+
         $item = Keranjang::firstOrNew([
             'user_id' => $request->user()->id,
             'barang_id' => $validated['barang_id'],
@@ -97,6 +117,23 @@ class KeranjangController extends Controller
         }
 
         $validated = $validator->validated();
+
+        if (array_key_exists('jumlah', $validated)) {
+            $barang = $item->barang;
+            
+            // Hitung total jumlah barang ini di keranjang user kecuali item yang sedang diupdate
+            $jumlahLainnya = $request->user()->keranjang()
+                ->where('barang_id', $item->barang_id)
+                ->where('id', '!=', $item->id)
+                ->sum('jumlah');
+
+            if (($jumlahLainnya + $validated['jumlah']) > $barang->stok) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Jumlah barang melebihi stok yang tersedia. Stok saat ini: ' . $barang->stok,
+                ], 400);
+            }
+        }
 
         if (array_key_exists('tanggal_sewa', $validated) && array_key_exists('tanggal_kembali_rencana', $validated)) {
             if ($validated['tanggal_kembali_rencana'] < $validated['tanggal_sewa']) {
