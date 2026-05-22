@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Barang;
 
 class KatalogController extends Controller
 {
@@ -11,6 +12,50 @@ class KatalogController extends Controller
     public function index(Request $request)
     {
         $barangs = $request->user()->barangs()->with('kategori')->get();
+        return response()->json([
+            'status' => 'success',
+            'data' => $barangs
+        ]);
+    }
+
+    // Get all items in the catalog (public access with search & filters)
+    public function katalogPublik(Request $request)
+    {
+        $query = Barang::where('status', 'tersedia')
+            ->where('stok', '>', 0)
+            ->with('kategori');
+
+        // Filter berdasarkan kata kunci (search) di nama_barang atau deskripsi
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_barang', 'like', '%' . $search . '%')
+                  ->orWhere('deskripsi', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Filter berdasarkan kategori_id
+        if ($request->has('kategori_id') && !empty($request->kategori_id)) {
+            $query->where('kategori_id', $request->kategori_id);
+        }
+
+        // Filter berdasarkan lokasi
+        if ($request->has('lokasi') && !empty($request->lokasi)) {
+            $query->where('lokasi', 'like', '%' . $request->lokasi . '%');
+        }
+
+        // Filter berdasarkan minimal harga sewa
+        if ($request->has('min_harga') && is_numeric($request->min_harga)) {
+            $query->where('harga_sewa', '>=', (float) $request->min_harga);
+        }
+
+        // Filter berdasarkan maksimal harga sewa
+        if ($request->has('max_harga') && is_numeric($request->max_harga)) {
+            $query->where('harga_sewa', '<=', (float) $request->max_harga);
+        }
+
+        $barangs = $query->get();
+
         return response()->json([
             'status' => 'success',
             'data' => $barangs
