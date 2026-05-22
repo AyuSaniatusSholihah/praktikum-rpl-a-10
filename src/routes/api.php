@@ -39,6 +39,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/keranjang', [KeranjangController::class, 'clear']);
 
     // API Transaksi & Pembayaran
+    Route::get('/transaksi', [TransaksiController::class, 'index']);
+    Route::get('/transaksi/{id}', [TransaksiController::class, 'show']);
     Route::post('/checkout', [TransaksiController::class, 'checkout']);
     Route::post('/transaksi/bayar', [TransaksiController::class, 'bayarMassal']);
+    Route::post('/transaksi/{id}/kembalikan', [TransaksiController::class, 'kembalikanBarang']);
 });

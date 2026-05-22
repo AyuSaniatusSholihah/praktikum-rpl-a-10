@@ -46,4 +46,9 @@ class TransaksiPenyewaan extends Model
     {
         return $this->belongsTo(Pembayaran::class, 'pembayaran_id');
     }
+
+    public function review()
+    {
+        return $this->hasOne(Review::class, 'transaksi_id');
+    }
 }

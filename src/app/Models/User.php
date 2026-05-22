@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(TransaksiPenyewaan::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
