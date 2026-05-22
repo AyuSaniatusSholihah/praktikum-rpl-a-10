@@ -10,7 +10,6 @@ class Pembayaran extends Model
     use HasFactory;
 
     protected $fillable = [
-        'transaksi_id',
         'metode',
         'detail_metode',
         'tanggal_bayar',
@@ -21,8 +20,8 @@ class Pembayaran extends Model
         'tanggal_bayar' => 'datetime',
     ];
 
-    public function transaksi()
+    public function transaksiPenyewaans()
     {
-        return $this->belongsTo(TransaksiPenyewaan::class, 'transaksi_id');
+        return $this->hasMany(TransaksiPenyewaan::class, 'pembayaran_id');
     }
 }

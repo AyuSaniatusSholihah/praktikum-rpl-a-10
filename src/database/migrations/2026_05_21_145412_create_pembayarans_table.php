@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id(); // Pembayaran_id (PK)
-            $table->foreignId('transaksi_id')->unique()->constrained('transaksi_penyewaans')->cascadeOnDelete(); // Relasi 1:1 (FK)
             $table->enum('metode', ['transfer bank', 'e-wallet', 'qris']);
             $table->string('detail_metode', 50)->nullable(); // BCA, Mandiri, ShopeePay, Gopay, dll.
             $table->timestamp('tanggal_bayar')->nullable();
             $table->decimal('jumlah_bayar', 10, 2);
             $table->timestamps(); // Mengisi created_at dan updated_at
+        });
+
+        // Tambahkan constraint foreign key ke transaksi_penyewaans
+        Schema::table('transaksi_penyewaans', function (Blueprint $table) {
+            $table->foreign('pembayaran_id')->references('id')->on('pembayarans')->nullOnDelete();
         });
     }
 
@@ -27,6 +31,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('transaksi_penyewaans', function (Blueprint $table) {
+            $table->dropForeign(['pembayaran_id']);
+        });
         Schema::dropIfExists('pembayarans');
     }
 };
