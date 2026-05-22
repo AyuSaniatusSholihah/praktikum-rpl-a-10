@@ -44,4 +44,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/checkout', [TransaksiController::class, 'checkout']);
     Route::post('/transaksi/bayar', [TransaksiController::class, 'bayarMassal']);
     Route::post('/transaksi/{id}/kembalikan', [TransaksiController::class, 'kembalikanBarang']);
+
+    // API Transaksi & Pembayaran (Owner)
+    Route::get('/owner/dashboard', [TransaksiController::class, 'ownerDashboard']);
+    Route::get('/owner/transaksi/{id}', [TransaksiController::class, 'ownerTransaksiDetail']);
+    Route::get('/owner/pengembalian', [TransaksiController::class, 'listPengembalian']);
+    Route::post('/transaksi/{id}/verifikasi-pengembalian', [TransaksiController::class, 'verifikasiPengembalian']);
 });
