@@ -93,11 +93,13 @@ class TransaksiController extends Controller
     }
 
     /**
-     * Melakukan simulasi pembayaran untuk sebuah transaksi.
+     * Melakukan simulasi pembayaran massal untuk beberapa transaksi sekaligus.
      */
-    public function bayar(Request $request, $id)
+    public function bayarMassal(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'transaksi_ids' => 'required|array',
+            'transaksi_ids.*' => 'integer|exists:transaksi_penyewaans,id',
             'metode' => 'required|in:transfer bank,e-wallet,qris',
             'detail_metode' => 'required|string|max:50', // Contoh: BCA, Mandiri, ShopeePay, Gopay
         ]);
@@ -109,47 +111,91 @@ class TransaksiController extends Controller
             ], 422);
         }
 
-        // Cari transaksi milik user aktif
-        $transaksi = $request->user()->transaksiPenyewaan()->find($id);
+        $transaksiIds = $request->transaksi_ids;
+        $user = $request->user();
 
-        // Jika transaksi tidak ditemukan di relasi user langsung, cari global untuk cek ownership
-        if (!$transaksi) {
-            $transaksi = TransaksiPenyewaan::find($id);
-            if (!$transaksi || $transaksi->user_id !== $request->user()->id) {
+        // Ambil semua transaksi milik user aktif yang sesuai dengan ID yang dikirimkan
+        $transaksis = TransaksiPenyewaan::whereIn('id', $transaksiIds)
+            ->where('user_id', $user->id)
+            ->with('barang')
+            ->get();
+
+        // Validasi apakah jumlah transaksi yang ditemukan cocok dengan input
+        if ($transaksis->count() !== count(array_unique($transaksiIds))) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Satu atau lebih transaksi tidak ditemukan atau Anda tidak memiliki akses.'
+            ], 404);
+        }
+
+        // Cek apakah ada transaksi yang sudah dibayar sebelumnya
+        foreach ($transaksis as $transaksi) {
+            if ($transaksi->pembayaran_id !== null) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Transaksi tidak ditemukan atau Anda tidak memiliki akses.'
-                ], 404);
+                    'message' => "Transaksi dengan ID {$transaksi->id} sudah dibayar sebelumnya."
+                ], 400);
             }
         }
 
-        // Cek apakah transaksi sudah memiliki pembayaran
-        if ($transaksi->pembayaran()->exists()) {
+        // Hitung total bayar untuk semua transaksi ini
+        $totalBayar = $transaksis->sum('total_harga');
+
+        try {
+            $result = \Illuminate\Support\Facades\DB::transaction(function () use ($transaksis, $request, $totalBayar) {
+                // Simpan pembayaran tunggal
+                $pembayaran = Pembayaran::create([
+                    'metode' => $request->metode,
+                    'detail_metode' => $request->detail_metode,
+                    'tanggal_bayar' => now(),
+                    'jumlah_bayar' => $totalBayar,
+                ]);
+
+                foreach ($transaksis as $transaksi) {
+                    // Kunci baris barang untuk mencegah race condition
+                    $barang = \App\Models\Barang::lockForUpdate()->find($transaksi->barang_id);
+
+                    if (!$barang) {
+                        throw new \Exception("Barang untuk transaksi ID {$transaksi->id} tidak ditemukan.");
+                    }
+
+                    // Cek apakah stok mencukupi
+                    if ($barang->stok < $transaksi->jumlah) {
+                        throw new \Exception("Stok barang '{$barang->nama_barang}' tidak mencukupi untuk melakukan pembayaran. Stok saat ini: {$barang->stok}.");
+                    }
+
+                    // Kurangi stok barang
+                    $barang->stok -= $transaksi->jumlah;
+                    
+                    // Update status ke 'tidak_tersedia' jika stok habis
+                    if ($barang->stok <= 0) {
+                        $barang->status = 'tidak_tersedia';
+                    }
+                    
+                    $barang->save();
+
+                    // Hubungkan transaksi ini ke pembayaran baru
+                    $transaksi->pembayaran_id = $pembayaran->id;
+                    $transaksi->save();
+                }
+
+                return $pembayaran;
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Pembayaran massal berhasil diproses dan stok barang telah diperbarui.',
+                'data' => [
+                    'pembayaran' => $result,
+                    'transaksi' => $transaksis->load('barang')
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Transaksi ini sudah dibayar sebelumnya.'
+                'message' => $e->getMessage()
             ], 400);
         }
-
-        // Simpan pembayaran
-        $pembayaran = Pembayaran::create([
-            'transaksi_id' => $transaksi->id,
-            'metode' => $request->metode,
-            'detail_metode' => $request->detail_metode,
-            'tanggal_bayar' => now(),
-            'jumlah_bayar' => $transaksi->total_harga,
-        ]);
-
-        // Setelah dibayar, status sewa dapat bergeser ke 'upcoming' atau 'aktif' tergantung tanggal sewa
-        // Pada simulasi ini kita pertahankan status 'upcoming' sampai tanggal sewa dimulai
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Pembayaran berhasil diproses.',
-            'data' => [
-                'pembayaran' => $pembayaran,
-                'transaksi' => $transaksi->load('barang')
-            ]
-        ], 200);
     }
 }

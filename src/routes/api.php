@@ -39,5 +39,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // API Transaksi & Pembayaran
     Route::post('/checkout', [TransaksiController::class, 'checkout']);
-    Route::post('/transaksi/{id}/bayar', [TransaksiController::class, 'bayar']);
+    Route::post('/transaksi/bayar', [TransaksiController::class, 'bayarMassal']);
 });
