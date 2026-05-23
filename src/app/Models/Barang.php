@@ -32,4 +32,9 @@ class Barang extends Model
     {
         return $this->belongsTo(Kategori::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

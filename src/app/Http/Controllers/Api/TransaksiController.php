@@ -8,11 +8,52 @@ use Illuminate\Http\Request;
 use App\Models\Keranjang;
 use App\Models\TransaksiPenyewaan;
 use App\Models\Pembayaran;
+use App\Models\Review;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
 class TransaksiController extends Controller
 {
+    /**
+     * Menampilkan riwayat transaksi penyewaan milik penyewa aktif.
+     */
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $transaksis = TransaksiPenyewaan::where('user_id', $user->id)
+            ->with(['barang', 'pembayaran', 'review'])
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $transaksis
+        ], 200);
+    }
+
+    /**
+     * Menampilkan detail lengkap transaksi penyewaan milik penyewa aktif.
+     */
+    public function show(Request $request, $id)
+    {
+        $user = $request->user();
+        $transaksi = TransaksiPenyewaan::where('user_id', $user->id)
+            ->with(['barang.user', 'pembayaran', 'review'])
+            ->find($id);
+
+        if (!$transaksi) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Transaksi tidak ditemukan atau Anda tidak memiliki akses.'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $transaksi
+        ], 200);
+    }
+
     /**
      * Checkout seluruh barang di keranjang menjadi transaksi penyewaan.
      */
@@ -176,6 +217,7 @@ class TransaksiController extends Controller
 
                     // Hubungkan transaksi ini ke pembayaran baru
                     $transaksi->pembayaran_id = $pembayaran->id;
+                    $transaksi->status = 'aktif';
                     $transaksi->save();
                 }
 
@@ -197,5 +239,284 @@ class TransaksiController extends Controller
                 'message' => $e->getMessage()
             ], 400);
         }
+    }
+
+    /**
+     * Mengembalikan barang sekaligus mengisi ulasan (review) oleh penyewa.
+     */
+    public function kembalikanBarang(Request $request, $id)
+    {
+        $user = $request->user();
+        
+        $transaksi = TransaksiPenyewaan::where('id', $id)
+            ->where('user_id', $user->id)
+            ->with('barang')
+            ->first();
+
+        if (!$transaksi) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Transaksi tidak ditemukan atau Anda tidak memiliki akses.'
+            ], 404);
+        }
+
+        if ($transaksi->status !== 'aktif') {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Hanya transaksi sewa aktif yang dapat dikembalikan.'
+            ], 400);
+        }
+
+        // Validasi input: bukti pengembalian dan review
+        $validator = Validator::make($request->all(), [
+            'foto_buktipengembalian' => 'required|image|max:2048',
+            'rating' => 'required|integer|min:1|max:5',
+            'komentar' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $result = \Illuminate\Support\Facades\DB::transaction(function () use ($transaksi, $request, $user) {
+                // Hitung Keterlambatan & Denda
+                $now = now();
+                $rencanaKembali = Carbon::parse($transaksi->tanggal_kembali_rencana)->endOfDay();
+                $jamTerlambat = 0;
+                $totalDenda = 0;
+
+                if ($now->greaterThan($rencanaKembali)) {
+                    // Bulatkan ke atas selisih jam
+                    $jamTerlambat = (int) ceil($rencanaKembali->diffInHours($now));
+                    $totalDenda = $jamTerlambat * (float) $transaksi->barang->harga_denda_perjam;
+                }
+
+                // Upload Bukti Pengembalian
+                $path = $request->file('foto_buktipengembalian')->store('bukti_pengembalian', 'public');
+
+                // Update Transaksi
+                $transaksi->update([
+                    'tanggal_kembali_aktual' => $now->toDateString(),
+                    'status' => 'tunggu verifikasi pengembalian',
+                    'jam_terlambat' => $jamTerlambat,
+                    'total_denda' => $totalDenda,
+                    'foto_buktipengembalian' => $path,
+                ]);
+
+                // Simpan Review
+                $review = Review::create([
+                    'transaksi_id' => $transaksi->id,
+                    'user_id' => $user->id,
+                    'barang_id' => $transaksi->barang_id,
+                    'rating' => $request->rating,
+                    'komentar' => $request->komentar,
+                ]);
+
+                return [
+                    'transaksi' => $transaksi,
+                    'review' => $review
+                ];
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Pengembalian barang dan ulasan berhasil dikirim. Menunggu verifikasi owner.',
+                'data' => $result
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
+     * Verifikasi pengembalian barang oleh owner produk.
+     */
+    /**
+     * Menampilkan daftar transaksi penyewaan yang menunggu verifikasi pengembalian (untuk Owner).
+     */
+    public function listPengembalian(Request $request)
+    {
+        $user = $request->user();
+
+        // Ambil semua transaksi yang statusnya 'tunggu verifikasi pengembalian'
+        // dan barangnya milik owner yang sedang login
+        $transaksis = TransaksiPenyewaan::where('status', 'tunggu verifikasi pengembalian')
+            ->whereHas('barang', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->with(['barang', 'user'])
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $transaksis
+        ], 200);
+    }
+
+    /**
+     * Verifikasi pengembalian barang oleh owner produk.
+     */
+    public function verifikasiPengembalian(Request $request, $id)
+    {
+        $user = $request->user();
+
+        $transaksi = TransaksiPenyewaan::where('id', $id)
+            ->with('barang')
+            ->first();
+
+        if (!$transaksi) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Transaksi tidak ditemukan.'
+            ], 404);
+        }
+
+        if ($transaksi->status !== 'tunggu verifikasi pengembalian') {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Transaksi tidak sedang menunggu verifikasi pengembalian.'
+            ], 400);
+        }
+
+        // Verifikasi bahwa user yang login adalah pemilik barang (owner)
+        if ($transaksi->barang->user_id !== $user->id) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Anda tidak memiliki akses untuk memverifikasi transaksi ini karena Anda bukan pemilik barang.'
+            ], 403);
+        }
+
+        // Validasi input konfirmasi dari owner
+        $validator = Validator::make($request->all(), [
+            'status_kondisi' => 'required|in:ok,tolak',
+            'denda_kerusakan' => 'required_if:status_kondisi,tolak|numeric|min:0'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $isTolak = $request->status_kondisi === 'tolak';
+            $dendaKerusakan = $isTolak ? (float) $request->denda_kerusakan : 0;
+
+            \Illuminate\Support\Facades\DB::transaction(function () use ($transaksi, $isTolak, $dendaKerusakan) {
+                // Update Transaksi
+                $transaksi->update([
+                    'status' => 'selesai',
+                    'tanggal_verifikasipengembalian' => now(),
+                    'total_denda' => $transaksi->total_denda + $dendaKerusakan
+                ]);
+
+                // Jika kondisinya OK, kembalikan stok barang ke katalog
+                // Jika ditolak (rusak), stok TIDAK bertambah kembali karena barang rusak
+                if (!$isTolak) {
+                    $barang = $transaksi->barang;
+                    $barang->stok += $transaksi->jumlah;
+                    if ($barang->status === 'tidak_tersedia') {
+                        $barang->status = 'tersedia';
+                    }
+                    $barang->save();
+                }
+            });
+
+            $message = $isTolak 
+                ? 'Pengembalian barang ditolak (Rusak). Transaksi diselesaikan dengan penambahan denda kerusakan.'
+                : 'Pengembalian barang berhasil diverifikasi (Kondisi OK). Transaksi selesai.';
+
+            return response()->json([
+                'status' => 'success',
+                'message' => $message,
+                'data' => [
+                    'transaksi' => $transaksi->fresh(['barang', 'review'])
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
+     * Menampilkan dashboard owner yang memuat total saldo/pendapatan dan daftar transaksi barang miliknya.
+     */
+    public function ownerDashboard(Request $request)
+    {
+        $user = $request->user();
+
+        // 1. Dapatkan daftar barang milik owner
+        $barangIds = \App\Models\Barang::where('user_id', $user->id)->pluck('id');
+
+        // 2. Dapatkan transaksi terkait barang-barang tersebut
+        $transaksis = TransaksiPenyewaan::whereIn('barang_id', $barangIds)
+            ->with(['barang', 'user', 'pembayaran'])
+            ->latest()
+            ->get();
+
+        // 3. Hitung total saldo (total pendapatan dari penyewaan barang yang sudah dibayar)
+        $totalPendapatan = (float) TransaksiPenyewaan::whereIn('barang_id', $barangIds)
+            ->whereNotNull('pembayaran_id')
+            ->sum('total_harga');
+
+        $totalDenda = (float) TransaksiPenyewaan::whereIn('barang_id', $barangIds)
+            ->whereNotNull('pembayaran_id')
+            ->sum('total_denda');
+
+        $totalSaldo = $totalPendapatan + $totalDenda;
+
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'owner_name' => $user->name,
+                'saldo_user' => (float) $user->saldo,
+                'total_saldo_pendapatan' => $totalSaldo,
+                'total_barang' => count($barangIds),
+                'daftar_transaksi' => $transaksis
+            ]
+        ], 200);
+    }
+
+    /**
+     * Menampilkan detail lengkap suatu transaksi barang milik owner.
+     */
+    public function ownerTransaksiDetail(Request $request, $id)
+    {
+        $user = $request->user();
+
+        $transaksi = TransaksiPenyewaan::with(['barang', 'user', 'pembayaran', 'review'])->find($id);
+
+        if (!$transaksi) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Transaksi tidak ditemukan.'
+            ], 404);
+        }
+
+        // Verifikasi bahwa user yang login adalah pemilik barang (owner)
+        if ($transaksi->barang->user_id !== $user->id) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Anda tidak memiliki akses untuk melihat detail transaksi ini.'
+            ], 403);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $transaksi
+        ], 200);
     }
 }

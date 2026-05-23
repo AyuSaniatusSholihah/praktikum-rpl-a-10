@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\KeranjangController;
 use App\Http\Controllers\Api\TransaksiController;
+use App\Http\Controllers\Api\AdminController;
 
 // Public Routes for Mobile App
 Route::post('/register', [ApiAuthController::class, 'register']);
@@ -39,6 +40,27 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/keranjang', [KeranjangController::class, 'clear']);
 
     // API Transaksi & Pembayaran
+    Route::get('/transaksi', [TransaksiController::class, 'index']);
+    Route::get('/transaksi/{id}', [TransaksiController::class, 'show']);
     Route::post('/checkout', [TransaksiController::class, 'checkout']);
     Route::post('/transaksi/bayar', [TransaksiController::class, 'bayarMassal']);
+    Route::post('/transaksi/{id}/kembalikan', [TransaksiController::class, 'kembalikanBarang']);
+
+    // API Transaksi & Pembayaran (Owner)
+    Route::get('/owner/dashboard', [TransaksiController::class, 'ownerDashboard']);
+    Route::get('/owner/transaksi/{id}', [TransaksiController::class, 'ownerTransaksiDetail']);
+    Route::get('/owner/pengembalian', [TransaksiController::class, 'listPengembalian']);
+    Route::post('/transaksi/{id}/verifikasi-pengembalian', [TransaksiController::class, 'verifikasiPengembalian']);
+
+    // API Admin Dashboard & Management
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/admin/users', [AdminController::class, 'listUsers']);
+    Route::get('/admin/users/{id}', [AdminController::class, 'userDetail']);
+    Route::post('/admin/users/{id}/toggle-ban', [AdminController::class, 'toggleBanUser']);
+    Route::get('/admin/items', [AdminController::class, 'listItems']);
+    Route::get('/admin/items/{id}', [AdminController::class, 'itemDetail']);
+    Route::get('/admin/transactions', [AdminController::class, 'listTransactions']);
+    Route::get('/admin/transactions/{id}', [AdminController::class, 'transactionDetail']);
+    Route::get('/admin/finance', [AdminController::class, 'listPayments']);
+    Route::get('/admin/finance/{id}', [AdminController::class, 'paymentDetail']);
 });
