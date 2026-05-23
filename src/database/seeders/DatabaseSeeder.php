@@ -36,5 +36,21 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
             'email_verified_at' => now(),
         ]);
+
+        // 3. Buat Kategori Dummy
+        \App\Models\Kategori::create([
+            'nama_kategori' => 'Kamera',
+            'deskripsi' => 'Semua jenis kamera (DSLR, Mirrorless, Analog, dll.)',
+        ]);
+
+        \App\Models\Kategori::create([
+            'nama_kategori' => 'Lensa',
+            'deskripsi' => 'Berbagai lensa kamera (Prime, Zoom, Wide, dll.)',
+        ]);
+
+        \App\Models\Kategori::create([
+            'nama_kategori' => 'Aksesoris',
+            'deskripsi' => 'Aksesoris pendukung (Tripod, Lighting, Memory Card, dll.)',
+        ]);
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // Transaksi_id (PK)
             $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // Penyewa (FK)
             $table->foreignId('barang_id')->constrained('barangs')->cascadeOnDelete(); // Barang (FK)
+            $table->unsignedBigInteger('pembayaran_id')->nullable(); // Ditambahkan untuk Many-to-One
             $table->integer('jumlah');
             $table->date('tanggal_sewa');
             $table->date('tanggal_kembali_rencana');

@@ -30,49 +30,66 @@ class TransaksiController extends Controller
             ], 400);
         }
 
-        $createdTransactions = [];
+        try {
+            $createdTransactions = \Illuminate\Support\Facades\DB::transaction(function () use ($user, $cartItems) {
+                $transactions = [];
 
-        foreach ($cartItems as $item) {
-            $barang = $item->barang;
+                foreach ($cartItems as $item) {
+                    $barang = $item->barang;
 
-            // Hitung durasi sewa dalam hari (minimal 1 hari)
-            $tanggalSewa = Carbon::parse($item->tanggal_sewa);
-            $tanggalKembali = Carbon::parse($item->tanggal_kembali_rencana);
-            $durasiHari = $tanggalSewa->diffInDays($tanggalKembali);
-            
-            if ($durasiHari <= 0) {
-                $durasiHari = 1;
-            }
+                    // Validasi stok barang sebelum checkout
+                    if ($barang->stok < $item->jumlah) {
+                        throw new \Exception("Stok barang '{$barang->nama_barang}' tidak mencukupi. Stok tersedia: {$barang->stok}.");
+                    }
 
-            // Total harga = harga sewa per hari * jumlah unit * durasi hari
-            $totalHarga = (float) $barang->harga_sewa * $item->jumlah * $durasiHari;
+                    // Hitung durasi sewa dalam hari (minimal 1 hari)
+                    $tanggalSewa = Carbon::parse($item->tanggal_sewa);
+                    $tanggalKembali = Carbon::parse($item->tanggal_kembali_rencana);
+                    $durasiHari = $tanggalSewa->diffInDays($tanggalKembali);
+                    
+                    if ($durasiHari <= 0) {
+                        $durasiHari = 1;
+                    }
 
-            // Buat transaksi penyewaan
-            $transaksi = TransaksiPenyewaan::create([
-                'user_id' => $user->id,
-                'barang_id' => $item->barang_id,
-                'jumlah' => $item->jumlah,
-                'tanggal_sewa' => $item->tanggal_sewa,
-                'tanggal_kembali_rencana' => $item->tanggal_kembali_rencana,
-                'status' => 'upcoming', // Status default sebelum aktif
-                'total_harga' => $totalHarga,
-                'jam_terlambat' => 0,
-                'total_denda' => 0,
-            ]);
+                    // Total harga = harga sewa per hari * jumlah unit * durasi hari
+                    $totalHarga = (float) $barang->harga_sewa * $item->jumlah * $durasiHari;
 
-            $createdTransactions[] = $transaksi->load('barang');
+                    // Buat transaksi penyewaan
+                    $transaksi = TransaksiPenyewaan::create([
+                        'user_id' => $user->id,
+                        'barang_id' => $item->barang_id,
+                        'jumlah' => $item->jumlah,
+                        'tanggal_sewa' => $item->tanggal_sewa,
+                        'tanggal_kembali_rencana' => $item->tanggal_kembali_rencana,
+                        'status' => 'upcoming', // Status default sebelum aktif
+                        'total_harga' => $totalHarga,
+                        'jam_terlambat' => 0,
+                        'total_denda' => 0,
+                    ]);
 
-            // Hapus item dari keranjang
-            $item->delete();
+                    $transactions[] = $transaksi->load('barang');
+
+                    // Hapus item dari keranjang
+                    $item->delete();
+                }
+
+                return $transactions;
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Checkout berhasil dilakukan. Silakan lanjutkan ke pembayaran.',
+                'data' => [
+                    'transaksi' => $createdTransactions
+                ]
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 400);
         }
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Checkout berhasil dilakukan. Silakan lanjutkan ke pembayaran.',
-            'data' => [
-                'transaksi' => $createdTransactions
-            ]
-        ], 201);
     }
 
     /**

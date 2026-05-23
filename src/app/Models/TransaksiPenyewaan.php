@@ -12,6 +12,7 @@ class TransaksiPenyewaan extends Model
     protected $fillable = [
         'user_id',
         'barang_id',
+        'pembayaran_id',
         'jumlah',
         'tanggal_sewa',
         'tanggal_kembali_rencana',
@@ -43,6 +44,6 @@ class TransaksiPenyewaan extends Model
 
     public function pembayaran()
     {
-        return $this->hasOne(Pembayaran::class, 'transaksi_id');
+        return $this->belongsTo(Pembayaran::class, 'pembayaran_id');
     }
 }
