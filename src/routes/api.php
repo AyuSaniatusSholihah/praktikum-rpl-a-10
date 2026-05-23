@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\TransaksiController;
 Route::post('/register', [ApiAuthController::class, 'register']);
 Route::post('/verify-otp', [ApiAuthController::class, 'verifyOtp']);
 Route::post('/login', [ApiAuthController::class, 'login']);
+Route::get('/katalog-publik', [App\Http\Controllers\Api\KatalogController::class, 'katalogPublik']);
 
 // Protected Routes for Mobile App (Requires Sanctum Token)
 Route::middleware('auth:sanctum')->group(function () {
