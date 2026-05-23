@@ -40,7 +40,7 @@ As a user, I want memilih barang, menentukan jumlah dan tanggal sewa, serta mela
 
 **Acceptance Criteria**
 - Given saya memilih barang, When membuka detail, Then muncul informasi barang  
-- Given saya sudah memilih jumlah & tanggal, When melakukan pembayaran, Then status menjadi status menjadi aktif sewa / upcoming  
+- Given saya sudah memilih jumlah & tanggal, When melakukan pembayaran, Then status menjadi aktif sewa / upcoming  
 
 ---
 
@@ -87,7 +87,7 @@ As a user (owner), I want menambahkan, mengedit, dan menghapus barang, so that b
 
 ### 🔵 US-09 – Konfirmasi Pengembalian & Pengelolaan Denda
 **User Story**  
-As a user (pemilik barang), I want mengkonfirmasi pengembalian barang dan memverifikasi denda keterlambatan, so that transaksi dapat ditutup dengan benar dan saya mendapat haknya jika ada keterlambatan.  
+As a user (pemilik barang), I want mengkonfirmasi pengembalian barang dan memverifikasi denda keterlambatan, so that transaksi dapat ditutup dengan benar dan saya mendapat haknya jika ada keterlambatan.   
 
 **Acceptance Criteria**
 - Given penyewa mengajukan pengembalian, When saya membuka notifikasi, Then muncul detail pengembalian: nama penyewa, barang, tanggal jatuh tempo, dan tanggal pengembalian aktual. 
