@@ -40,22 +40,13 @@ As a user, I want memilih barang, menentukan jumlah dan tanggal sewa, serta mela
 
 **Acceptance Criteria**
 - Given saya memilih barang, When membuka detail, Then muncul informasi barang  
-- Given saya sudah memilih jumlah & tanggal, When melakukan pembayaran, Then status menjadi **menunggu persetujuan owner**  
+- Given saya sudah memilih jumlah & tanggal, When melakukan pembayaran, Then status menjadi status menjadi aktif sewa / upcoming  
 
 ---
 
 ### 🟢 US-05 – Pengembalian Barang
 **User Story**  
-As a user, I want mengembalikan barang, so that transaksi selesai  
-
-**Acceptance Criteria**
-- Given masa sewa selesai, When klik "kembalikan", Then status menjadi selesai  
-
----
-
-### 🟢 US-06 – Pengembalian Barang
-**User Story**  
-As a user, I want mengembalikan barang ke pemilik toko tepat waktu, so that   saya terhindar dari denda akibat keterlambatan pengembalian.  
+As a user, I want mengembalikan barang ke pemilik toko tepat waktu, so that saya terhindar dari denda akibat keterlambatan pengembalian.  
 
 **Acceptance Criteria**
 - Given saya mengembalikan barang sebelum atau tepat pada tanggal jatuh tempo, When saya klik 'Pengembalian Barang', Then sistem menampilkan konfirmasi pengembalian tanpa denda, dan status peminjaman berubah menjadi "Selesai".
@@ -64,7 +55,7 @@ As a user, I want mengembalikan barang ke pemilik toko tepat waktu, so that   sa
 
 ---
 
-### 🟢 US-07 – Riwayat Sewa
+### 🟢 US-06 – Riwayat Sewa
 **User Story**  
 As a user, I want melihat riwayat sewa dan status transaksi, so that saya dapat memantau aktivitas saya  
 
@@ -73,7 +64,7 @@ As a user, I want melihat riwayat sewa dan status transaksi, so that saya dapat 
 
 ---
 
-### 🟢 US-08 – Review Barang
+### 🟢 US-07 – Review Barang
 **User Story**  
 As a user, I want memberikan review setelah menyewa, so that saya dapat memberikan feedback  
 
@@ -84,7 +75,7 @@ As a user, I want memberikan review setelah menyewa, so that saya dapat memberik
 
 ## 👤 User (Owner)
 
-### 🔵 US-09 – Mengelola Katalog Barang
+### 🔵 US-08 – Mengelola Katalog Barang
 **User Story**  
 As a user (owner), I want menambahkan, mengedit, dan menghapus barang, so that barang dapat disewakan  
 
@@ -94,17 +85,18 @@ As a user (owner), I want menambahkan, mengedit, dan menghapus barang, so that b
 
 ---
 
-### 🔵 US-10 – Persetujuan Sewa
+### 🔵 US-09 – Konfirmasi Pengembalian & Pengelolaan Denda
 **User Story**  
-As a user (owner), I want menyetujui atau menolak permintaan sewa, so that saya dapat mengontrol penyewaan  
+As a user (pemilik barang), I want mengkonfirmasi pengembalian barang dan memverifikasi denda keterlambatan, so that transaksi dapat ditutup dengan benar dan saya mendapat haknya jika ada keterlambatan.  
 
 **Acceptance Criteria**
-- Given ada request sewa, When approve, Then status disetujui  
-- When reject, Then status ditolak  
+- Given penyewa mengajukan pengembalian, When saya membuka notifikasi, Then muncul detail pengembalian: nama penyewa, barang, tanggal jatuh tempo, dan tanggal pengembalian aktual. 
+- Given pengembalian tepat waktu, When saya klik 'Konfirmasi Pengembalian', Then status transaksi berubah menjadi Selesai, stok bertambah kembali, dan penyewa mendapat notifikasi. 
+- Given penyewa terlambat mengembalikan, When saya membuka detail transaksi, Then sistem otomatis menampilkan total denda (tarif denda × jumlah hari terlambat) yang harus dibayar penyewa. Given denda sudah dibayar penyewa, When saya mengkonfirmasi pelunasan denda, Then status transaksi berubah menjadi Selesai dan stok bertambah.
 
 ---
 
-### 🔵 US-11 – Melihat Transaksi & Saldo
+### 🔵 US-10 – Melihat Transaksi & Saldo
 **User Story**  
 As a user (owner), I want melihat transaksi dan saldo, so that saya dapat memantau pendapatan  
 
@@ -115,7 +107,7 @@ As a user (owner), I want melihat transaksi dan saldo, so that saya dapat memant
 
 ## 🛡️ Admin (Monitoring & Moderasi)
 
-### 🔴 US-12 – Monitoring Platform
+### 🔴 US-11 – Monitoring Platform
 **User Story**  
 As an admin, I want memantau aktivitas platform, so that sistem berjalan dengan baik  
 
@@ -124,7 +116,7 @@ As an admin, I want memantau aktivitas platform, so that sistem berjalan dengan 
 
 ---
 
-### 🔴 US-13 – Melihat Detail User
+### 🔴 US-12 – Melihat Detail User
 **User Story**  
 As an admin, I want melihat detail user, so that saya dapat memantau aktivitas pengguna  
 
@@ -133,7 +125,7 @@ As an admin, I want melihat detail user, so that saya dapat memantau aktivitas p
 
 ---
 
-### 🔴 US-14 – Freeze / Ban Account
+### 🔴 US-13 – Freeze / Ban Account
 **User Story**  
 As an admin, I want membekukan akun user yang memiliki review buruk atau laporan negatif, so that saya dapat menjaga kualitas platform  
 
