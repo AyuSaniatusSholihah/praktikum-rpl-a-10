@@ -9,328 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Jomolhari&family=Poppins:wght@300;400;500;600;700&family=Vidaloka&family=Volkhov:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/auth.css" />
 
-  <style>
-    :root {
-      --blue:    #6A87A1;
-      --black:   #000000;
-      --bg:      #f4f4f4;
-      --bg-outer:#B9C8D6;
-      --nav-h:   56px;
-    }
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── Navbar ── */
-    nav {
-      height: var(--nav-h);
-      background: #fff;
-      display: flex;
-      align-items: center;
-      padding: 0 32px;
-      border-bottom: 1px solid #e8e8e8;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .nav-logo {
-      font-family: 'Vidaloka', serif;
-      font-size: 35px;
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      color: #484848;
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--blue); }
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-      margin-left: 40px;
-    }
-    .nav-links a {
-      font-family: 'Poppins', sans-serif;
-      font-size: 14px;
-      color: #444;
-      text-decoration: none;
-      padding: 4px 2px;
-      transition: color .2s;
-    }
-    .nav-links a.active,
-    .nav-links a:hover { color: var(--black); font-weight: 600; }
-    .nav-links a.active { border-bottom: 2px solid var(--black); }
-    .nav-right {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-    .nav-right svg { width: 20px; height: 20px; color: #333; cursor: pointer; }
-
-    /* ── Main ── */
-    main {
-      flex: 1;
-      background: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 24px;
-    }
-
-    /* ── Auth Card ── */
-    .auth-card {
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      width: 100%;
-      max-width: 860px;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-      background: #fff;
-    }
-
-    /* ── Left: foto interior ── */
-    .auth-sidebar {
-      width: 45%;
-      flex-shrink: 0;
-      height: auto;
-      background-image: url('assets/img/register_login.png');
-      background-size: 199%;
-      background-position: -125px center;
-      background-repeat: no-repeat;
-      overflow: hidden;
-    }
-
-    /* ── Right: Form ── */
-    .auth-form-side {
-      flex: 1;
-      background: #fff;
-      padding: 36px 44px 28px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-
-    .auth-logo {
-      font-family: 'Vidaloka', serif;
-      font-size: 28px;
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      color: #484848;
-      text-decoration: none;
-      display: inline-block;
-      margin-bottom: 8px;
-    }
-    .auth-logo span { color: var(--blue); }
-
-    .auth-title {
-      font-family: 'Volkhov', serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--black);
-      margin-bottom: 16px;
-    }
-
-    .social-btn {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 9px 16px;
-      border: 1.5px solid var(--blue);
-      border-radius: 7px;
-      background: #fff;
-      font-family: 'Poppins', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      color: #333;
-      cursor: pointer;
-      transition: background .15s, border-color .15s;
-      margin-bottom: 14px;
-      text-decoration: none;
-    }
-    .social-btn:hover { background: #f5f5f5; border-color: #5b7891; }
-
-    .auth-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-size: 12px;
-      color: #838383;
-      font-weight: 700;
-      font-family: 'Poppins', sans-serif;
-      margin-bottom: 12px;
-    }
-    .auth-divider::before,
-    .auth-divider::after {
-      content: '';
-      width: 24px;
-      height: 2px;
-      background: #838383;
-    }
-
-    /* Fields */
-    .auth-field { margin-bottom: 10px; }
-
-    .auth-field input {
-      width: 100%;
-      border: none;
-      border-bottom: 1.5px solid #C7C7C7;
-      padding: 8px 0 5px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 10px;
-      font-weight: 300;
-      color: #555;
-      background: transparent;
-      outline: none;
-      transition: border-color .2s;
-    }
-    .auth-field input::placeholder { color: #9D9D9D; font-weight: 300; }
-    .auth-field input:focus { border-bottom-color: #9D9D9D; }
-
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    .btn-auth {
-      width: 100%;
-      padding: 10px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: 7px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: opacity .2s, box-shadow .2s;
-      box-shadow: 0 8px 20px rgba(106, 135, 161, 0.18);
-    }
-    .btn-auth:hover { opacity: .88; }
-
-    .auth-links {
-      margin-top: 12px;
-      font-size: 10px;
-      color: var(--black);
-      text-align: center;
-      font-family: 'Poppins', sans-serif;
-    }
-    .auth-links a {
-      color: var(--blue);
-      font-family: 'Poppins', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-    .auth-links a:hover { text-decoration: underline; }
-
-    .auth-footer {
-      margin-top: 12px;
-      font-size: 10.5px;
-      color: var(--black);
-      text-align: right;
-      font-family: 'Poppins', sans-serif;
-    }
-    .auth-footer a { color: var(--black); text-decoration: underline; }
-
-    /* ── Footer ── */
-    footer {
-      background: #e2e2e2;
-      padding: 40px 24px 28px 24px;
-      margin-top: auto;
-    }
-    .footer-inner {
-      width: 100%;
-      display: flex;
-      gap: 32px;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-    .footer-brand {
-      flex: 0 0 220px;
-      padding-left: 24px;
-    }
-    .footer-logo {
-      font-family: 'Vidaloka', serif;
-      font-size: 35px;
-      font-weight: 400;
-      color: #484848;
-      letter-spacing: 0.04em;
-    }
-    .footer-logo span { color: var(--blue); }
-    .footer-tagline {
-      font-size: 13px;
-      color: #555;
-      margin-top: 8px;
-      line-height: 1.6;
-    }
-    .footer-socials {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-    }
-    .footer-socials a {
-      width: 32px; height: 32px;
-      background: #ccc;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      text-decoration: none;
-      color: #333;
-      transition: background .2s;
-    }
-    .footer-socials a:hover { background: var(--blue); color: #fff; }
-    .footer-cols {
-      flex: 0 0 auto;
-      display: flex;
-      gap: 48px;
-      margin-left: auto;
-      margin-right: 24px;
-    }
-    .footer-col h4 {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--black);
-      margin-bottom: 12px;
-    }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 8px; }
-    .footer-col ul li a {
-      font-size: 13px;
-      color: #555;
-      text-decoration: none;
-      transition: color .2s;
-    }
-    .footer-col ul li a:hover { color: var(--blue); }
-    .footer-bottom {
-      width: 100%;
-      margin: 28px 0 0;
-      padding: 16px 24px 0;
-      border-top: 1px solid #ccc;
-      font-size: 12px;
-      color: #888;
-    }
-
-    /* Mobile */
-    @media (max-width: 640px) {
-      .auth-sidebar { display: none; }
-      .auth-form-side { padding: 28px 24px; }
-      .field-row { grid-template-columns: 1fr; }
-    }
-  </style>
 </head>
 <body>
 
@@ -344,18 +25,24 @@
       <li><a href="katalog.html">My Katalog</a></li>
     </ul>
     <div class="nav-right">
+      <a href="profile.html" aria-label="Account">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
           d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
       </svg>
+      </a>
+      <a href="#" aria-label="Notifications">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
           d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
       </svg>
+      </a>
+      <a href="cart.html" aria-label="Cart">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
           d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
       </svg>
+      </a>
     </div>
   </nav>
 
@@ -374,10 +61,11 @@
         <a href="index.html" class="auth-logo">SEWA<span>IN</span></a>
 
 
+        <div class="auth-form-body">
         <h1 class="auth-title">Create Account</h1>
 
 
-        <a href="{{ route('auth.redirect') }}" class="social-btn" style="text-decoration: none;">
+        <button class="social-btn" type="button">
           <svg width="16" height="16" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -385,46 +73,40 @@
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
           </svg>
           Sign up with Google
-        </a>
+        </button>
 
 
         <div class="auth-divider">OR</div>
 
 
-        <form action="{{ route('register.post') }}" method="POST">
-          @csrf
+        <form id="signupForm" novalidate>
           <div class="auth-field">
             <div class="field-row">
               <div>
-                <input type="text" id="firstName" name="first_name" placeholder="First Name" value="{{ old('first_name') }}" required />
-                @error('first_name') <small style="color: #ef4444;">{{ $message }}</small> @enderror
+                <input type="text" id="firstName" placeholder="First Name" required />
               </div>
               <div>
-                <input type="text" id="lastName" name="last_name" placeholder="Last Name" value="{{ old('last_name') }}" />
-                @error('last_name') <small style="color: #ef4444;">{{ $message }}</small> @enderror
+                <input type="text" id="lastName" placeholder="Last Name" />
               </div>
             </div>
           </div>
           <div class="auth-field">
             <div class="field-row">
               <div>
-                <input type="email" id="regEmail" name="email" autocomplete="email" placeholder="Email Address" value="{{ old('email') }}" required />
-                @error('email') <small style="color: #ef4444;">{{ $message }}</small> @enderror
+                <input type="email" id="regEmail" autocomplete="email" placeholder="Email Address" required />
               </div>
               <div>
-                <input type="tel" id="phone" name="phone" placeholder="Phone Number" value="{{ old('phone') }}" />
-                @error('phone') <small style="color: #ef4444;">{{ $message }}</small> @enderror
+                <input type="tel" id="phone" placeholder="Phone Number" />
               </div>
             </div>
           </div>
           <div class="auth-field">
             <div class="field-row">
               <div>
-                <input type="password" id="regPassword" name="password" autocomplete="new-password" placeholder="Password" required />
-                @error('password') <small style="color: #ef4444;">{{ $message }}</small> @enderror
+                <input type="password" id="regPassword" autocomplete="new-password" placeholder="Password" required />
               </div>
               <div>
-                <input type="password" id="confirmPassword" name="password_confirmation" placeholder="Confirm Password" required />
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
               </div>
             </div>
           </div>
@@ -432,7 +114,8 @@
         </form>
 
 
-        <div class="auth-links">Already have an account? <a href="{{ route('login') }}">Login</a></div>
+        <div class="auth-links">Already have an account? <a href="signin.html">Login</a></div>
+        </div>
         <p class="auth-footer">SEWAIN Terms &amp; Conditions</p>
       </div>
 
@@ -460,8 +143,8 @@
             </svg>
           </a>
           <a href="#">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10 20C8.63333 20 7.34167 19.7375 6.125 19.2125C4.90833 18.6875 3.84583 17.9708 2.9375 17.0625C2.02917 16.1542 1.3125 15.0917 0.7875 13.875C0.2625 12.6583 0 11.3667 0 10C0 8.61667 0.2625 7.32083 0.7875 6.1125C1.3125 4.90417 2.02917 3.84583 2.9375 2.9375C3.84583 2.02917 4.90833 1.3125 6.125 0.7875C7.34167 0.2625 8.63333 0 10 0C11.3833 0 12.6792 0.2625 13.8875 0.7875C15.0958 1.3125 16.1542 2.02917 17.0625 2.9375C17.9708 3.84583 18.6875 4.90417 19.2125 6.1125C19.7375 7.32083 20 8.61667 20 10C20 11.3667 19.7375 12.6583 19.2125 13.875C18.6875 15.0917 17.9708 16.1542 17.0625 17.0625C16.1542 17.9708 15.0958 18.6875 13.8875 19.2125C12.6792 19.7375 11.3833 20 10 20Z"/>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M10 20C8.63333 20 7.34167 19.7375 6.125 19.2125C4.90833 18.6875 3.84583 17.9708 2.9375 17.0625C2.02917 16.1542 1.3125 15.0917 0.7875 13.875C0.2625 12.6583 0 11.3667 0 10C0 8.61667 0.2625 7.32083 0.7875 6.1125C1.3125 4.90417 2.02917 3.84583 2.9375 2.9375C3.84583 2.02917 4.90833 1.3125 6.125 0.7875C7.34167 0.2625 8.63333 0 10 0C11.3833 0 12.6792 0.2625 13.8875 0.7875C15.0958 1.3125 16.1542 2.02917 17.0625 2.9375C17.9708 3.84583 18.6875 4.90417 19.2125 6.1125C19.7375 7.32083 20 8.61667 20 10C20 11.3667 19.7375 12.6583 19.2125 13.875C18.6875 15.0917 17.9708 16.1542 17.0625 17.0625C16.1542 17.9708 15.0958 18.6875 13.8875 19.2125C12.6792 19.7375 11.3833 20 10 20ZM10 17.95C10.4333 17.35 10.8083 16.725 11.125 16.075C11.4417 15.425 11.7 14.7333 11.9 14H8.1C8.3 14.7333 8.55833 15.425 8.875 16.075C9.19167 16.725 9.56667 17.35 10 17.95ZM7.4 17.55C7.1 17 6.8375 16.4292 6.6125 15.8375C6.3875 15.2458 6.2 14.6333 6.05 14H3.1C3.58333 14.8333 4.1875 15.5583 4.9125 16.175C5.6375 16.7917 6.46667 17.25 7.4 17.55ZM12.6 17.55C13.5333 17.25 14.3625 16.7917 15.0875 16.175C15.8125 15.5583 16.4167 14.8333 16.9 14H13.95C13.8 14.6333 13.6125 15.2458 13.3875 15.8375C13.1625 16.4292 12.9 17 12.6 17.55ZM2.25 12H5.65C5.6 11.6667 5.5625 11.3375 5.5375 11.0125C5.5125 10.6875 5.5 10.35 5.5 10C5.5 9.65 5.5125 9.3125 5.5375 8.9875C5.5625 8.6625 5.6 8.33333 5.65 8H2.25C2.16667 8.33333 2.10417 8.6625 2.0625 8.9875C2.02083 9.3125 2 9.65 2 10C2 10.35 2.02083 10.6875 2.0625 11.0125C2.10417 11.3375 2.16667 11.6667 2.25 12ZM7.65 12H12.35C12.4 11.6667 12.4375 11.3375 12.4625 11.0125C12.4875 10.6875 12.5 10.35 12.5 10C12.5 9.65 12.4875 9.3125 12.4625 8.9875C12.4375 8.6625 12.4 8.33333 12.35 8H7.65C7.6 8.33333 7.5625 8.6625 7.5375 8.9875C7.5125 9.3125 7.5 9.65 7.5 10C7.5 10.35 7.5125 10.6875 7.5375 11.0125C7.5625 11.3375 7.6 11.6667 7.65 12ZM14.35 12H17.75C17.8333 11.6667 17.8958 11.3375 17.9375 11.0125C17.9792 10.6875 18 10.35 18 10C18 9.65 17.9792 9.3125 17.9375 8.9875C17.8958 8.6625 17.8333 8.33333 17.75 8H14.35C14.4 8.33333 14.4375 8.6625 14.4625 8.9875C14.4875 9.3125 14.5 9.65 14.5 10C14.5 10.35 14.4875 10.6875 14.4625 11.0125C14.4375 11.3375 14.4 11.6667 14.35 12ZM13.95 6H16.9C16.4167 5.16667 15.8125 4.44167 15.0875 3.825C14.3625 3.20833 13.5333 2.75 12.6 2.45C12.9 3 13.1625 3.57083 13.3875 4.1625C13.6125 4.75417 13.8 5.36667 13.95 6ZM8.1 6H11.9C11.7 5.26667 11.4417 4.575 11.125 3.925C10.8083 3.275 10.4333 2.65 10 2.05C9.56667 2.65 9.19167 3.275 8.875 3.925C8.55833 4.575 8.3 5.26667 8.1 6ZM3.1 6H6.05C6.2 5.36667 6.3875 4.75417 6.6125 4.1625C6.8375 3.57083 7.1 3 7.4 2.45C6.46667 2.75 5.6375 3.20833 4.9125 3.825C4.1875 4.44167 3.58333 5.16667 3.1 6Z"/>
             </svg>
           </a>
           <a href="#">
@@ -508,7 +191,15 @@
   </footer>
 
 
-
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const pass    = document.getElementById('regPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+      if (pass !== confirm) { alert('Password tidak cocok'); return; }
+      window.location.href = 'verify-email.html';
+    });
+  </script>
 </body>
 </html>
 
