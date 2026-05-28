@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 })->name('home');
 
 Route::get('/login', function () {
@@ -25,6 +25,10 @@ Route::post('/verify-otp', [RegisterController::class, 'verifyOtp'])->name('otp.
 Route::get('/dashboard', function () {
     return "<h1>Dashboard</h1><p>Welcome, " . auth()->user()->name . "!</p><form action='/logout' method='POST'>" . csrf_field() . "<button type='submit'>Logout</button></form>";
 })->middleware('auth')->name('dashboard');
+
+Route::get('/admin/dashboard', function () {
+    return "<h1>Admin Dashboard</h1><p>Welcome, " . auth()->user()->name . " (Admin)!</p><form action='/logout' method='POST'>" . csrf_field() . "<button type='submit'>Logout</button></form>";
+})->middleware('auth')->name('admin.dashboard');
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/logout', [LoginController::class, 'logout']); // Keep GET for convenience if needed, but POST is better.
