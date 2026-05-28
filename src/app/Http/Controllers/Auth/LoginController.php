@@ -20,6 +20,21 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->has('remember'))) {
             $request->session()->regenerate();
 
+            $user = Auth::user();
+
+            // Cek jika user dibanned
+            if ($user->is_banned) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Akun kamu telah dinonaktifkan. Hubungi admin untuk informasi lebih lanjut.',
+                ])->onlyInput('email');
+            }
+
+            // Redirect berdasarkan role
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard')->with('success', 'Selamat datang, Admin!');
+            }
+
             return redirect()->intended(route('home'))->with('success', 'Welcome back!');
         }
 
