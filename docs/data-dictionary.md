@@ -1,122 +1,163 @@
 # Data Dictionary – Sistem Penyewaan Barang
 
-## Tabel: Pengguna
+---
+
+## Tabel: users
+
+Menyimpan data semua pengguna sistem, termasuk autentikasi Google OAuth dan OTP.
 
 | Kolom | Tipe Data | Constraint | Keterangan |
-|------|----------|-----------|-----------|
-| User_id | INT | PK, AUTO_INCREMENT | ID unik pengguna |
-| username | VARCHAR(100) | NOT NULL | Username pengguna |
-| password | VARCHAR(255) | NOT NULL | Password (hash bcrypt) |
-| nama_lengkap | VARCHAR(100) | NOT NULL | Nama lengkap |
-| email | VARCHAR(100) | UNIQUE, NOT NULL | Email login |
-| no_telp | VARCHAR(25) | NOT NULL | Nomor telepon |
-| alamat | VARCHAR(255) | NOT NULL | Alamat pengguna |
-| saldo | DECIMAL(10,2) | DEFAULT 0 | Saldo simulasi |
-| foto_profil | VARCHAR(255) | NULL | Foto profil |
-| is_banned | BOOLEAN | DEFAULT FALSE | Status banned akun user |
-| role | ENUM | DEFAULT 'user' | Role user/admin |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID unik pengguna |
+| google_id | VARCHAR | NULL | ID akun Google (OAuth) |
+| google_token | TEXT | NULL | Token akses Google OAuth |
+| google_refresh_token | TEXT | NULL | Refresh token Google OAuth |
+| name | VARCHAR | NOT NULL | Nama lengkap pengguna |
+| username | VARCHAR | UNIQUE, NOT NULL | Username pengguna |
+| email | VARCHAR | UNIQUE, NOT NULL | Email login |
+| phone_number | VARCHAR | NOT NULL | Nomor telepon |
+| alamat | VARCHAR | NOT NULL | Alamat pengguna |
+| saldo | DECIMAL | DEFAULT 0 | Saldo simulasi pembayaran |
+| foto_profil | VARCHAR | NULL | Foto profil pengguna |
+| is_banned | BOOLEAN | DEFAULT FALSE | Status banned akun |
+| role | ENUM | DEFAULT 'user' | Role: user / admin |
+| otp_code | VARCHAR | NULL | Kode OTP verifikasi email |
+| otp_expires_at | TIMESTAMP | NULL | Waktu kadaluarsa OTP |
+| email_verified_at | TIMESTAMP | NULL | Waktu verifikasi email |
+| password | VARCHAR | NULL | Password (hash bcrypt); NULL jika login via Google |
+| remember_token | VARCHAR | NULL | Token remember me (session) |
 | created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu registrasi |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
 
 ---
 
-## Tabel: Kategori
+## Tabel: kategoris
+
+Menyimpan kategori barang yang tersedia untuk disewakan.
 
 | Kolom | Tipe Data | Constraint | Keterangan |
-|------|----------|-----------|-----------|
-| Kategori_id | INT | PK, AUTO_INCREMENT | ID kategori |
-| nama_kategori | VARCHAR(50) | NOT NULL | Nama kategori |
-| deskripsi | TEXT | NULL | Deskripsi |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID unik kategori |
+| nama_kategori | VARCHAR | NOT NULL | Nama kategori barang |
+| deskripsi | TEXT | NULL | Deskripsi kategori |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu data dibuat |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
 
 ---
 
-## Tabel: Barang
+## Tabel: barangs
+
+Menyimpan data barang yang ditawarkan untuk disewakan oleh pengguna (pemilik).
 
 | Kolom | Tipe Data | Constraint | Keterangan |
-|------|----------|-----------|-----------|
-| Barang_id | INT | PK, AUTO_INCREMENT | ID barang |
-| User_id | INT | FK, NOT NULL | Pemilik barang |
-| Kategori_id | INT | FK, NOT NULL | Kategori barang |
-| nama_barang | VARCHAR(100) | NOT NULL | Nama barang |
-| deskripsi | TEXT | NOT NULL | Deskripsi |
-| harga_sewa | DECIMAL(10,2) | NOT NULL | Harga sewa |
-| harga_jaminan | DECIMAL(10,2) | NOT NULL | Uang jaminan |
-| harga_denda_perjam | DECIMAL(10,2) | NOT NULL | Denda per jam |
-| stok | INT | DEFAULT 1 | Jumlah stok |
-| lokasi | VARCHAR(100) | NOT NULL | Lokasi (kota) |
-| foto_barang | VARCHAR(255) | NOT NULL | Foto barang |
-| status | ENUM | DEFAULT 'tersedia' | Status barang |
-| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu input |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID unik barang |
+| user_id | BIGINT | FK → users.id, NOT NULL | ID pemilik barang |
+| kategori_id | BIGINT | FK → kategoris.id, NOT NULL | ID kategori barang |
+| nama_barang | VARCHAR | NOT NULL | Nama barang |
+| deskripsi | TEXT | NOT NULL | Deskripsi detail barang |
+| harga_sewa | DECIMAL | NOT NULL | Harga sewa per periode |
+| harga_jaminan | DECIMAL | NOT NULL | Uang jaminan yang dibebankan |
+| harga_denda_perjam | DECIMAL | NOT NULL | Denda keterlambatan per jam |
+| stok | INT | DEFAULT 1 | Jumlah stok tersedia |
+| lokasi | VARCHAR | NOT NULL | Lokasi barang (kota) |
+| foto_barang | VARCHAR | NOT NULL | Path foto barang |
+| status | ENUM | DEFAULT 'tersedia' | Status barang (tersedia/disewa/dll) |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu data dibuat |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
 
 ---
 
-## Tabel: Transaksi_Penyewaan
+## Tabel: keranjangs
+
+Menyimpan data keranjang sewa pengguna sebelum transaksi dikonfirmasi. Tabel ini merupakan tambahan baru yang tidak ada di versi sebelumnya.
 
 | Kolom | Tipe Data | Constraint | Keterangan |
-|------|----------|-----------|-----------|
-| Transaksi_id | INT | PK, AUTO_INCREMENT | ID transaksi |
-| User_id | INT | FK, NOT NULL | Penyewa |
-| Barang_id | INT | FK, NOT NULL | Barang |
-| Jumlah | INT | NOT NULL | Jumlah disewa |
-| tanggal_sewa | DATE | NOT NULL | Tanggal mulai |
-| tanggal_kembali_rencana | DATE | NOT NULL | Rencana kembali |
-| tanggal_kembali_aktual | DATE | NULL | Tanggal kembali aktual |
-| status | ENUM | NOT NULL | Status transaksi |
-| foto_buktipengembalian | VARCHAR(255) | NULL | Bukti pengembalian |
-| tanggal_verifikasipengembalian | TIMESTAMP | NULL | Waktu verifikasi owner |
-| total_harga | DECIMAL(10,2) | NOT NULL | Total biaya sewa |
-| jam_terlambat | INT | DEFAULT 0 | Lama keterlambatan |
-| total_denda | DECIMAL(10,2) | DEFAULT 0 | Total denda |
-| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu transaksi |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID unik keranjang |
+| user_id | BIGINT | FK → users.id, NOT NULL | ID pengguna penyewa |
+| barang_id | BIGINT | FK → barangs.id, NOT NULL | ID barang yang dimasukkan |
+| jumlah | INT | NOT NULL | Jumlah barang yang disewa |
+| tanggal_sewa | DATE | NOT NULL | Tanggal mulai sewa yang direncanakan |
+| tanggal_kembali_rencana | DATE | NOT NULL | Tanggal rencana pengembalian |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu data dibuat |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
 
 ---
 
-## Tabel: Pembayaran
+## Tabel: pembayarans
+
+Menyimpan data pembayaran atas transaksi penyewaan.
 
 | Kolom | Tipe Data | Constraint | Keterangan |
-|------|----------|-----------|-----------|
-| Pembayaran_id | INT | PK, AUTO_INCREMENT | ID pembayaran |
-| Transaksi_id | INT | FK, UNIQUE, NOT NULL | Relasi ke transaksi |
-| metode | ENUM | NOT NULL | Metode (transfer, e-wallet, QRIS) |
-| detail_metode | VARCHAR(50) | NULL | Detail (BCA, OVO, dll) |
-| tanggal_bayar | TIMESTAMP | NULL | Waktu pembayaran |
-| jumlah_bayar | DECIMAL(10,2) | NOT NULL | Nominal pembayaran |
-| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu pencatatan |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID unik pembayaran |
+| metode | ENUM | NOT NULL | Metode: transfer / e-wallet / QRIS |
+| detail_metode | VARCHAR | NULL | Detail metode (BCA, OVO, dll) |
+| tanggal_bayar | TIMESTAMP | NULL | Waktu pembayaran dilakukan |
+| jumlah_bayar | DECIMAL | NOT NULL | Nominal total pembayaran |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu data dicatat |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
 
 ---
 
-## Tabel: Review
+## Tabel: transaksi_penyewaans
+
+Menyimpan data transaksi penyewaan barang. Tabel ini berelasi ke pembayarans melalui FK `pembayaran_id`, sehingga pembayaran dibuat lebih dahulu sebelum transaksi dikonfirmasi.
 
 | Kolom | Tipe Data | Constraint | Keterangan |
-|------|----------|-----------|-----------|
-| Review_id | INT | PK, AUTO_INCREMENT | ID review |
-| Transaksi_id | INT | FK, UNIQUE, NOT NULL | Relasi ke transaksi |
-| User_id | INT | FK, NOT NULL | Pengguna |
-| Barang_id | INT | FK, NOT NULL | Barang |
-| rating | INT | CHECK (1–5), NOT NULL | Nilai rating |
-| komentar | TEXT | NULL | Ulasan |
-| foto_review | VARCHAR(255) | NULL | Foto review |
-| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu review |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID unik transaksi |
+| user_id | BIGINT | FK → users.id, NOT NULL | ID penyewa |
+| barang_id | BIGINT | FK → barangs.id, NOT NULL | ID barang yang disewa |
+| pembayaran_id | BIGINT | FK → pembayarans.id, NOT NULL | ID pembayaran terkait |
+| jumlah | INT | NOT NULL | Jumlah barang yang disewa |
+| tanggal_sewa | DATE | NOT NULL | Tanggal mulai sewa |
+| tanggal_kembali_rencana | DATE | NOT NULL | Rencana tanggal kembali |
+| tanggal_kembali_aktual | DATE | NULL | Tanggal aktual pengembalian |
+| status | ENUM | NOT NULL | Status transaksi (proses/selesai/dll) |
+| foto_buktipengembalian | VARCHAR | NULL | Foto bukti pengembalian barang |
+| tanggal_verifikasipengembalian | TIMESTAMP | NULL | Waktu verifikasi pengembalian oleh owner |
+| total_harga | DECIMAL | NOT NULL | Total biaya sewa |
+| jam_terlambat | INT | DEFAULT 0 | Jumlah jam keterlambatan |
+| total_denda | DECIMAL | DEFAULT 0 | Total denda keterlambatan |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu transaksi dibuat |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
 
 ---
 
-## Tabel: OTP
+## Tabel: reviews
+
+Menyimpan ulasan dan rating dari penyewa setelah transaksi selesai.
 
 | Kolom | Tipe Data | Constraint | Keterangan |
-|------|----------|-----------|-----------|
-| OTP_id | INT | PK, AUTO_INCREMENT | ID OTP |
-| User_id | INT | FK, NOT NULL | Relasi ke user |
-| kode_OTP | VARCHAR(10) | NOT NULL | Kode OTP |
-| expired_at | TIMESTAMP | NOT NULL | Waktu kadaluarsa |
-| is_used | BOOLEAN | DEFAULT FALSE | Status penggunaan OTP |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID unik review |
+| transaksi_id | BIGINT | FK → transaksi_penyewaans.id | ID transaksi yang diulas |
+| user_id | BIGINT | FK → users.id, NOT NULL | ID pengguna pemberi review |
+| barang_id | BIGINT | FK → barangs.id, NOT NULL | ID barang yang diulas |
+| rating | INT | CHECK (1–5), NOT NULL | Nilai rating (1–5 bintang) |
+| komentar | TEXT | NULL | Komentar / ulasan teks |
+| foto_review | VARCHAR | NULL | Foto pendukung ulasan |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu review dibuat |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
 
 ---
 
-## Relasi Utama
+## Relasi Antar Tabel
 
-- Pengguna → Barang (1 : N)
-- Pengguna → Transaksi_Penyewaan (1 : N)
-- Barang → Transaksi_Penyewaan (1 : N)
-- Kategori → Barang (1 : N)
-- Pengguna → OTP(1 : N)
-- Transaksi_Penyewaan → Pembayaran (1 : 1)
-- Transaksi_Penyewaan → Review (1 : 1)
+| Relasi | Kardinalitas | Keterangan |
+|--------|-------------|------------|
+| users → barangs | 1 : N | Satu pengguna dapat memiliki banyak barang |
+| users → keranjangs | 1 : N | Satu pengguna dapat memiliki banyak item keranjang |
+| users → transaksi_penyewaans | 1 : N | Satu pengguna dapat melakukan banyak transaksi sewa |
+| users → reviews | 1 : N | Satu pengguna dapat memberikan banyak review |
+| kategoris → barangs | 1 : N | Satu kategori memiliki banyak barang |
+| barangs → keranjangs | 1 : N | Satu barang dapat masuk ke banyak keranjang |
+| barangs → transaksi_penyewaans | 1 : N | Satu barang dapat disewa dalam banyak transaksi |
+| barangs → reviews | 1 : N | Satu barang dapat memiliki banyak review |
+| pembayarans → transaksi_penyewaans | 1 : 1 | Satu pembayaran hanya untuk satu transaksi |
+| transaksi_penyewaans → reviews | 1 : 1 | Satu transaksi hanya memiliki satu review |
+
+---
+
