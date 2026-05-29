@@ -12,17 +12,338 @@
   <link rel="stylesheet" href="assets/css/auth.css" />
 
 
+  <style>
+    :root {
+      --blue:    #6A87A1;
+      --black:   #000000;
+      --bg:      #f4f4f4;
+      --bg-outer:#B9C8D6;
+      --nav-h:   56px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Navbar ── */
+    nav {
+      height: var(--nav-h);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      border-bottom: 1px solid #e8e8e8;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Vidaloka', serif;
+      font-size: 35px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: #484848;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--blue); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      margin-left: 40px;
+    }
+    .nav-links a {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      color: #444;
+      text-decoration: none;
+      padding: 4px 2px;
+      transition: color .2s;
+    }
+    .nav-links a.active,
+    .nav-links a:hover { color: var(--black); font-weight: 600; }
+    .nav-links a.active { border-bottom: 2px solid var(--black); }
+    .nav-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .nav-right svg { width: 20px; height: 20px; color: #333; cursor: pointer; }
+
+    /* ── Main ── */
+    main {
+      flex: 1;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    /* ── Auth Card ── */
+    .auth-card {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      width: 100%;
+      max-width: 860px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      background: #fff;
+    }
+
+    /* ── Left: foto interior ── */
+    .auth-sidebar {
+      width: 45%;
+      flex-shrink: 0;
+      height: auto;
+      background-image: url('{{ asset('assets/img/register_login.png') }}');
+      background-size: 199%;
+      background-position: -125px center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    /* ── Right: Form ── */
+    .auth-form-side {
+      flex: 1;
+      background: #fff;
+      padding: 36px 44px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .auth-logo {
+      font-family: 'Vidaloka', serif;
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: #484848;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .auth-logo span { color: var(--blue); }
+
+    .auth-title {
+      font-family: 'Volkhov', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+
+    .social-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 9px 16px;
+      border: 1.5px solid var(--blue);
+      border-radius: 7px;
+      background: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #333;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+      margin-bottom: 14px;
+      text-decoration: none;
+    }
+    .social-btn:hover { background: #f5f5f5; border-color: #5b7891; }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #838383;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 12px;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: #838383;
+    }
+
+    /* Fields */
+    .auth-field { margin-bottom: 10px; }
+
+    .auth-field input {
+      width: 100%;
+      border: none;
+      border-bottom: 1.5px solid #C7C7C7;
+      padding: 8px 0 5px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      color: #555;
+      background: transparent;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .auth-field input::placeholder { color: #9D9D9D; font-weight: 300; }
+    .auth-field input:focus { border-bottom-color: #9D9D9D; }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .btn-auth {
+      width: 100%;
+      padding: 10px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: opacity .2s, box-shadow .2s;
+      box-shadow: 0 8px 20px rgba(106, 135, 161, 0.18);
+    }
+    .btn-auth:hover { opacity: .88; }
+
+    .auth-links {
+      margin-top: 12px;
+      font-size: 10px;
+      color: var(--black);
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+    .auth-links a {
+      color: var(--blue);
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .auth-links a:hover { text-decoration: underline; }
+
+    .auth-footer {
+      margin-top: auto;
+      font-size: 10.5px;
+      color: var(--black);
+      text-align: right;
+      font-family: 'Poppins', sans-serif;
+    }
+    .auth-footer a { color: var(--black); text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      background: #e2e2e2;
+      padding: 40px 24px 28px 24px;
+      margin-top: auto;
+    }
+    .footer-inner {
+      width: 100%;
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .footer-brand {
+      flex: 0 0 220px;
+      padding-left: 24px;
+    }
+    .footer-logo {
+      font-family: 'Vidaloka', serif;
+      font-size: 35px;
+      font-weight: 400;
+      color: #484848;
+      letter-spacing: 0.04em;
+    }
+    .footer-logo span { color: var(--blue); }
+    .footer-tagline {
+      font-size: 13px;
+      color: #555;
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .footer-socials a {
+      width: 32px; height: 32px;
+      background: #ccc;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      color: #333;
+      transition: background .2s;
+    }
+    .footer-socials a:hover { background: var(--blue); color: #fff; }
+    .footer-cols {
+      flex: 0 0 auto;
+      display: flex;
+      gap: 48px;
+      margin-left: auto;
+      margin-right: 24px;
+    }
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul li a {
+      font-size: 13px;
+      color: #555;
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-col ul li a:hover { color: var(--blue); }
+    .footer-bottom {
+      width: 100%;
+      margin: 28px 0 0;
+      padding: 16px 24px 0;
+      border-top: 1px solid #ccc;
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .auth-sidebar { display: none; }
+      .auth-form-side { padding: 28px 24px; }
+      .field-row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
 
   <!-- ── Navbar ── -->
   <nav>
-    <a href="index.html" class="nav-logo">SEWA<span>IN</span></a>
+    <a href="{{ route('home') }}" class="nav-logo">SEWA<span>IN</span></a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="rentals.html">Rentals</a></li>
-      <li><a href="katalog.html">My Katalog</a></li>
+      <li><a href="{{ route('home') }}">Home</a></li>
+      <li><a href="#">Rentals</a></li>
+      <li><a href="#">My Katalog</a></li>
     </ul>
     <div class="nav-right">
       <a href="profile.html" aria-label="Account">
@@ -58,7 +379,7 @@
 
       <!-- Kanan: Form -->
       <div class="auth-form-side">
-        <a href="index.html" class="auth-logo">SEWA<span>IN</span></a>
+        <a href="{{ route('home') }}" class="auth-logo">SEWA<span>IN</span></a>
 
 
         <div class="auth-form-body">
@@ -83,20 +404,24 @@
           <div class="auth-field">
             <div class="field-row">
               <div>
-                <input type="text" id="firstName" placeholder="First Name" required />
+                <input type="text" id="firstName" name="first_name" placeholder="First Name" value="{{ old('first_name') }}" autocomplete="given-name" required />
+                @error('first_name') <small style="color: #ef4444;">{{ $message }}</small> @enderror
               </div>
               <div>
-                <input type="text" id="lastName" placeholder="Last Name" />
+                <input type="text" id="lastName" name="last_name" placeholder="Last Name" value="{{ old('last_name') }}" autocomplete="family-name" required />
+                @error('last_name') <small style="color: #ef4444;">{{ $message }}</small> @enderror
               </div>
             </div>
           </div>
           <div class="auth-field">
             <div class="field-row">
               <div>
-                <input type="email" id="regEmail" autocomplete="email" placeholder="Email Address" required />
+                <input type="email" id="regEmail" name="email" autocomplete="email" placeholder="Email Address" value="{{ old('email') }}" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Format email tidak valid. Pastikan menggunakan domain yang benar (contoh: .com, .id)." />
+                @error('email') <small style="color: #ef4444;">{{ $message }}</small> @enderror
               </div>
               <div>
-                <input type="tel" id="phone" placeholder="Phone Number" />
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number" value="{{ old('phone') }}" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" maxlength="15" />
+                @error('phone') <small style="color: #ef4444;">{{ $message }}</small> @enderror
               </div>
             </div>
           </div>

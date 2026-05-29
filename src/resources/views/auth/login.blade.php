@@ -110,7 +110,7 @@
       width: 45%;
       flex-shrink: 0;
       height: auto;
-      background-image: url('assets/img/register_login.png');
+      background-image: url('{{ asset('assets/img/register_login.png') }}');
       background-size: 199%;
       background-position: -125px center;
       background-repeat: no-repeat;
@@ -266,7 +266,7 @@
 
 
     .auth-footer {
-      margin-top: 18px;
+      margin-top: auto;
       font-size: 10.5px;
       color: var(--black);
       text-align: right;
@@ -358,11 +358,11 @@
 
   <!-- ── Navbar ── -->
   <nav>
-    <a href="index.html" class="nav-logo">SEWA<span>IN</span></a>
+    <a href="{{ route('home') }}" class="nav-logo">SEWA<span>IN</span></a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="rentals.html">Rentals</a></li>
-      <li><a href="katalog.html">My Katalog</a></li>
+      <li><a href="{{ route('home') }}">Home</a></li>
+      <li><a href="#">Rentals</a></li>
+      <li><a href="#">My Katalog</a></li>
     </ul>
     <div class="nav-right">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -392,7 +392,7 @@
 
       <!-- Kanan: Form -->
       <div class="auth-form-side">
-        <a href="index.html" class="auth-logo">SEWA<span>IN</span></a>
+        <a href="{{ route('home') }}" class="auth-logo">SEWA<span>IN</span></a>
 
 
         <h1 class="auth-title">
@@ -437,7 +437,7 @@
         <form action="{{ route('login.post') }}" method="POST">
           @csrf
           <div class="auth-field">
-            <input type="email" id="email" name="email" placeholder="Email" autocomplete="email" value="{{ old('email') }}" required />
+            <input type="email" id="email" name="email" placeholder="Email" autocomplete="email" value="{{ old('email') }}" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Format email tidak valid. Pastikan menggunakan domain yang benar (contoh: .com, .id)." />
             @error('email') <small style="color: #ef4444;">{{ $message }}</small> @enderror
           </div>
           <div class="auth-field">
