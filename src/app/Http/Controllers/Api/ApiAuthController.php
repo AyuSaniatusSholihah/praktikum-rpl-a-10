@@ -174,4 +174,53 @@ class ApiAuthController extends Controller
             'message' => 'Logout berhasil!'
         ], 200);
     }
+
+    /**
+     * API Google Login (Untuk Android Studio)
+     */
+    public function googleLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'name' => 'required|string',
+            'google_id' => 'required|string', // Pastikan android mengirim ID dari akun Google
+        ]);
+
+        // Cari user berdasarkan email
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            // Update google_id jika belum ada
+            if (is_null($user->google_id)) {
+                $user->google_id = $request->google_id;
+                $user->save();
+            }
+            
+            // Jika user ada tapi belum verifikasi email, anggap verifikasi sudah lewat google
+            if (is_null($user->email_verified_at)) {
+                $user->email_verified_at = Carbon::now();
+                $user->save();
+            }
+        } else {
+            // Jika belum ada, buat user baru
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'google_id' => $request->google_id, // Simpan ID google
+                'password' => Hash::make(uniqid()), // Berikan password acak
+                'email_verified_at' => Carbon::now(), // Langsung terverifikasi
+            ]);
+        }
+
+        // Buat Sanctum token
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Login Google berhasil!',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user
+        ], 200);
+    }
 }

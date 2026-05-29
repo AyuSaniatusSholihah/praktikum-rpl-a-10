@@ -1,0 +1,10 @@
+/src/node_modules
+/src/vendor
+/src/.env
+/src/.phpunit.result.cache
+/src/storage
+/src/bootstrap/cache
+.DS_Store
+.vscode
+.idea
+*.log
