@@ -14,7 +14,7 @@
  </ul>
  <div class="site-nav-right">
    @auth
-     <div style="position: relative; display: inline-block;" onmouseover="this.querySelector('.dropdown-menu').style.display='block'" onmouseout="this.querySelector('.dropdown-menu').style.display='none'">
+     <div style="position: relative; display: inline-flex; align-items: center;" onmouseover="this.querySelector('.dropdown-menu').style.display='block'" onmouseout="this.querySelector('.dropdown-menu').style.display='none'">
        <a href="{{ Route::has('profile') ? route('profile') : '#' }}" class="icon-link" aria-label="Account">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
