@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\AdminController;
 Route::post('/register', [ApiAuthController::class, 'register']);
 Route::post('/verify-otp', [ApiAuthController::class, 'verifyOtp']);
 Route::post('/login', [ApiAuthController::class, 'login']);
+Route::post('/google-login', [ApiAuthController::class, 'googleLogin']); // Endpoint untuk Google Login dari Android
 Route::get('/katalog-publik', [App\Http\Controllers\Api\KatalogController::class, 'katalogPublik']);
 
 // Protected Routes for Mobile App (Requires Sanctum Token)

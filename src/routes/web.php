@@ -5,10 +5,24 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+use App\Http\Controllers\KatalogUploadController;
 
 Route::get('/', function () {
     return view('index');
 })->name('home');
+
+Route::get('/rentals', function () {
+    return view('katalog.RentalsPage');
+})->name('rentals');
+
+Route::get('/katalog', function () {
+    return view('katalog.MyKatalogsPage'); // placeholder
+})->name('katalog');
+
+Route::get('/katalog/add-item', [KatalogUploadController::class, 'create'])->name('katalog.add-item');
+Route::post('/katalog/add-item', [KatalogUploadController::class, 'store'])->name('katalog.store-item');
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -23,11 +37,15 @@ Route::get('/verify-otp', [RegisterController::class, 'showOtpForm'])->name('otp
 Route::post('/verify-otp', [RegisterController::class, 'verifyOtp'])->name('otp.verify.post');
 
 Route::get('/dashboard', function () {
-    return "<h1>Dashboard</h1><p>Welcome, " . auth()->user()->name . "!</p><form action='/logout' method='POST'>" . csrf_field() . "<button type='submit'>Logout</button></form>";
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    return "<h1>Dashboard</h1><p>Welcome, " . $user->name . "!</p><form action='/logout' method='POST'>" . csrf_field() . "<button type='submit'>Logout</button></form>";
 })->middleware('auth')->name('dashboard');
 
 Route::get('/admin/dashboard', function () {
-    return "<h1>Admin Dashboard</h1><p>Welcome, " . auth()->user()->name . " (Admin)!</p><form action='/logout' method='POST'>" . csrf_field() . "<button type='submit'>Logout</button></form>";
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    return "<h1>Admin Dashboard</h1><p>Welcome, " . $user->name . " (Admin)!</p><form action='/logout' method='POST'>" . csrf_field() . "<button type='submit'>Logout</button></form>";
 })->middleware('auth')->name('admin.dashboard');
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
