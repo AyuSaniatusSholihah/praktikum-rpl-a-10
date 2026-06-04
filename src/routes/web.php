@@ -69,13 +69,19 @@ Route::get('/product/{id}', function ($id) {
     return view('katalog.ProductRentPage', compact('product'));
 })->name('product.show');
 
-// Profile page
-Route::get('/profile', function () {
-    return view('profile.ProfileMenuPage', ['user' => Auth::user()]);
-})->name('profile');
-
 // Auth‑protected routes
 Route::middleware('auth')->group(function () {
+    // Profile dashboard pages
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/rentals', fn () => view('profile.MyRentalsPage', ['user' => Auth::user()]))->name('profile.rentals');
+    Route::get('/profile/rentals/produk', fn () => view('profile.MyRentalsProdukPage', ['user' => Auth::user()]))->name('profile.rentals.produk');
+    Route::get('/profile/rentals/pengembalian', fn () => view('profile.MyRentalsPengembalianPage', ['user' => Auth::user()]))->name('profile.rentals.pengembalian');
+    Route::get('/profile/rentals/confirmation', fn () => view('profile.MyRentalsConfirmationPage', ['user' => Auth::user()]))->name('profile.rentals.confirmation');
+    Route::get('/profile/owner', fn () => view('profile.MyRentalsOwnerPage', ['user' => Auth::user()]))->name('profile.owner');
+    Route::get('/profile/owner/produk', fn () => view('profile.MyRentalsOwnerProdukPage', ['user' => Auth::user()]))->name('profile.owner.produk');
+    Route::get('/profile/wallet', fn () => view('profile.MyWalletPage', ['user' => Auth::user()]))->name('profile.wallet');
+
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
