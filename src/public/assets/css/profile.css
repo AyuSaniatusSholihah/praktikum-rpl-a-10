@@ -91,9 +91,10 @@ body {
     background-color: #bbb;
     border-radius: 5px;
     margin-right: 10px;
+    flex-shrink: 0;
 }
 
-.profile-selector div {
+.profile-selector > div:not(.avatar-mini) {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -164,9 +165,21 @@ body {
 }
 
 .logout-icon {
-    margin-left: auto;
     color: #8da4be;
     cursor: pointer;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.logout-btn:hover .logout-icon {
+    color: #ffffff;
 }
 
 /* MAIN CONTENT PANEL */
@@ -245,7 +258,50 @@ body {
 .profile-pic-large img {
     border-radius: 50%;
     border: 3px solid #ffffff;
+    margin-bottom: 12px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+/* TOMBOL UBAH FOTO */
+.upload-foto {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #344c5e;
+    color: #fff;
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
     margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.upload-foto:hover { background-color: #4a677f; }
+
+/* ALERT PESAN */
+.alert {
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: #c7e0a8;
+    color: #2f4d1e;
+}
+
+.alert-error {
+    background-color: #f3c2c2;
+    color: #6e1f1f;
+}
+
+.alert-error ul {
+    margin: 0;
+    padding-left: 18px;
 }
 
 .saldo-card {

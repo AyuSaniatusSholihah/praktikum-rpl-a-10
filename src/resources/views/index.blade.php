@@ -45,19 +45,19 @@
 
 </div>
 
-   <div class="search-bar">
+   <form class="search-bar" action="{{ route('rentals') }}" method="GET">
      <div class="search-field">
        <label>Location</label>
        <div class="value">
          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-         Choose Location
+         <input type="text" name="loc" value="{{ request('loc') }}" placeholder="Lokasi" autocomplete="off" style="border:none;background:transparent;outline:none;font:inherit;color:inherit;width:100%;padding:0;" />
        </div>
      </div>
      <div class="search-field">
        <label>Find</label>
        <div class="value">
          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-         Kamera
+         <input type="text" name="find" value="{{ request('find') }}" placeholder="Cari barang..." autocomplete="off" style="border:none;background:transparent;outline:none;font:inherit;color:inherit;width:100%;padding:0;" />
        </div>
      </div>
      <div class="search-field">
@@ -100,8 +100,8 @@
          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
        </div>
      </div>
-     <button class="btn-search">Search</button>
-   </div>
+     <button class="btn-search" type="submit">Search</button>
+   </form>
  </div>
 </section>
 

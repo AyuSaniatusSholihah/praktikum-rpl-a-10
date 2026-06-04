@@ -315,6 +315,20 @@
             renderPage(1);
         });
 
+        // Terima kata kunci pencarian dari halaman Home (mis. /rentals?find=kamera&loc=bandung)
+        const urlParams = new URLSearchParams(window.location.search);
+        const qFind = (urlParams.get('find') || '').trim();
+        const qLoc = (urlParams.get('loc') || '').trim();
+        if (qFind) {
+            activeSearchFind = qFind.toLowerCase();
+            const findInput = document.getElementById('searchFind');
+            if (findInput) findInput.value = qFind;
+        }
+        if (qLoc) {
+            activeSearchLoc = qLoc.toLowerCase();
+            selectEl.value = qLoc.toLowerCase();
+        }
+
         renderPage(1);
     </script>
 </x-layout>

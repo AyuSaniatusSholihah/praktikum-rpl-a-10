@@ -31,7 +31,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('katalog.store-item') }}" method="POST" enctype="multipart/form-data" id="addItemForm">
+            <form action="{{ route('katalog.add-item.post') }}" method="POST" enctype="multipart/form-data" id="addItemForm">
                 @csrf
                 
                 <!-- ============ PROFILE CARD + PUBLISH ITEM BTN ============ -->
