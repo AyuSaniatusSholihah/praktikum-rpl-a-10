@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>My Katalogs — SEWAIN</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+ <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&family=Jomolhari&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Poppins:wght@300;400;500;600;700&family=Vidaloka&family=Volkhov:wght@400;700&display=swap" rel="stylesheet" />
+ <link href="https://fonts.googleapis.com/css2?family=Rochester&display=swap" rel="stylesheet" />
+ <link rel="stylesheet" href="http://127.0.0.1:8000/assets/css/general.css" />
+ <link rel="stylesheet" href="http://127.0.0.1:8000/assets/css/home.css" />
+        <link rel="stylesheet" href="http://127.0.0.1:8000/assets/css/katalog.css" />
+</head>
+<body>
+
+<nav class="site-nav">
+  <button class="hamburger-btn" aria-label="Toggle menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+ <a href="http://127.0.0.1:8000" class="site-logo">SEWA<span>IN</span></a>
+ <ul class="site-nav-links">
+   <li><a href="http://127.0.0.1:8000" class="">Home</a></li>
+   <li><a href="http://127.0.0.1:8000/rentals" class="">Rentals</a></li>
+   <li><a href="http://127.0.0.1:8000/katalog" class="active">My Katalog</a></li>
+ </ul>
+ <div class="site-nav-right">
+        <a href="http://127.0.0.1:8000/login" class="nav-signin">Sign in</a>
+     <a href="http://127.0.0.1:8000/register" class="nav-signup">Sign Up</a>
+    </div>
+</nav>
+
+<main>
+    <section class="katalog-page">
+  <div class="container" style="max-width:1280px;">
+
+    <h1 class="katalog-title">My Katalogs</h1>
+    <nav class="katalog-breadcrumb" aria-label="Breadcrumb">
+      <a href="http://127.0.0.1:8000">Home</a>
+      <span class="sep">›</span>
+      <span class="current">My Katalogs</span>
+    </nav>
+
+    <!-- ============ PROFILE CARD ============ -->
+    <div class="profile-card">
+      <div class="profile-photo">
+        <img src="http://127.0.0.1:8000/assets/img/katalog/profile-placeholder.jpg" alt="Camping Groups Bandung" onerror="this.style.display='none'"/>
+      </div>
+      <div class="profile-info">
+        <h2 class="profile-name">Camping Groups Bandung</h2>
+        <div class="profile-detail-grid">
+          <div class="label lokasi-label">
+             <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.66667 7.08333C6.05625 7.08333 6.38976 6.94462 6.66719 6.66719C6.94462 6.38976 7.08333 6.05625 7.08333 5.66667C7.08333 5.27708 6.94462 4.94358 6.66719 4.66615C6.38976 4.38872 6.05625 4.25 5.66667 4.25C5.27708 4.25 4.94358 4.38872 4.66615 4.66615C4.38872 4.94358 4.25 5.27708 4.25 5.66667C4.25 6.05625 4.38872 6.38976 4.66615 6.66719C4.94358 6.94462 5.27708 7.08333 5.66667 7.08333ZM5.66667 14.1667C3.76597 12.5493 2.34635 11.047 1.40781 9.6599C0.469271 8.27274 0 6.98889 0 5.80833C0 4.0375 0.569618 2.62674 1.70885 1.57604C2.84809 0.525347 4.16736 0 5.66667 0C7.16597 0 8.48524 0.525347 9.62448 1.57604C10.7637 2.62674 11.3333 4.0375 11.3333 5.80833C11.3333 6.98889 10.8641 8.27274 9.92552 9.6599C8.98698 11.047 7.56736 12.5493 5.66667 14.1667Z" fill="#727272"/></svg>
+            Lokasi
+          </div>
+          <div class="value">Kota Bandung</div>
+
+          <div class="label">Rating</div>
+             <div class="value">
+             <span class="star">★</span>
+             <span style="position: relative; top: 4px;"> 4,3 (120 Reviews)</span>
+             </div>
+
+          <div class="label">Jumlah Katalog</div>
+          <div class="value" id="jumlahKatalog">7 Barang</div>
+
+          <div class="label wa-label">
+           <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.2019 13.2332V15.7332C18.2029 15.9653 18.153 16.195 18.0554 16.4077C17.9577 16.6203 17.8145 16.8112 17.635 16.9681C17.4554 17.125 17.2434 17.2445 17.0126 17.3188C16.7817 17.3932 16.5371 17.4208 16.2944 17.3999C13.6019 17.1213 11.0155 16.245 8.74316 14.8416C6.62901 13.5621 4.83658 11.855 3.49316 9.84155C2.01439 7.66756 1.09412 5.19238 0.806907 2.61655C0.785041 2.38611 0.813797 2.15385 0.891345 1.93457C0.968892 1.71529 1.09353 1.51379 1.25733 1.3429C1.42112 1.17201 1.62049 1.03548 1.84272 0.941987C2.06496 0.848498 2.3052 0.800103 2.54816 0.799885H5.17316C5.5978 0.795905 6.00947 0.939118 6.33145 1.20283C6.65342 1.46654 6.86372 1.83276 6.92316 2.23322C7.03395 3.03327 7.23943 3.81882 7.53566 4.57489C7.65338 4.87316 7.67886 5.19731 7.60907 5.50895C7.53929 5.82059 7.37716 6.10664 7.14191 6.33322L6.03066 7.39155C7.27627 9.47784 9.09005 11.2053 11.2807 12.3916L12.3919 11.3332C12.6298 11.1092 12.9302 10.9548 13.2574 10.8883C13.5846 10.8218 13.925 10.8461 14.2382 10.9582C15.032 11.2403 15.8568 11.436 16.6969 11.5416C17.122 11.5987 17.5101 11.8026 17.7876 12.1145C18.0651 12.4264 18.2126 12.8245 18.2019 13.2332Z" stroke="#1E1E1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            WhatsApp
+          </div>
+          <div class="value">0821-5620-9034</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SEARCH BAR ============ -->
+    <div class="katalog-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" placeholder="Search something here" aria-label="Search"/>
+    </div>
+
+    <!-- ============ TOOLBAR with VIEW TOGGLE ============ -->
+    <div class="katalog-toolbar">
+      <div class="view-toggle">
+        <button class="view-btn active" aria-label="List view">
+          <svg viewBox="0 0 24 14" fill="currentColor"><rect y="0" width="24" height="2"/><rect y="6" width="24" height="2"/><rect y="12" width="24" height="2"/></svg>
+        </button>
+        <button class="view-btn" aria-label="2 columns">
+          <svg viewBox="0 0 24 14" fill="currentColor"><rect x="9" width="2" height="14"/><rect x="13" width="2" height="14"/></svg>
+        </button>
+        <button class="view-btn" aria-label="3 columns">
+          <svg viewBox="0 0 24 14" fill="currentColor"><rect x="6" width="2" height="14"/><rect x="11" width="2" height="14"/><rect x="16" width="2" height="14"/></svg>
+        </button>
+        <button class="view-btn" aria-label="4 columns">
+          <svg viewBox="0 0 24 14" fill="currentColor"><rect x="3" width="2" height="14"/><rect x="9" width="2" height="14"/><rect x="15" width="2" height="14"/><rect x="21" width="2" height="14"/></svg>
+        </button>
+        <button class="view-btn" aria-label="5 columns">
+          <svg viewBox="0 0 24 14" fill="currentColor"><rect x="1" width="2" height="14"/><rect x="6" width="2" height="14"/><rect x="11" width="2" height="14"/><rect x="16" width="2" height="14"/><rect x="21" width="2" height="14"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ============ KATALOG GRID ============ -->
+    <div class="katalog-grid" id="katalogGrid"></div>
+
+    <!-- ============ PAGINATION ============ -->
+    <nav class="katalog-pagination" aria-label="Pagination">
+      <button class="active">1</button>
+      <button>2</button>
+      <button>3</button>
+      <button class="nav" aria-label="Next">»</button>
+    </nav>
+
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+ <div class="site-footer-inner">
+   <div class="site-footer-brand">
+     <div class="site-footer-logo">SEWA<span>IN</span></div>
+     <p class="site-footer-tagline">We help you find<br/>and rent what you<br/>need easily</p>
+     <div class="site-footer-socials">
+       <a href="#" aria-label="WhatsApp">
+         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+           <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.558 4.126 1.534 5.857L0 24l6.302-1.513A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.665-.523-5.181-1.434l-.371-.219-3.742.898.939-3.635-.242-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+         </svg>
+       </a>
+       <a href="#" aria-label="Instagram">
+         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+           <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+         </svg>
+       </a>
+       <a href="#" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 20C8.63333 20 7.34167 19.7375 6.125 19.2125C4.90833 18.6875 3.84583 17.9708 2.9375 17.0625C2.02917 16.1542 1.3125 15.0917 0.7875 13.875C0.2625 12.6583 0 11.3667 0 10C0 8.61667 0.2625 7.32083 0.7875 6.1125C1.3125 4.90417 2.02917 3.84583 2.9375 2.9375C3.84583 2.02917 4.90833 1.3125 6.125 0.7875C7.34167 0.2625 8.63333 0 10 0C11.3833 0 12.6792 0.2625 13.8875 0.7875C15.0958 1.3125 16.1542 2.02917 17.0625 2.9375C17.9708 3.84583 18.6875 4.90417 19.2125 6.1125C19.7375 7.32083 20 8.61667 20 10C20 11.3667 19.7375 12.6583 19.2125 13.875C18.6875 15.0917 17.9708 16.1542 17.0625 17.0625C16.1542 17.9708 15.0958 18.6875 13.8875 19.2125C12.6792 19.7375 11.3833 20 10 20ZM10 17.95C10.4333 17.35 10.8083 16.725 11.125 16.075C11.4417 15.425 11.7 14.7333 11.9 14H8.1C8.3 14.7333 8.55833 15.425 8.875 16.075C9.19167 16.725 9.56667 17.35 10 17.95ZM7.4 17.55C7.1 17 6.8375 16.4292 6.6125 15.8375C6.3875 15.2458 6.2 14.6333 6.05 14H3.1C3.58333 14.8333 4.1875 15.5583 4.9125 16.175C5.6375 16.7917 6.46667 17.25 7.4 17.55ZM12.6 17.55C13.5333 17.25 14.3625 16.7917 15.0875 16.175C15.8125 15.5583 16.4167 14.8333 16.9 14H13.95C13.8 14.6333 13.6125 15.2458 13.3875 15.8375C13.1625 16.4292 12.9 17 12.6 17.55ZM2.25 12H5.65C5.6 11.6667 5.5625 11.3375 5.5375 11.0125C5.5125 10.6875 5.5 10.35 5.5 10C5.5 9.65 5.5125 9.3125 5.5375 8.9875C5.5625 8.6625 5.6 8.33333 5.65 8H2.25C2.16667 8.33333 2.10417 8.6625 2.0625 8.9875C2.02083 9.3125 2 9.65 2 10C2 10.35 2.02083 10.6875 2.0625 11.0125C2.10417 11.3375 2.16667 11.6667 2.25 12ZM7.65 12H12.35C12.4 11.6667 12.4375 11.3375 12.4625 11.0125C12.4875 10.6875 12.5 10.35 12.5 10C12.5 9.65 12.4875 9.3125 12.4625 8.9875C12.4375 8.6625 12.4 8.33333 12.35 8H7.65C7.6 8.33333 7.5625 8.6625 7.5375 8.9875C7.5125 9.3125 7.5 9.65 7.5 10C7.5 10.35 7.5125 10.6875 7.5375 11.0125C7.5625 11.3375 7.6 11.6667 7.65 12ZM14.35 12H17.75C17.8333 11.6667 17.8958 11.3375 17.9375 11.0125C17.9792 10.6875 18 10.35 18 10C18 9.65 17.9792 9.3125 17.9375 8.9875C17.8958 8.6625 17.8333 8.33333 17.75 8H14.35C14.4 8.33333 14.4375 8.6625 14.4625 8.9875C14.4875 9.3125 14.5 9.65 14.5 10C14.5 10.35 14.4875 10.6875 14.4625 11.0125C14.4375 11.3375 14.4 11.6667 14.35 12ZM13.95 6H16.9C16.4167 5.16667 15.8125 4.44167 15.0875 3.825C14.3625 3.20833 13.5333 2.75 12.6 2.45C12.9 3 13.1625 3.57083 13.3875 4.1625C13.6125 4.75417 13.8 5.36667 13.95 6ZM8.1 6H11.9C11.7 5.26667 11.4417 4.575 11.125 3.925C10.8083 3.275 10.4333 2.65 10 2.05C9.56667 2.65 9.19167 3.275 8.875 3.925C8.55833 4.575 8.3 5.26667 8.1 6ZM3.1 6H6.05C6.2 5.36667 6.3875 4.75417 6.6125 4.1625C6.8375 3.57083 7.1 3 7.4 2.45C6.46667 2.75 5.6375 3.20833 4.9125 3.825C4.1875 4.44167 3.58333 5.16667 3.1 6Z"/>
+          </svg>
+       </a>
+       <a href="#" aria-label="Email">
+         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+           <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+         </svg>
+       </a>
+     </div>
+   </div>
+
+   <div class="site-footer-cols">
+     <div class="site-footer-col">
+       <h4>Information</h4>
+       <ul>
+         <li><a href="#">About</a></li>
+         <li><a href="#">Product</a></li>
+         <li><a href="#">Blog</a></li>
+       </ul>
+     </div>
+     <div class="site-footer-col">
+       <h4>Company</h4>
+       <ul>
+         <li><a href="#">Community</a></li>
+         <li><a href="#">Career</a></li>
+         <li><a href="#">Our Story</a></li>
+       </ul>
+     </div>
+     <div class="site-footer-col">
+       <h4>Contact</h4>
+       <ul>
+         <li><a href="#">Getting Started</a></li>
+         <li><a href="#">Pricing</a></li>
+         <li><a href="#">Resources</a></li>
+       </ul>
+     </div>
+   </div>
+ </div>
+
+ <div class="site-footer-bottom">
+   Copyright © 2026 Xpro . All Rights Reserved Term of use SEWAIN
+ </div>
+</footer>
+
+<div class="floating-actions">
+ <button class="floating-btn" onclick="location.href='http://127.0.0.1:8000/cart'" title="Cart">
+   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+ </button>
+ <button class="floating-btn light" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Top">↑</button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.querySelector('.hamburger-btn');
+    const navLinks = document.querySelector('.site-nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('nav-open');
+      });
+    }
+  });
+</script>
+
+<script>
+  // Data katalog (sementara dari localStorage kalau ada)
+  const defaultKatalogs = [
+    { title: 'Soleil Set 5 Pcs Alat Masak Camping Nesting Aluminium - Hitam', loc: 'Kota Bandung', reviews: 40, rating: 4, price: 50000,  stock: 10, status: 'AVAILABLE',     img: 'http://127.0.0.1:8000/assets/img/alat masak camp.webp' },
+    { title: 'ALLTREK Tenda Camping 1 Bedroom + 1 Guest Room',                loc: 'Kota Bandung', reviews: 20, rating: 4, price: 450000, stock: 1,  status: 'ACTIVE RENTAL', img: 'http://127.0.0.1:8000/assets/img/tenda altrek.webp' },
+    { title: 'ALLTREK Set Meja Kursi Camping Gear Folding Table Chair Set',   loc: 'Kota Bandung', reviews: 52, rating: 3, price: 70000,  stock: 5,  status: 'AVAILABLE',     img: 'http://127.0.0.1:8000/assets/img/kursi meja camp.webp' },
+    { title: 'ALLTREK Storage Cookwear Tas Penyimpanan Alat Masak Camping',                 loc: 'Kota Bandung', reviews: 40, rating: 4, price: 750000, stock: 3,  status: 'AVAILABLE',     img: 'http://127.0.0.1:8000/assets/img/tas camp.webp' },
+    { title: '1 Sunrei Lampu Camping Wraith (Hike and Ride)',                 loc: 'Kota Bandung', reviews: 30, rating: 5, price: 25000,  stock: 1,  status: 'ACTIVE RENTAL', img: 'http://127.0.0.1:8000/assets/img/lampu camp.webp' },
+  ];
+
+  const saved = localStorage.getItem('katalogs');
+  localStorage.removeItem('katalogs'); // reset paksa setiap load
+  const katalogs = saved ? JSON.parse(saved) : defaultKatalogs;
+  localStorage.setItem('katalogs', JSON.stringify(katalogs));
+  if (!saved) localStorage.setItem('katalogs', JSON.stringify(katalogs));
+
+  const stars = n => '★★★★★☆☆☆☆☆'.slice(5 - n, 10 - n);
+  const locSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+  const stockSvg = `<svg width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.4997 5.16667V16H2.49967V5.16667M8.33301 8.5H11.6663M0.833008 1H19.1663V5.16667H0.833008V1Z" stroke="#484848" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  const grid = document.getElementById('katalogGrid');
+
+  const itemHTML = it => `
+    <article class="katalog-card" onclick="location.href='http://127.0.0.1:8000/product/1'">
+      <span class="katalog-badge ${it.status === 'ACTIVE RENTAL' ? 'active' : ''}">${it.status}</span>
+      <div class="product-img"><img src="${it.img}" alt="${it.title}" onerror="this.style.display='none'"/></div>
+      <div class="head-row">
+        <h4>${it.title}</h4>
+        <span class="rating">${stars(it.rating)}</span>
+      </div>
+      <div class="loc">${locSvg} ${it.loc}</div>
+      <div class="reviews">(${it.reviews}) Customer Reviews</div>
+      <div class="price">Rp ${it.price.toLocaleString('id-ID')}/hari</div>
+      <div class="stock-footer">
+        ${stockSvg}
+        <span class="stock-text-only" style="position: relative; top: 1px;">${it.stock} ${it.stock === 1 ? 'Unit' : 'Units'} in Stock</span>
+      </div>
+    </article>
+  `;
+
+  const addCardHTML = `
+    <a class="add-item-card" href="http://127.0.0.1:8000/katalog/add-item">
+      <div class="plus-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+      <div class="add-text">ADD NEW ITEM</div>
+    </a>
+  `;
+
+  const ITEMS_PER_PAGE = 6;
+  let currentPage = 1;
+  let activeSearch = '';
+
+  function getFiltered() {
+    return katalogs.filter(it =>
+      !activeSearch ||
+      it.title.toLowerCase().includes(activeSearch) ||
+      it.loc.toLowerCase().includes(activeSearch)
+    );
+  }
+
+  function renderPage(page) {
+    const filtered = getFiltered();
+    const total = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    const pageItems = filtered.slice(start, start + ITEMS_PER_PAGE);
+
+    // Keep ADD NEW ITEM card at the bottom of the items!
+    grid.innerHTML = pageItems.map(itemHTML).join('') + addCardHTML;
+    updatePagination(total);
+  }
+
+  function updatePagination(total) {
+    const pag = document.querySelector('.katalog-pagination');
+    let html = '';
+    for (let i = 1; i <= total; i++) {
+      html += `<button class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+    }
+    html += `<button class="nav" aria-label="Next">»</button>`;
+    pag.innerHTML = html;
+
+    pag.querySelectorAll('button:not(.nav)').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentPage = parseInt(btn.textContent);
+        renderPage(currentPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    pag.querySelector('.nav').addEventListener('click', () => {
+      if (currentPage < total) {
+        currentPage++;
+        renderPage(currentPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
+  // View toggle
+  document.querySelectorAll('.view-btn').forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cols = [1, 2, 3, 4, 5][idx];
+      grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    });
+  });
+
+  // Search
+  document.querySelector('.katalog-search input').addEventListener('input', function() {
+    activeSearch = this.value.toLowerCase();
+    currentPage = 1;
+    renderPage(1);
+  });
+
+  // Profile stats otomatis
+  document.getElementById('jumlahKatalog').textContent = katalogs.length + ' Barang';
+
+  // Render awal
+  renderPage(1);
+
+  // Samakan tinggi add-card dengan kartu produk
+  function equalizeCardHeight() {
+    const productCard = document.querySelector('.katalog-card');
+    const addCard = document.querySelector('.add-item-card');
+    if (productCard && addCard) {
+      addCard.style.minHeight = productCard.offsetHeight + 'px';
+    }
+  }
+  equalizeCardHeight();
+</script>
+
+</body>
+</html>

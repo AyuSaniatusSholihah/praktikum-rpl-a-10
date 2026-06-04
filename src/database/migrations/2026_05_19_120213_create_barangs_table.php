@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('lokasi', 100);
             $table->string('foto_barang', 255)->nullable();
             $table->enum('status', ['tersedia', 'tidak_tersedia'])->default('tersedia');
+            $table->date('tanggal_item_mulai')->nullable();
+            $table->date('tanggal_item_tidak_tersedia')->nullable();
             $table->timestamps();
         });
     }

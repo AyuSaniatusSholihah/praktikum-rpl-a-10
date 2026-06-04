@@ -52,4 +52,8 @@ class LoginController extends Controller
 
         return redirect('/register');
     }
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
 }

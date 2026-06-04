@@ -233,7 +233,23 @@
  <div class="container">
    <h2 class="section-title">Rent Items</h2>
    <p class="section-subtitle">Temukan berbagai barang pilihan yang siap mendukung aktivitasmu.<br/>Proses sewa mudah, barang berkualitas, dan siap antar kapan saja.</p>
-   <div class="products-grid" id="rent-items-grid"></div>
+   <div class="products-grid" id="rent-items-grid">
+     @foreach($barangs->take(6) as $barang)
+     <article class="product-card" onclick="location.href='{{ route('product.show', $barang->id) }}'">
+       <div class="product-img"><img src="{{ $barang->foto_barang ? asset('storage/' . $barang->foto_barang) : 'https://placehold.co/400x300?text=No+Image' }}" alt="{{ $barang->nama_barang }}" /></div>
+       <div class="head-row">
+         <h4>{{ $barang->nama_barang }}</h4>
+         <span class="rating">★★★★★</span>
+       </div>
+       <div class="loc">
+         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-right:4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+         {{ $barang->lokasi }}
+       </div>
+       <div class="reviews">(0) Customer Reviews</div>
+       <div class="price">Rp {{ number_format($barang->harga_sewa, 0, ',', '.') }}/hari</div>
+     </article>
+     @endforeach
+   </div>
    <button class="btn-view-more" onclick="location.href='{{ route('rentals') ?? '#' }}'">View More</button>
  </div>
 </section>
@@ -255,31 +271,6 @@
   const productUrl = "{{ Route::has('product') ? route('product') : '#' }}";
 </script>
 <script>
- const items = [
-   { title: 'Sony Alpha A7 IV Mirrorless Digital Camera', loc: 'Kota Tangerang', reviews: 40, rating: 4, price: 100000, img: '/assets/img/sony camera.jpg' },
-   { title: 'ALLTREK Tenda Camping 1 Bedroom + 1 Guest Room', loc: 'Kota Bandung', reviews: 25, rating: 4, price: 450000, img: '/assets/img/tenda altrek.webp' },
-   { title: 'Mobil Fortuner Hitam', loc: 'Bali', reviews: 52, rating: 3, price: 1000000, img: '/assets/img/fortuner mobil.jpg' },
-   { title: 'Yamaha Pro Audio Paket 12P Paket Sound System', loc: 'Kota Surakarta', reviews: 40, rating: 4, price: 750000, img: '/assets/img/sound system.jpg' },
-   { title: 'Iphone 17 Air (Hijau)', loc: 'Kota Jogjakarta', reviews: 18, rating: 5, price: 300000, img: '/assets/img/ip 18b air.webp' },
-   { title: 'Kebaya Cream (1 Set)', loc: 'Kota Surakarta', reviews: 35, rating: 5, price: 630000, img: '/assets/img/kebaya cream.jpg' },
- ];
-
- const stars = n => '★★★★★☆☆☆☆☆'.slice(5 - n, 10 - n);
- const locSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
-
- document.getElementById('rent-items-grid').innerHTML = items.map(it => `
-   <article class="product-card" onclick="location.href='${productUrl}'">
-     <div class="product-img"><img src="${it.img}" alt="${it.title}" /></div>
-     <div class="head-row">
-       <h4>${it.title}</h4>
-       <span class="rating">${stars(it.rating)}</span>
-     </div>
-     <div class="loc">${locSvg} ${it.loc}</div>
-     <div class="reviews">(${it.reviews}) Customer Reviews</div>
-     <div class="price">Rp ${it.price.toLocaleString('id-ID')}/hari</div>
-   </article>
- `).join('');
-
  /* ============ TESTIMONIALS CAROUSEL ============ */
 const testimonials = [
   { name: 'Karen W.',  role: 'Fotografer',      stars: 5,

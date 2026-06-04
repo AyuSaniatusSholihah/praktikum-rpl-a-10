@@ -1,0 +1,559 @@
+/* ============ MY KATALOGS PAGE ============ */
+.katalog-page {
+  padding: 36px 0 88px;
+  background: #fff;
+}
+
+
+
+
+/* Title + Breadcrumb */
+.katalog-title {
+  font-family: 'Volkhov', Georgia, serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1;
+  color: #000;
+  text-align: center;
+  margin: 12px 0 14px;
+}
+
+
+
+
+.katalog-breadcrumb {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  color: #8A8A8A;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 44px;
+  text-align: center;
+}
+
+.katalog-breadcrumb a {
+  color: #8A8A8A;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.katalog-breadcrumb .sep {
+  color: #8A8A8A;
+}
+
+.katalog-breadcrumb .current {
+  color: #000000;
+  font-weight: 700;
+}
+
+
+
+
+/* ============ PROFILE CARD ============ */
+.profile-card {
+  background: #E0E0E0;
+  border: none;
+  border-radius: 25px;
+  padding: 22px 32px;
+  display: flex;
+  gap: 28px;
+  min-width: 500px;
+  max-width: 600px;
+  margin: 0 auto 60px;
+  align-items: center;
+  width: fit-content;
+  width: 100%;
+}
+
+
+
+
+.profile-photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ccc;
+  flex-shrink: 0;
+}
+
+.profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+
+.profile-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+
+
+
+.profile-name {
+  font-family: 'Volkhov', Georgia, serif;
+  font-weight: 600;
+  font-size: 25px;
+  color: #000;
+  margin: 0;
+  line-height: 1;
+}
+
+
+
+
+.profile-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  row-gap: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #484848;
+}
+
+.profile-detail-grid .label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 15.5px;
+}
+
+.profile-detail-grid .label svg {
+  width: 18px;
+  height: 18px;
+  stroke: none;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.profile-detail-grid .value {
+  color: #484848;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+}
+
+.profile-detail-grid .value .star {
+  color: #f5b800;
+  margin-right: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 20px;
+  margin-left: 4px;
+  letter-spacing: 1px;
+  margin-left: 0px;
+}
+
+.profile-detail-grid .wa-label svg {
+  width: 19px;
+  height: 19px;
+}
+
+.profile-detail-grid .lokasi-label svg {
+  width: 20px;
+  height: 20px;
+}
+
+
+
+
+
+
+/* ============ SEARCH BAR ============ */
+.katalog-search {
+  display: flex;
+  align-items: center;
+  margin: 0 auto 28px;
+  max-width: 492px;
+  height: 44px;
+  background: #E0E0E0;
+  border: 1px solid #C3D4E9;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  padding: 0 20px;
+  gap: 10px;
+}
+
+.katalog-search svg {
+  width: 16px;
+  height: 16px;
+  color: #3D5278;
+  stroke: #3D5278;
+  flex-shrink: 0;
+}
+
+.katalog-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16.5px;
+  font-weight: 600;
+  color: #3D5278;
+  background: transparent;
+}
+
+.katalog-search input::placeholder {
+  color: #3D5278;
+}
+
+
+
+
+/* ============ VIEW TOGGLE (reuse from rentals) ============ */
+.katalog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: -20px 0 28px;
+}
+
+.view-toggle {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 36px 0 28px;
+}
+
+.view-btn {
+  width: 32px;
+  height: 26px;
+  background: #F2F2F2;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #B0B0B0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color .15s;
+}
+
+.view-btn:hover {
+  color: #555;
+}
+
+.view-btn.active {
+  color: #000;
+}
+
+.view-btn svg {
+  width: 18px;
+  height: 14px;
+}
+
+
+
+
+/* ============ KATALOG GRID ============ */
+.katalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 32px;
+}
+
+
+
+
+.katalog-card {
+  position: relative;
+  text-align: left;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px 14px 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.18s, box-shadow 0.18s;
+  display: flex;
+  flex-direction: column;
+}
+
+.katalog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+
+
+
+/* Badge: AVAILABLE / ACTIVE RENTAL */
+.katalog-badge {
+  transition: none;
+  will-change: unset;
+  transform: translateY(0) !important;
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  background: #C3D4E9;
+  color: #1e3a5f;
+  font-family: 'Volkhov', serif;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.1em;
+  z-index: 2;
+}
+
+.katalog-badge.active {
+  background: #1e3a5f;
+  /* ganti dari #C3D4E9 */
+  color: #fff;
+}
+
+
+
+
+.katalog-card .product-img {
+  aspect-ratio: 386 / 240;
+  background: #ededed;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.katalog-card .product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+
+.katalog-card .head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.katalog-card h4 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #484848;
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.katalog-card .rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: #f5b800;
+  font-size: 20px;
+  margin-left: 4px;
+  letter-spacing: 1px;
+}
+
+.katalog-card .loc {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11.5px;
+  color: #8A8A8A;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.katalog-card .loc svg {
+  width: 12px;
+  height: 12px;
+  color: #55959E;
+  stroke: #55959E;
+  flex-shrink: 0;
+}
+
+.katalog-card .reviews {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11.5px;
+  color: #484848;
+  margin-top: 4px;
+}
+
+.katalog-card .price {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #484848;
+  margin-top: 8px;
+}
+
+
+
+
+/* Stock footer */
+.katalog-card .stock-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #484848;
+  padding: 10px 4px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: auto;
+}
+
+.katalog-card .stock-footer svg {
+  width: 19px;
+  height: 17px;
+  color: #8A8A8A;
+  stroke: #8A8A8A;
+  flex-shrink: 0;
+}
+
+
+
+
+/* ============ ADD NEW ITEM CARD ============ */
+.add-item-card {
+  background: #fff;
+  border: 1px solid #ededed;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 28px;
+  padding: 80px 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  transition: transform .18s, box-shadow .18s;
+  text-decoration: none;
+}
+
+.add-item-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
+}
+
+
+
+
+.add-item-card .plus-circle {
+  width: 80px;
+  height: 80px;
+  border: 3px solid #484848;
+  /* tebelin dari 2px */
+  background: #E0E0E0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-item-card .plus-circle svg {
+  width: 36px;
+  height: 36px;
+  stroke: #484848;
+}
+
+.add-item-card .add-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #484848;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+
+
+
+/* ============ PAGINATION (reuse) ============ */
+.katalog-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+}
+
+.katalog-pagination button {
+  min-width: 35px;
+  height: 35px;
+  padding: 0 8px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  font-family: 'Jost', sans-serif !important;
+  font-size: 13px;
+  color: #484848;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s, border-color .15s;
+}
+
+.katalog-pagination button:hover {
+  background: #f5f5f5;
+}
+
+.katalog-pagination button.active {
+  background: #F3F3F3;
+  border-color: none;
+  color: #000;
+  font-weight: 600;
+}
+
+.katalog-pagination button.nav {
+  color: #777;
+  font-size: 16px;
+}
+
+
+
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .katalog-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 32px 20px;
+  }
+
+  .profile-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .profile-info {
+    align-items: center;
+  }
+
+  .profile-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .katalog-title {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 560px) {
+  .katalog-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .katalog-title {
+    font-size: 28px;
+  }
+}
