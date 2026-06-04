@@ -21,6 +21,13 @@ class Barang extends Model
         'lokasi',
         'foto_barang',
         'status',
+        'tanggal_item_mulai',
+        'tanggal_item_tidak_tersedia',
+    ];
+
+    protected $casts = [
+        'tanggal_item_mulai' => 'date',
+        'tanggal_item_tidak_tersedia' => 'date',
     ];
 
     public function user()

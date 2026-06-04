@@ -8,51 +8,48 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\KatalogUploadController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
+use App\Models\Barang;
 
+// Home page
 Route::get('/', function () {
-    return view('index');
+    $barangs = Barang::where('status', 'tersedia')->get();
+    return view('index', compact('barangs'));
 })->name('home');
 
+// Rentals page
 Route::get('/rentals', function () {
-    return view('katalog.RentalsPage');
+    $barangs = Barang::where('status', 'tersedia')->get();
+    return view('katalog.RentalsPage', compact('barangs'));
 })->name('rentals');
 
+// Dashboard (requires auth)
 Route::get('/katalog', function () {
-    return view('katalog.MyKatalogsPage'); // placeholder
+    $barangs = Barang::where('status', 'tersedia')->get();
+    return view('katalog.MyKatalog', compact('barangs'));
 })->name('katalog');
+Route::get('/dashboard', function () {
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    return "<h1>Dashboard</h1><p>Welcome, {$user->name}!</p>".
+        "<form action='" . route('logout') . "' method='POST'>".
+        csrf_field()."<button type='submit'>Logout</button></form>";
+})->middleware('auth')->name('dashboard');
 
-Route::get('/katalog/add-item', [KatalogUploadController::class, 'create'])->name('katalog.add-item');
-Route::post('/katalog/add-item', [KatalogUploadController::class, 'store'])->name('katalog.store-item');
-
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
+// Authentication routes
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// Optional GET logout for convenience
+Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
 Route::get('/verify-otp', [RegisterController::class, 'showOtpForm'])->name('otp.verify');
 Route::post('/verify-otp', [RegisterController::class, 'verifyOtp'])->name('otp.verify.post');
-
-Route::get('/dashboard', function () {
-    /** @var \App\Models\User $user */
-    $user = Auth::user();
-    return "<h1>Dashboard</h1><p>Welcome, " . $user->name . "!</p><form action='/logout' method='POST'>" . csrf_field() . "<button type='submit'>Logout</button></form>";
-})->middleware('auth')->name('dashboard');
-
-Route::get('/admin/dashboard', function () {
-    /** @var \App\Models\User $user */
-    $user = Auth::user();
-    return "<h1>Admin Dashboard</h1><p>Welcome, " . $user->name . " (Admin)!</p><form action='/logout' method='POST'>" . csrf_field() . "<button type='submit'>Logout</button></form>";
-})->middleware('auth')->name('admin.dashboard');
-
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/logout', [LoginController::class, 'logout']); // Keep GET for convenience if needed, but POST is better.
-
-Route::get('/auth/redirect', [SocialiteController::class, 'redirect'])->name('auth.redirect');
-Route::get('/auth/google/callback', [SocialiteController::class, 'callback'])->name('auth.callback');
 
 // Password Reset Routes
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -61,3 +58,47 @@ Route::get('/reset-password-otp', [ForgotPasswordController::class, 'showOtpForm
 Route::post('/reset-password-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.otp.verify');
 Route::get('/reset-password', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
+
+// Socialite routes
+Route::get('/auth/redirect', [SocialiteController::class, 'redirect'])->name('auth.redirect');
+Route::get('/auth/google/callback', [SocialiteController::class, 'callback'])->name('auth.callback');
+
+// Product detail page
+Route::get('/product/{id}', function ($id) {
+    $product = Barang::findOrFail($id);
+    return view('katalog.ProductRentPage', compact('product'));
+})->name('product.show');
+
+// Profile page
+Route::get('/profile', function () {
+    return view('profile.ProfileMenuPage', ['user' => Auth::user()]);
+})->name('profile');
+
+// Auth‑protected routes
+Route::middleware('auth')->group(function () {
+    // Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/{id}', [CartController::class, 'destroy']);
+    Route::patch('/cart/{id}/quantity', [CartController::class, 'updateQuantity']);
+
+    // Checkout
+    Route::get('/checkout/{id?}', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.post');
+    // Checkout confirmation page
+    Route::get('/checkout/confirmation', [OrderController::class, 'confirmation'])->name('checkout.confirmation');
+    // Add item routes (owner upload)
+    Route::get('/katalog/add-item', [KatalogUploadController::class, 'create'])->name('katalog.add-item');
+    Route::post('/katalog/add-item', [KatalogUploadController::class, 'store'])->name('katalog.add-item.post');
+
+    // Order confirmation
+    Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
+});
+
+// Edit item routes
+// Edit item route with product ID
+Route::get('/katalog/edit-item/{id}', function ($id) {
+    $product = Barang::findOrFail($id);
+    return view('katalog.EditItemPage', compact('product'));
+})->name('katalog.edit-item');
+?>

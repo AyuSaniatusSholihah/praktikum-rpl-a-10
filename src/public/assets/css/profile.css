@@ -1,0 +1,454 @@
+/* RESET & FONTS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background-color: #ffffff;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1a2a3a;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #5b7c99;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #666;
+    margin: 0 15px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.nav-links a.active {
+    color: #1a2a3a;
+    border-bottom: 2px solid #1a2a3a;
+    padding-bottom: 5px;
+}
+
+.nav-icons i {
+    font-size: 18px;
+    color: #333;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+/* DASHBOARD CONTAINER */
+.dashboard-container {
+    display: flex;
+    max-width: 1300px;
+    margin: 20px auto;
+    background-color: #1f3144; /* Warna background gelap utama */
+    border-radius: 30px;
+    overflow: hidden;
+    min-height: 800px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 25%;
+    background-color: #344c5e; /* Slate Blue terang */
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-selector {
+    display: flex;
+    align-items: center;
+    background-color: #243747;
+    padding: 12px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 13px;
+    margin-bottom: 40px;
+    cursor: pointer;
+}
+
+.avatar-mini {
+    width: 30px;
+    height: 30px;
+    background-color: #bbb;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.profile-selector div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.sidebar-menu {
+    list-style: none;
+    flex-grow: 1;
+}
+
+.sidebar-menu li {
+    margin-bottom: 10px;
+}
+
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    color: #b0c4de;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.sidebar-menu li.active a, 
+.sidebar-menu li a:hover {
+    background-color: #4a677f;
+    color: #ffffff;
+}
+
+.sidebar-menu li a i {
+    margin-right: 15px;
+    width: 20px;
+}
+
+.sidebar-divider {
+    border: none;
+    border-top: 1px solid #4a677f;
+    margin: 20px 0;
+}
+
+.sidebar-footer {
+    display: flex;
+    align-items: center;
+    background-color: #243747;
+    padding: 10px 15px;
+    border-radius: 15px;
+    color: #fff;
+}
+
+.footer-avatar {
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.sidebar-footer div h5 {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-footer div p {
+    font-size: 10px;
+    color: #8da4be;
+}
+
+.logout-icon {
+    margin-left: auto;
+    color: #8da4be;
+    cursor: pointer;
+}
+
+/* MAIN CONTENT PANEL */
+.main-content {
+    width: 75%;
+    padding: 40px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-section h2 {
+    font-family: 'Georgia', serif;
+    font-size: 26px;
+    margin-bottom: 5px;
+}
+
+.welcome-section p {
+    color: #8da4be;
+    font-size: 13px;
+    margin-bottom: 30px;
+}
+
+.content-grid {
+    display: flex;
+    gap: 40px;
+}
+
+/* FORM DATA DIRI */
+.profile-form {
+    flex: 1.3;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #e0e8f0;
+}
+
+.form-group input, 
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    background-color: #a4c2db;
+    border: none;
+    border-radius: 15px;
+    padding: 12px 20px;
+    color: #1f3144;
+    font-size: 14px;
+    font-weight: 500;
+    outline: none;
+}
+
+.form-group textarea {
+    resize: none;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+/* STATISTIK & FINANSIAL (KANAN) */
+.stats-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-pic-large img {
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    margin-bottom: 20px;
+}
+
+.saldo-card {
+    background-color: #a4c2db;
+    color: #1f3144;
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.saldo-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.badge {
+    background-color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.saldo-title {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.saldo-card h3 {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.currency-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #243747;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.stat-box {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.stat-box label {
+    display: block;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+    width: 100%;
+}
+
+.stat-value {
+    background-color: #a4c2db;
+    color: #1f3144;
+    text-align: center;
+    padding: 10px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.btn-save {
+    width: 100%;
+    background-color: #344c5e;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn-save:hover {
+    background-color: #4a677f;
+}
+
+/* MY RENTALS PREVIEW (BAWAH) */
+.my-rentals-section {
+    margin-top: 40px;
+    border-top: 2px solid #243747;
+    padding-top: 20px;
+}
+
+.my-rentals-section h3 {
+    font-family: 'Georgia', serif;
+    margin-bottom: 15px;
+}
+
+.rentals-preview-grid {
+    display: flex;
+    gap: 20px;
+}
+
+.rental-card {
+    background-color: #243747;
+    border-radius: 15px;
+    padding: 15px;
+    position: relative;
+    flex: 1;
+    height: 150px;
+}
+
+.status-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 8px;
+    color: white;
+}
+
+.status-badge.upcoming { background-color: #8da4be; color: #1f3144; }
+.status-badge.active-rent { background-color: #4a677f; }
+
+.card-placeholder-img {
+    width: 100%;
+    height: 100%;
+    background-color: #344c5e;
+    border-radius: 10px;
+}
+
+/* FOOTER */
+.main-footer {
+    background-color: #e2e8f0;
+    padding: 50px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 50px;
+}
+
+.footer-left {
+    max-width: 300px;
+}
+
+.footer-left p {
+    font-size: 14px;
+    color: #666;
+    margin: 15px 0;
+}
+
+.social-icons a {
+    color: #333;
+    margin-right: 15px;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.footer-links-container {
+    display: flex;
+    gap: 60px;
+}
+
+.footer-column h4 {
+    font-size: 15px;
+    margin-bottom: 15px;
+    color: #1a2a3a;
+}
+
+.footer-column a {
+    display: block;
+    color: #666;
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* RESPONSIVE LAYOUT (UNTUK LAYAR KECIL) */
+@media (max-width: 900px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .sidebar, .main-content {
+        width: 100%;
+    }
+    .content-grid {
+        flex-direction: column;
+    }
+    .footer-links-container {
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+    .main-footer {
+        flex-direction: column;
+        gap: 30px;
+    }
+}

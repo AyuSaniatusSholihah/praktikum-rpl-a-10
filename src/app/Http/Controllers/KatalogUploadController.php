@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Auth;
 
 class KatalogUploadController extends Controller
 {
@@ -27,6 +28,8 @@ class KatalogUploadController extends Controller
             'harga_denda_perjam' => 'required|numeric',
             'stok' => 'required|integer',
             'lokasi' => 'required|string|max:255',
+            'tanggal_item_mulai' => 'required|date|after_or_equal:today',
+            'tanggal_item_tidak_tersedia' => 'required|date|after_or_equal:tanggal_item_mulai',
             'foto_barang' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
@@ -38,7 +41,7 @@ class KatalogUploadController extends Controller
 
         // Simpan ke database
         Barang::create([
-            'user_id' => auth()->id() ?? 1, // Fallback to 1 if not logged in for testing
+            'user_id' => Auth::id() ?? 1,
             'kategori_id' => $request->kategori_id,
             'nama_barang' => $request->nama_barang,
             'deskripsi' => $request->deskripsi,
@@ -49,6 +52,8 @@ class KatalogUploadController extends Controller
             'lokasi' => $request->lokasi,
             'foto_barang' => $imagePath,
             'status' => 'tersedia',
+            'tanggal_item_mulai' => $request->tanggal_item_mulai,
+            'tanggal_item_tidak_tersedia' => $request->tanggal_item_tidak_tersedia,
         ]);
 
         return redirect()->route('katalog.add-item')->with('success', 'Barang berhasil diunggah!');

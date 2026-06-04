@@ -1,0 +1,58 @@
+/* ============ PRODUCT RENT PAGE (Owner View) ============ */
+/* Reuses product.css, with these overrides/additions */
+
+
+
+
+/* EDIT button (top-right of detail column) */
+.detail-col-header {
+ display: flex;
+ justify-content: flex-end;
+ margin-bottom: 6px;
+}
+.btn-edit {
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ padding: 9px 32px;
+ background: #6A87A1;
+ color: #fff;
+ border: none;
+ border-radius: 999px;
+ font-family: 'Lato', sans-serif;
+ font-size: 14px;
+ font-weight: 700;
+ letter-spacing: 0.14em;
+ cursor: pointer;
+ text-transform: uppercase;
+ box-shadow: var(--shadow-btn, 0 6px 14px rgba(74, 102, 116, 0.35));
+ text-decoration: none;
+ transition: transform .15s, opacity .15s;
+ width: 100px;
+ height: 50px;
+}
+.btn-edit:hover {
+ transform: translateY(-1px);
+ opacity: 0.94;
+}
+
+
+
+
+/* Notification dot on Home nav link */
+.site-nav-links a.has-dot {
+ position: relative;
+}
+.site-nav-links a.has-dot::before {
+ content: '';
+ position: absolute;
+ top: 0;
+ right: -8px;
+ width: 5px;
+ height: 5px;
+ border-radius: 50%;
+ background: #d8262c;
+}
+
+
+
