@@ -268,7 +268,7 @@
 
 <x-slot:scripts>
 <script>
-  const productUrl = "{{ Route::has('product') ? route('product') : '#' }}";
+  const productUrl = "{{ Route::has('product') ? route('product', ['id' => ':id']) : '#' }}";
 </script>
 <script>
  /* ============ TESTIMONIALS CAROUSEL ============ */

@@ -18,7 +18,7 @@ class SocialiteController extends Controller
 
     public function callback()
     {
-        $socialUser = Socialite::driver('google')->user();
+        $socialUser = Socialite::driver('google')->stateless()->user();
 
         // 1. Try to find user by google_id
         $user = User::where('google_id', $socialUser->id)->first();
