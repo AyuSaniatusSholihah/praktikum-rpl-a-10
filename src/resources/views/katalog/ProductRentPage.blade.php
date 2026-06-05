@@ -18,6 +18,88 @@
             .fly-go { transform:scale(0.1); opacity:0.2; }
             @keyframes cartBounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
             .cart-bounce { animation:cartBounce 0.4s ease-in-out; }
+
+            /* ===== TOAST NOTIFICATION ===== */
+            #rentToast {
+                position: fixed;
+                bottom: 32px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                z-index: 99999;
+                display: flex;
+                align-items: flex-start;
+                gap: 14px;
+                background: #fff;
+                border-radius: 16px;
+                box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+                padding: 18px 24px 18px 20px;
+                min-width: 320px;
+                max-width: 420px;
+                opacity: 0;
+                transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), opacity 0.4s ease;
+                pointer-events: none;
+            }
+            #rentToast.show {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+            #rentToast .toast-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                font-size: 20px;
+            }
+            #rentToast .toast-icon.warning  { background: #fff7ed; color: #f97316; }
+            #rentToast .toast-icon.info     { background: #eff6ff; color: #3b82f6; }
+            #rentToast .toast-icon.error    { background: #fef2f2; color: #ef4444; }
+            #rentToast .toast-body { flex: 1; }
+            #rentToast .toast-title {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 700;
+                font-size: 15px;
+                color: #181A18;
+                margin-bottom: 4px;
+            }
+            #rentToast .toast-msg {
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                font-size: 13px;
+                color: #555;
+                line-height: 1.5;
+            }
+            #rentToast .toast-action {
+                margin-top: 12px;
+                display: inline-block;
+                padding: 7px 18px;
+                border-radius: 8px;
+                font-family: 'Poppins', sans-serif;
+                font-size: 13px;
+                font-weight: 600;
+                text-decoration: none;
+                cursor: pointer;
+                border: none;
+            }
+            #rentToast .toast-action.primary {
+                background: #181A18;
+                color: #fff;
+            }
+            #rentToast .toast-close {
+                position: absolute;
+                top: 12px;
+                right: 14px;
+                background: none;
+                border: none;
+                font-size: 18px;
+                color: #aaa;
+                cursor: pointer;
+                line-height: 1;
+                padding: 0;
+            }
+            #rentToast .toast-close:hover { color: #555; }
         </style>
     </x-slot:styles>
 
@@ -249,6 +331,9 @@
         };
 
         const CSRF  = @json(csrf_token());
+        const IS_LOGGED_IN   = {{ auth()->check() ? 'true' : 'false' }};
+        const IS_OWN_PRODUCT = {{ (auth()->check() && auth()->id() === $product->user_id) ? 'true' : 'false' }};
+        const LOGIN_URL      = "{{ route('login') }}";
         const ADD_CART_URL   = "{{ route('cart.add') }}";
         const CHECKOUT_URL   = "{{ route('checkout', $product->id) }}";
         const CART_PAGE_URL  = "{{ route('cart') }}";
@@ -414,18 +499,93 @@
         });
 
         /* ============================================================
+         * TOAST NOTIFICATION HELPER
+         * ============================================================ */
+        function showRentToast({ iconClass, iconEmoji, title, msg, actionLabel, actionHref, actionFn }) {
+            // Hapus toast lama jika ada
+            const old = document.getElementById('rentToast');
+            if (old) old.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'rentToast';
+            toast.style.position = 'fixed';
+            toast.innerHTML = `
+                <button class="toast-close" onclick="this.closest('#rentToast').remove()" aria-label="Tutup">×</button>
+                <div class="toast-icon ${iconClass}">${iconEmoji}</div>
+                <div class="toast-body">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-msg">${msg}</div>
+                    ${actionLabel ? `<a class="toast-action primary" id="toastActionBtn" href="${actionHref || '#'}">${actionLabel}</a>` : ''}
+                </div>
+            `;
+            document.body.appendChild(toast);
+
+            if (actionFn) {
+                toast.querySelector('#toastActionBtn')?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    actionFn();
+                });
+            }
+
+            // Tampilkan dengan animasi
+            requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('show')));
+
+            // Auto-dismiss setelah 6 detik (kecuali ada action)
+            if (!actionLabel) {
+                setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 6000);
+            }
+        }
+
+        /* ============================================================
          * RENT NOW – langsung ke checkout
          * ============================================================ */
         document.getElementById('btnRentNow').addEventListener('click', function (e) {
             e.preventDefault();
+
+            // Kasus 1: Belum login
+            if (!IS_LOGGED_IN) {
+                showRentToast({
+                    iconClass   : 'info',
+                    iconEmoji   : '🔐',
+                    title       : 'Login Diperlukan',
+                    msg         : 'Kamu perlu login terlebih dahulu sebelum melanjutkan ke checkout.',
+                    actionLabel : 'Login Sekarang',
+                    actionHref  : LOGIN_URL + '?redirect=' + encodeURIComponent(CHECKOUT_URL),
+                });
+                return;
+            }
+
+            // Kasus 2: Produk milik sendiri
+            if (IS_OWN_PRODUCT) {
+                showRentToast({
+                    iconClass   : 'warning',
+                    iconEmoji   : '⚠️',
+                    title       : 'Produk Milik Kamu',
+                    msg         : 'Kamu tidak dapat menyewa produk milikmu sendiri. Silakan temukan produk lain di halaman Rentals.',
+                    actionLabel : 'Lihat Produk Lain',
+                    actionHref  : "{{ route('rentals') }}",
+                });
+                return;
+            }
+
             const startDate = document.getElementById('dateStart').value || @json($product->tanggal_item_mulai?->format('Y-m-d'));
             const endDate   = document.getElementById('dateEnd').value   || @json($product->tanggal_item_tidak_tersedia?->format('Y-m-d'));
+
             // Tambah ke cart dulu, lalu redirect ke checkout
             fetch(ADD_CART_URL, {
                 method : 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
                 body   : JSON.stringify({ barang_id: PRODUCT.id, qty: 1, start_date: startDate, end_date: endDate }),
-            }).finally(() => { window.location.href = CHECKOUT_URL; });
+            }).then(r => {
+                if (r.ok || r.status === 201) {
+                    window.location.href = CHECKOUT_URL;
+                } else {
+                    // Tetap redirect ke checkout, controller yang handle error
+                    window.location.href = CHECKOUT_URL;
+                }
+            }).catch(() => {
+                window.location.href = CHECKOUT_URL;
+            });
         });
 
         /* ============================================================

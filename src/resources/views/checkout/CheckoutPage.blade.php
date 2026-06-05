@@ -268,7 +268,7 @@
                 <div class="action-group">
                     <input type="hidden" name="checkout_cart" id="checkout_cart" />
                     <input type="hidden" name="total_price" value="{{ $cartTotal }}" />
-                    <a href="{{ route('order.confirmation') }}" class="btn-pay">Pay Now</a>
+                    <button type="submit" class="btn-pay" style="border:none; cursor:pointer;">Pay Now</button>
                     <p class="copyright-note">© {{ date('Y') }} SEWAIN · All Rights Reserved · Secure Payment</p>
                 </div>
             </div>
@@ -346,12 +346,8 @@
             // Copy helper
             function copyText(text) { navigator.clipboard.writeText(text).then(() => alert('Disalin: '+text)); }
 
-            // ==================== Checkout Cart Sync ====================
-            document.getElementById('checkoutForm').addEventListener('submit', function (e) {
-                const raw = localStorage.getItem('checkoutCart');
-                if (!raw) { alert('Tidak ada item yang dipilih untuk checkout.'); e.preventDefault(); return; }
-                document.getElementById('checkout_cart').value = raw;
-            });
-        </script>
+             // ==================== Checkout Cart Sync ====================
+             // Form will submit directly to server where cart is loaded from database.
+         </script>
     </x-slot:scripts>
 </x-layout>
