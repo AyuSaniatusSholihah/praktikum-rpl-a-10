@@ -32,25 +32,16 @@
      <div class="site-footer-col">
        <h4>Information</h4>
        <ul>
-         <li><a href="#">About</a></li>
-         <li><a href="#">Product</a></li>
-         <li><a href="#">Blog</a></li>
        </ul>
      </div>
      <div class="site-footer-col">
        <h4>Company</h4>
        <ul>
-         <li><a href="#">Community</a></li>
-         <li><a href="#">Career</a></li>
-         <li><a href="#">Our Story</a></li>
        </ul>
      </div>
      <div class="site-footer-col">
        <h4>Contact</h4>
        <ul>
-         <li><a href="#">Getting Started</a></li>
-         <li><a href="#">Pricing</a></li>
-         <li><a href="#">Resources</a></li>
        </ul>
      </div>
    </div>

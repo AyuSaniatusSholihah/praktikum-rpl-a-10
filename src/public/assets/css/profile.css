@@ -1,55 +1,7 @@
-/* RESET & FONTS */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
+/* RESET tambahan khusus profile — umum sudah dari general.css */
 body {
     background-color: #ffffff;
     color: #333;
-}
-
-/* NAVBAR */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 8%;
-    background-color: #ffffff;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #1a2a3a;
-    letter-spacing: 1px;
-}
-
-.logo span {
-    color: #5b7c99;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #666;
-    margin: 0 15px;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.nav-links a.active {
-    color: #1a2a3a;
-    border-bottom: 2px solid #1a2a3a;
-    padding-bottom: 5px;
-}
-
-.nav-icons i {
-    font-size: 18px;
-    color: #333;
-    margin-left: 20px;
-    cursor: pointer;
 }
 
 /* DASHBOARD CONTAINER */

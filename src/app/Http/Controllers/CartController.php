@@ -28,15 +28,18 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $request->validate([
-            'barang_id' => 'required|exists:barangs,id',
-            'qty' => 'required|integer|min:1',
+            'barang_id'  => 'required|exists:barangs,id',
+            'qty'        => 'required|integer|min:1',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
         ]);
 
         // ---- Prevent owner from adding own product to cart ----
         $barang = \App\Models\Barang::findOrFail($request->barang_id);
         if ($barang->user_id === \Illuminate\Support\Facades\Auth::id()) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Anda tidak dapat menambahkan barang milik Anda sendiri ke keranjang.'], 422);
+            }
             return redirect()->back()
                 ->with('error', 'Anda tidak dapat menambahkan barang milik Anda sendiri ke keranjang.');
         }
@@ -52,21 +55,25 @@ class CartController extends Controller
             $item->save();
         } else {
             Keranjang::create([
-                'user_id' => Auth::id(),
-                'barang_id' => $request->barang_id,
-                'jumlah' => $request->qty,
-                'tanggal_sewa' => $request->start_date,
-                'tanggal_kembali_rencana' => $request->end_date,
+                'user_id'                => Auth::id(),
+                'barang_id'              => $request->barang_id,
+                'jumlah'                 => $request->qty,
+                'tanggal_sewa'           => $request->start_date,
+                'tanggal_kembali_rencana'=> $request->end_date,
             ]);
         }
 
-            // Log activity
-            ActivityLog::create([
-                'user_id' => Auth::id(),
-                'action' => 'add_to_cart',
-                'description' => 'Added barang_id: ' . $request->barang_id . ', qty: ' . $request->qty,
-            ]);
-            return redirect()->route('cart')->with('success', 'Barang ditambahkan ke keranjang');
+        // Log activity
+        ActivityLog::create([
+            'user_id'     => Auth::id(),
+            'action'      => 'add_to_cart',
+            'description' => 'Added barang_id: ' . $request->barang_id . ', qty: ' . $request->qty,
+        ]);
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Barang ditambahkan ke keranjang']);
+        }
+        return redirect()->route('cart')->with('success', 'Barang ditambahkan ke keranjang');
     }
 
     public function destroy($id)
