@@ -96,10 +96,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/cart/{id}/quantity', [CartController::class, 'updateQuantity']);
 
     // Checkout
+    // PENTING: Route spesifik harus SEBELUM route dengan parameter wildcard
+    Route::get('/checkout/confirmation', [OrderController::class, 'confirmation'])->name('checkout.confirmation');
     Route::get('/checkout/{id?}', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.post');
-    // Checkout confirmation page
-    Route::get('/checkout/confirmation', [OrderController::class, 'confirmation'])->name('checkout.confirmation');
+
     // Add item routes (owner upload)
     Route::get('/katalog/add-item', [KatalogUploadController::class, 'create'])->name('katalog.add-item');
     Route::post('/katalog/add-item', [KatalogUploadController::class, 'store'])->name('katalog.add-item.post');

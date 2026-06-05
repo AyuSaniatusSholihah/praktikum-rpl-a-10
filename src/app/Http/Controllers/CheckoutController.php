@@ -47,7 +47,10 @@ class CheckoutController extends Controller
             $days = Carbon::parse($item->tanggal_sewa)->diffInDays(Carbon::parse($item->tanggal_kembali_rencana));
             if ($days == 0) $days = 1;
             $item->duration_days = $days;
-            $cartTotal += ($item->barang->harga_sewa ?? 0) * $item->jumlah * $days;
+            $harga   = $item->barang->harga_sewa ?? 0;
+            $subtotal = $harga * $item->jumlah * $days;
+            $jaminan  = (int) round($harga * $item->jumlah / 2);
+            $cartTotal += $subtotal + $jaminan;
         }
 
         return view('checkout.CheckoutPage', compact('cartItems', 'cartTotal'));
