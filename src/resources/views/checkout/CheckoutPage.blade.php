@@ -3,7 +3,6 @@
         <link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}" />
     </x-slot:styles>
 
-    <!-- Page Header -->
     <div class="page-header">
         <h1>Checkout Payment</h1>
         <div class="breadcrumb-nav">
@@ -14,20 +13,20 @@
             <span class="current">Checkout Payment</span>
         </div>
     </div>
-
     <form id="checkoutForm" action="{{ route('checkout.post') }}" method="POST">
-            <input type="hidden" name="shipping_method" id="shipping_method" />
         @csrf
-        <main>
-            <!-- LEFT: Form -->
+        <input type="hidden" name="shipping_method" id="shipping_method" value="cod" />
+        @if(isset($barangId))
+            <input type="hidden" name="single_barang_id" value="{{ $barangId }}" />
+        @endif
+        <main class="checkout-main">
             <div class="form-side">
-                <!-- Contact -->
                 <div class="form-section">
                     <div class="contact-header">
                         <div class="form-section-title">Contact</div>
                         <div class="have-account">
                             <span>Have an Account? </span>
-                            <a href="{{ route('login') }}">Sign In</a>
+                            <a href="{{ route('register') }}">Create Account</a>
                         </div>
                     </div>
                     <div class="form-row form-field" id="nameFields">
@@ -38,7 +37,6 @@
                     <div class="form-field"><input type="tel" name="phone" placeholder="Phone Number" required /></div>
                 </div>
 
-                <!-- Shipping Method -->
                 <div class="form-section">
                     <div class="form-section-title">Metode Pengiriman</div>
                     <div class="shipping-toggle">
@@ -49,11 +47,10 @@
                     </div>
                 </div>
 
-                <!-- Delivery Section (shown only for Delivery) -->
-                <div class="form-section delivery-section" id="deliverySection" style="display:none;">
+                <div class="form-section delivery-section" id="deliverySection">
                     <div class="form-section-title">Delivery</div>
                     <div class="form-field">
-                        <select required>
+                        <select name="country">
                             <option value="" disabled selected>Country / Region</option>
                             <option>Indonesia</option>
                             <option>Malaysia</option>
@@ -61,18 +58,17 @@
                         </select>
                     </div>
                     <div class="form-row form-field">
-                        <input type="text" placeholder="First Name" required />
-                        <input type="text" placeholder="Last Name" required />
+                        <input type="text" name="ship_first_name" placeholder="First Name" />
+                        <input type="text" name="ship_last_name" placeholder="Last Name" />
                     </div>
-                    <div class="form-field"><input type="text" placeholder="Address" required /></div>
+                    <div class="form-field"><input type="text" name="address" placeholder="Address" /></div>
                     <div class="form-row form-field">
-                        <input type="text" placeholder="City & Province" required />
-                        <input type="text" placeholder="Kode Pos" required />
+                        <input type="text" name="city" placeholder="City & Province" />
+                        <input type="text" name="kode_pos" placeholder="Kode Pos" />
                     </div>
                     <label class="checkbox-row"><input type="checkbox" /> Save This Info For Future</label>
                 </div>
 
-                <!-- Payment Method -->
                 <div class="form-section">
                     <div class="form-section-title">Payment Method</div>
                     <p class="payment-instruction">
@@ -80,7 +76,6 @@
                         Your order will not be shipped until the funds have cleared in our account.
                     </p>
                     <div class="payment-methods-grid">
-                        <!-- Selected card -->
                         <div class="payment-method-card selected" id="selectedCard">
                             <div class="pm-left">
                                 <input type="radio" class="pm-radio" name="payment_method" value="Credit Card" checked />
@@ -101,7 +96,6 @@
                                 </span>
                             </div>
                         </div>
-                        <!-- Dropdown list -->
                         <div id="pmDropdown" style="display:none;flex-direction:column;gap:6px;margin-top:4px;">
                             <div class="payment-method-card" onclick="selectPayment('credit','', 'Credit Card','Visa, Mastercard, dll','visa')">
                                 <div class="pm-left"><input type="radio" class="pm-radio" name="payment_method" value="credit" />
@@ -139,7 +133,6 @@
                         </div>
                     </div>
 
-                    <!-- Panel Credit Card -->
                     <div class="payment-panel active" id="panel-credit">
                         <div class="form-field card-field"><input type="text" placeholder="Card Number" /></div>
                         <div class="form-row form-field">
@@ -150,7 +143,6 @@
                         <label class="checkbox-row"><input type="checkbox" /> Save This Info For Future</label>
                     </div>
 
-                    <!-- Panel QRIS -->
                     <div class="payment-panel" id="panel-qris">
                         <div style="display:flex; gap:16px; align-items:flex-start;">
                             <img src="{{ asset('assets/img/qris kode.webp') }}" alt="QRIS Code" style="width:140px;height:140px;object-fit:contain;border:1px solid #e0e0e0;border-radius:4px;flex-shrink:0;" />
@@ -162,7 +154,6 @@
                         <label class="checkbox-row" style="margin-top:12px;"><input type="checkbox" /> Save This Info For Future</label>
                     </div>
 
-                    <!-- Panel Transfer Bank -->
                     <div class="payment-panel" id="panel-transfer">
                         <div style="position:relative; margin-bottom:12px;">
                             <div onclick="toggleBankDropdown()" style="display:flex;justify-content:space-between;align-items:center;border:1px solid #e0e0e0;padding:10px 14px;cursor:pointer;background:#fff;">
@@ -183,7 +174,7 @@
                         <div class="bank-row" style="margin-bottom:12px;">
                             <label>No Rekening</label>
                             <div class="value"><span id="bankRekening">0978 5634 21196</span>
-                                <button class="copy-btn" onclick="copyText(document.getElementById('bankRekening').textContent)">
+                                <button type="button" class="copy-btn" onclick="copyText(document.getElementById('bankRekening').textContent)">
                                     <svg width="20" height="20" viewBox="0 0 30 30" fill="none"><path d="M5.5 18.8333H4.16667C3.45942 18.8333 2.78115 18.5524 2.28105 18.0523C1.78095 17.5522 1.5 16.8739 1.5 16.1667V4.16667C1.5 3.45942 1.78095 2.78115 2.28105 2.28105C2.78115 1.78095 3.45942 1.5 4.16667 1.5H16.1667C16.8739 1.5 17.5522 1.78095 18.0523 2.28105C18.5524 2.78115 18.8333 3.45942 18.8333 4.16667V5.5M13.5 10.8333H25.5C26.9728 10.8333 28.1667 12.0272 28.1667 13.5V25.5C28.1667 26.9728 26.9728 28.1667 25.5 28.1667H13.5C12.0272 28.1667 10.8333 26.9728 10.8333 25.5V13.5C10.8333 12.0272 12.0272 10.8333 13.5 10.8333Z" stroke="#8A8A8A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </button>
                             </div>
@@ -195,7 +186,6 @@
                         <label class="checkbox-row"><input type="checkbox" /> Save This Info For Future</label>
                     </div>
 
-                    <!-- Panel E‑Wallet -->
                     <div class="payment-panel" id="panel-ewallet">
                         <div style="position:relative;margin-bottom:12px;">
                             <div onclick="toggleWalletDropdown()" style="display:flex;justify-content:space-between;align-items:center;border:1px solid #e0e0e0;padding:10px 14px;cursor:pointer;background:#fff;">
@@ -215,7 +205,7 @@
                         <div class="bank-row" style="margin-bottom:12px;">
                             <label>Nomor</label>
                             <div class="value"><span id="walletNomor">0812‑xxxx‑xxxx</span>
-                                <button class="copy-btn" onclick="copyText(document.getElementById('walletNomor').textContent)">
+                                <button type="button" class="copy-btn" onclick="copyText(document.getElementById('walletNomor').textContent)">
                                     <svg width="20" height="20" viewBox="0 0 30 30" fill="none"><path d="M5.5 18.8333H4.16667C3.45942 18.8333 2.78115 18.5524 2.28105 18.0523C1.78095 17.5522 1.5 16.8739 1.5 16.1667V4.16667C1.5 3.45942 1.78095 2.78115 2.28105 2.28105C2.78115 1.78095 3.45942 1.5 4.16667 1.5H16.1667C16.8739 1.5 17.5522 1.78095 18.0523 2.28105C18.5524 2.78115 18.8333 3.45942 18.8333 4.16667V5.5M13.5 10.8333H25.5C26.9728 10.8333 28.1667 12.0272 28.1667 13.5V25.5C28.1667 26.9728 26.9728 28.1667 25.5 28.1667H13.5C12.0272 28.1667 10.8333 26.9728 10.8333 25.5V13.5C10.8333 12.0272 12.0272 10.8333 13.5 10.8333Z" stroke="#8A8A8A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </button>
                             </div>
@@ -229,15 +219,18 @@
                 </div>
             </div>
 
-            <!-- RIGHT: Order Summary -->
             <div class="summary-side" id="summarySide">
                 @foreach($cartItems as $item)
                     @php
+                        $tanggalMulai = \Carbon\Carbon::parse($item->tanggal_sewa);
+                        $tanggalSelesai = \Carbon\Carbon::parse($item->tanggal_kembali_rencana);                        
+                        $durasi = $tanggalMulai->diffInDays($tanggalSelesai);
+                        $durasi = $durasi < 1 ? 1 : $durasi;
                         $price = $item->barang->harga_sewa ?? 0;
-                        $durasi = $item->duration_days ?? 1;
                         $subtotal = $price * $item->jumlah * $durasi;
                         $jaminan = round($price * $item->jumlah / 2);
-                        $rowTotal = $subtotal + $jaminan;
+                        $shipping = 20000; // biaya kirim flat per item (harus sama dengan CheckoutController)
+                        $rowTotal = $subtotal + $jaminan + $shipping;
                     @endphp
                     <input type="hidden" name="prices[]" value="{{ $price }}" />
                     <div class="summary-product">
@@ -250,20 +243,20 @@
                             </div>
                         </div>
                         <div class="sum-dates">
-                            <div class="sum-date-item"><div class="sum-date-label">Tanggal Mulai Penyewaan</div><div class="sum-date-val"><span class="date-text">{{ \Carbon\Carbon::parse($item->tanggal_sewa)->translatedFormat('d F Y') }}</span></div></div>
-                            <div class="sum-date-item"><div class="sum-date-label">Tanggal Selesai Penyewaan</div><div class="sum-date-val"><span class="date-text">{{ \Carbon\Carbon::parse($item->tanggal_kembali_rencana)->translatedFormat('d F Y') }}</span></div></div>
+                            <div class="sum-date-item"><div class="sum-date-label">Tanggal Mulai Penyewaan</div><div class="sum-date-val"><span class="date-text">{{ $tanggalMulai->locale('id')->translatedFormat('d F Y') }}</span></div></div>
+                            <div class="sum-date-item"><div class="sum-date-label">Tanggal Selesai Penyewaan</div><div class="sum-date-val"><span class="date-text">{{ $tanggalSelesai->locale('id')->translatedFormat('d F Y') }}</span></div></div>
                         </div>
                         <div class="sum-rows">
                             <div class="sum-row"><span class="lbl">Durasi Sewa</span><span class="val">{{ $durasi }} Hari</span></div>
                             <div class="sum-row"><span class="lbl">Subtotal</span><span class="val">Rp {{ number_format($subtotal,0,',','.') }}</span></div>
-                            <div class="sum-row"><span class="lbl">Shipping</span><span class="val">-</span></div>
+                            <div class="sum-row"><span class="lbl">Shipping</span><span class="val">Rp {{ number_format($shipping,0,',','.') }}</span></div>
                             <div class="sum-row"><span class="lbl">Jaminan</span><span class="val">Rp {{ number_format($jaminan,0,',','.') }}</span></div>
                             <div class="sum-row"><span class="lbl" style="font-weight:700;">Total</span><span class="val" style="font-weight:700;">Rp {{ number_format($rowTotal,0,',','.') }}</span></div>
                         </div>
                     </div>
                 @endforeach
 
-                <div class="summary-total"><span class="lbl">Grand Total</span><span class="val">Rp {{ number_format($cartTotal,0,',','.') }}</span></div>
+                <div class="summary-total"><span class="lbl">Total</span><span class="val">Rp {{ number_format($cartTotal,0,',','.') }}</span></div>
                 <p class="summary-note">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.</p>
                 <div class="action-group">
                     <input type="hidden" name="checkout_cart" id="checkout_cart" />
@@ -277,6 +270,30 @@
 
     <x-slot:scripts>
         <script>
+            // Passing grand total value dari Blade ke JavaScript variabel
+            const grandTotalValue = {{ $cartTotal }};
+
+            // Helper untuk memformat angka integer ke format mata uang Rupiah
+            function formatRupiah(value) {
+                return 'Rp ' + value.toLocaleString('id-ID');
+            }
+
+            // Fungsi untuk menginisialisasi nominal pembayaran di panel interaktif
+            function initPaymentNominals() {
+                const formattedTotal = formatRupiah(grandTotalValue);
+                
+                const qrisNominalEl = document.getElementById('qrisNominal');
+                const transferNominalEl = document.getElementById('transferNominal');
+                const ewalletNominalEl = document.getElementById('ewalletNominal');
+
+                if (qrisNominalEl) qrisNominalEl.textContent = formattedTotal;
+                if (transferNominalEl) transferNominalEl.textContent = formattedTotal;
+                if (ewalletNominalEl) ewalletNominalEl.textContent = formattedTotal;
+            }
+
+            // Jalankan inisialisasi nominal begitu dokumen HTML selesai dimuat
+            document.addEventListener('DOMContentLoaded', initPaymentNominals);
+
             // ==================== UI Helpers ====================
             const pmLogos = {
                 credit: `<image href="{{ asset('assets/img/logo visa.png') }}" width="50" height="25"/>`,
@@ -291,17 +308,27 @@
                 dd.style.display = isOpen ? 'none' : 'flex';
                 chev.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
             }
-            function selectPayment(type, card, label, sub, logoKey) {
-                document.getElementById('selectedLabel').textContent = label;
-                document.getElementById('selectedSub').textContent = sub;
-                document.getElementById('selectedLogo').innerHTML = pmLogos[logoKey] || '';
-                // Show relevant panel
-                document.querySelectorAll('.payment-panel').forEach(p => p.classList.remove('active'));
-                document.getElementById('panel-' + type).classList.add('active');
-                // Close dropdown
-                document.getElementById('pmDropdown').style.display = 'none';
-                document.getElementById('pmChevron').style.transform = 'rotate(0deg)';
-            }
+             function selectPayment(type, label, sub, logoKey) {
+    // 1. Ubah teks display pada komponen utama kartu
+    document.getElementById('selectedLabel').textContent = label;
+    document.getElementById('selectedSub').textContent = sub;
+    document.getElementById('selectedLogo').innerHTML = pmLogos[logoKey] || '';
+    
+    // 2. SINKRONISASI KRUSIAL: Update nilai value pada input radio utama agar terbaca oleh Controller
+    const mainRadio = document.getElementById('mainPaymentMethod');
+    if (mainRadio) {
+        mainRadio.value = type; 
+    }
+
+    // 3. Tampilkan panel detail pembayaran yang sesuai
+    document.querySelectorAll('.payment-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + type).classList.add('active');
+    
+    // 4. Tutup kembali container dropdown
+    document.getElementById('pmDropdown').style.display = 'none';
+    document.getElementById('pmChevron').style.transform = 'rotate(0deg)';
+}
+    
             // Shipping toggle
             function selectShipping(mode, el) {
                 document.querySelectorAll('.shipping-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
@@ -346,8 +373,37 @@
             // Copy helper
             function copyText(text) { navigator.clipboard.writeText(text).then(() => alert('Disalin: '+text)); }
 
-             // ==================== Checkout Cart Sync ====================
-             // Form will submit directly to server where cart is loaded from database.
+            // ===== VALIDASI: tombol "Pay Now" nonaktif selama masih ada kolom yang belum diisi =====
+            (function () {
+                const form = document.getElementById('checkoutForm');
+                const payBtn = document.querySelector('.btn-pay');
+                if (!form || !payBtn) return;
+
+                function isVisible(el) {
+                    return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+                }
+
+                function validatePayButton() {
+                    const fields = form.querySelectorAll(
+                        'input[type=text], input[type=email], input[type=tel], input[type=date], input[type=number], select, textarea'
+                    );
+                    let semuaTerisi = true;
+                    fields.forEach(function (el) {
+                        // abaikan kolom tersembunyi / readonly / disabled
+                        if (el.disabled || el.readOnly || el.type === 'hidden' || !isVisible(el)) return;
+                        if (!el.value || el.value.trim() === '') semuaTerisi = false;
+                    });
+                    payBtn.disabled = !semuaTerisi;
+                    payBtn.style.opacity = semuaTerisi ? '1' : '0.5';
+                    payBtn.style.cursor = semuaTerisi ? 'pointer' : 'not-allowed';
+                }
+
+                form.addEventListener('input', validatePayButton);
+                form.addEventListener('change', validatePayButton);
+                // re-cek saat ganti panel metode pembayaran/pengiriman
+                form.addEventListener('click', function () { setTimeout(validatePayButton, 50); });
+                validatePayButton(); // cek saat halaman dimuat
+            })();
          </script>
     </x-slot:scripts>
 </x-layout>

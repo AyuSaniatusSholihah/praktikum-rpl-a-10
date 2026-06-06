@@ -17,29 +17,50 @@ class CheckoutController extends Controller
     public function index($id = null)
     {
         if ($id) {
-            // Single item checkout based on product ID
-            $barang = \App\Models\Barang::find($id);
-            if (!$barang) {
-                return redirect()->route('rentals')->with('error', 'Produk tidak ditemukan');
+            // Try to find if this item is already in the cart to fetch user's selected dates/quantity
+            $cartItem = Keranjang::where('user_id', Auth::id())
+                ->where('barang_id', $id)
+                ->with('barang')
+                ->first();
+
+            if ($cartItem) {
+                $cartItems = collect([$cartItem]);
+            } else {
+                // Single item checkout fallback based on product ID
+                $barang = \App\Models\Barang::find($id);
+                if (!$barang) {
+                    return redirect()->route('rentals')->with('error', 'Produk tidak ditemukan');
+                }
+                // ---- Prevent owner from checking out own product ----
+                if ($barang->user_id === \Illuminate\Support\Facades\Auth::id()) {
+                    return redirect()->route('rentals')->with('error', 'Anda tidak dapat checkout barang milik Anda sendiri.');
+                }
+                // Create a temporary cart item collection
+                $cartItems = collect([
+                    (object)[
+                        'barang' => $barang,
+                        'jumlah' => 1,
+                        'tanggal_sewa' => now()->toDateString(),
+                        'tanggal_kembali_rencana' => now()->addDay()->toDateString(),
+                    ]
+                ]);
             }
-            // ---- Prevent owner from checking out own product ----
-            if ($barang->user_id === \Illuminate\Support\Facades\Auth::id()) {
-                return redirect()->route('rentals')->with('error', 'Anda tidak dapat checkout barang milik Anda sendiri.');
-            }
-            // Create a temporary cart item collection
-            $cartItems = collect([
-                (object)[
-                    'barang' => $barang,
-                    'jumlah' => 1,
-                    'tanggal_sewa' => now()->toDateString(),
-                    'tanggal_kembali_rencana' => now()->addDay()->toDateString(),
-                ]
-            ]);
         } else {
             $cartItems = Keranjang::where('user_id', Auth::id())->with('barang')->get();
         }
+
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart')->with('error', 'Keranjang kosong');
+        }
+
+        foreach ($cartItems as $item) {
+            $barang = $item->barang;
+            if (!$barang) {
+                return redirect()->route('cart')->with('error', 'Produk tidak ditemukan.');
+            }
+            if ($item->jumlah > $barang->stok) {
+                return redirect()->route('cart')->with('error', "Stok barang '{$barang->nama_barang}' tidak mencukupi. Stok tersedia: {$barang->stok}. Silakan kurangi kuantitas di keranjang.");
+            }
         }
 
         $cartTotal = 0;
@@ -50,10 +71,11 @@ class CheckoutController extends Controller
             $harga   = $item->barang->harga_sewa ?? 0;
             $subtotal = $harga * $item->jumlah * $days;
             $jaminan  = (int) round($harga * $item->jumlah / 2);
-            $cartTotal += $subtotal + $jaminan;
+            $shipping = 20000; // biaya kirim flat per item (harus sama dengan CheckoutPage.blade.php)
+            $cartTotal += $subtotal + $jaminan + $shipping;
         }
 
-        return view('checkout.CheckoutPage', compact('cartItems', 'cartTotal'));
+        return view('checkout.CheckoutPage', compact('cartItems', 'cartTotal'))->with('barangId', $id);
     }
 
     public function store(Request $request)
@@ -67,7 +89,31 @@ class CheckoutController extends Controller
             'phone' => 'required|string',
         ]);
 
-        $cartItems = Keranjang::where('user_id', Auth::id())->with('barang')->get();
+        if ($request->has('single_barang_id') && $request->single_barang_id) {
+            $cartItems = Keranjang::where('user_id', Auth::id())
+                ->where('barang_id', $request->single_barang_id)
+                ->with('barang')
+                ->get();
+            
+            if ($cartItems->isEmpty()) {
+                $barang = Barang::find($request->single_barang_id);
+                if (!$barang) {
+                    return redirect()->route('rentals')->with('error', 'Produk tidak ditemukan');
+                }
+                $cartItems = collect([
+                    (object)[
+                        'barang_id' => $barang->id,
+                        'barang' => $barang,
+                        'jumlah' => 1,
+                        'tanggal_sewa' => now()->toDateString(),
+                        'tanggal_kembali_rencana' => now()->addDay()->toDateString(),
+                    ]
+                ]);
+            }
+        } else {
+            $cartItems = Keranjang::where('user_id', Auth::id())->with('barang')->get();
+        }
+
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart')->with('error', 'Keranjang kosong');
         }
@@ -80,17 +126,50 @@ class CheckoutController extends Controller
             }
         }
 
+        // ---- Check stock availability for all items before proceeding ----
+        foreach ($cartItems as $item) {
+            $barang = $item->barang;
+            if (!$barang || $barang->stok < $item->jumlah) {
+                $nama = $barang ? $barang->nama_barang : 'Barang';
+                $stok = $barang ? $barang->stok : 0;
+                return redirect()->route('cart')->with('error', "Stok barang '{$nama}' tidak mencukupi. Stok tersedia: {$stok}.");
+            }
+        }
+
         $cartTotal = 0;
         foreach($cartItems as $item) {
             $days = Carbon::parse($item->tanggal_sewa)->diffInDays(Carbon::parse($item->tanggal_kembali_rencana));
             if ($days == 0) $days = 1;
-            $cartTotal += ($item->barang->harga_sewa ?? 0) * $item->jumlah * $days;
+            $harga   = $item->barang->harga_sewa ?? 0;
+            $subtotal = $harga * $item->jumlah * $days;
+            $jaminan  = (int) round($harga * $item->jumlah / 2);
+            $shipping = 20000; // biaya kirim flat per item (harus sama dengan CheckoutPage.blade.php)
+            $cartTotal += $subtotal + $jaminan + $shipping;
         }
 
-        // Create Pembayaran
+        // Map incoming payment method to database enum values: 'transfer bank', 'e-wallet', 'qris'
+        $rawMetode = $request->payment_method;
+        $metode = 'transfer bank';
+        $detailMetode = $rawMetode;
+
+        if ($rawMetode === 'qris') {
+            $metode = 'qris';
+            $detailMetode = 'QRIS';
+        } elseif ($rawMetode === 'ewallet') {
+            $metode = 'e-wallet';
+            $detailMetode = 'E-Wallet';
+        } elseif ($rawMetode === 'transfer') {
+            $metode = 'transfer bank';
+            $detailMetode = 'Transfer Bank';
+        } elseif ($rawMetode === 'credit' || $rawMetode === 'Credit Card') {
+            $metode = 'transfer bank';
+            $detailMetode = 'Credit Card';
+        }
+
+        // Create Pembayaran (including jaminan)
         $pembayaran = Pembayaran::create([
-            'metode' => 'Transfer',
-            'detail_metode' => $request->payment_method,
+            'metode' => $metode,
+            'detail_metode' => $detailMetode,
             'tanggal_bayar' => Carbon::now(),
             'jumlah_bayar' => $cartTotal,
         ]);
@@ -125,19 +204,32 @@ class CheckoutController extends Controller
             if ($days == 0) $days = 1;
             $subtotal = ($item->barang->harga_sewa ?? 0) * $item->jumlah * $days;
 
+            // Kurangi stok barang dan perbarui status jika habis
+            $barang = $item->barang;
+            if ($barang) {
+                $barang->stok -= $item->jumlah;
+                if ($barang->stok <= 0) {
+                    $barang->status = 'tidak_tersedia';
+                }
+                $barang->save();
+            }
+
             TransaksiPenyewaan::create([
                 'user_id' => Auth::id(),
-                'barang_id' => $item->barang_id,
+                'barang_id' => $item->barang_id ?? $item->barang->id,
                 'pembayaran_id' => $pembayaran->id,
                 'jumlah' => $item->jumlah,
                 'tanggal_sewa' => $item->tanggal_sewa,
                 'tanggal_kembali_rencana' => $item->tanggal_kembali_rencana,
-                'status' => 'diproses',
+                'status' => 'aktif',
                 'total_harga' => $subtotal,
             ]);
-        }
 
-        Keranjang::where('user_id', Auth::id())->delete();
+            // Only delete this item from the cart if it actually exists in the DB
+            if ($item instanceof Keranjang) {
+                $item->delete();
+            }
+        }
 
         return redirect()->route('order.confirmation')->with('success', 'Pesanan berhasil dibuat!');
     }

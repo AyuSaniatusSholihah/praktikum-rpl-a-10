@@ -76,18 +76,27 @@ Route::get('/product/{id}', function ($id) {
     return view('katalog.ProductRentPage', compact('product'));
 })->name('product');
 
+// Real-time stock endpoint (public)
+Route::get('/product/{id}/stok', function ($id) {
+    $product = Barang::findOrFail($id);
+    return response()->json([
+        'stok'   => (int) $product->stok,
+        'status' => $product->status,
+    ]);
+})->name('product.stok');
+
 // Auth‑protected routes
 Route::middleware('auth')->group(function () {
     // Profile dashboard pages
     Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
     Route::post('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/profile/rentals', fn () => view('profile.MyRentalsPage', ['user' => Auth::user()]))->name('profile.rentals');
-    Route::get('/profile/rentals/produk', fn () => view('profile.MyRentalsProdukPage', ['user' => Auth::user()]))->name('profile.rentals.produk');
-    Route::get('/profile/rentals/pengembalian', fn () => view('profile.MyRentalsPengembalianPage', ['user' => Auth::user()]))->name('profile.rentals.pengembalian');
-    Route::get('/profile/rentals/confirmation', fn () => view('profile.MyRentalsConfirmationPage', ['user' => Auth::user()]))->name('profile.rentals.confirmation');
-    Route::get('/profile/owner', fn () => view('profile.MyRentalsOwnerPage', ['user' => Auth::user()]))->name('profile.owner');
-    Route::get('/profile/owner/produk', fn () => view('profile.MyRentalsOwnerProdukPage', ['user' => Auth::user()]))->name('profile.owner.produk');
-    Route::get('/profile/wallet', fn () => view('profile.MyWalletPage', ['user' => Auth::user()]))->name('profile.wallet');
+    Route::get('/profile/rentals', [\App\Http\Controllers\ProfileController::class, 'rentals'])->name('profile.rentals');
+    Route::get('/profile/rentals/{id}', [\App\Http\Controllers\ProfileController::class, 'rentalDetail'])->name('profile.rentals.produk');
+    Route::get('/profile/rentals/{id}/pengembalian', [\App\Http\Controllers\ProfileController::class, 'pengembalian'])->name('profile.rentals.pengembalian');
+    Route::get('/profile/rentals/{id}/confirmation', [\App\Http\Controllers\ProfileController::class, 'confirmation'])->name('profile.rentals.confirmation');
+    Route::get('/profile/owner', [\App\Http\Controllers\ProfileController::class, 'owner'])->name('profile.owner');
+    Route::get('/profile/owner/{id}', [\App\Http\Controllers\ProfileController::class, 'ownerDetail'])->name('profile.owner.produk');
+    Route::get('/profile/wallet', [\App\Http\Controllers\ProfileController::class, 'wallet'])->name('profile.wallet');
 
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
@@ -115,4 +124,71 @@ Route::get('/katalog/edit-item/{id}', function ($id) {
     $product = Barang::findOrFail($id);
     return view('katalog.EditItemPage', compact('product'));
 })->name('katalog.edit-item');
-?>
+
+// ============================================================
+// ADMIN ROUTES – hanya bisa diakses oleh user dengan role admin
+// ============================================================
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+
+    // Helper: pastikan user adalah admin, abort 403 jika bukan
+    $onlyAdmin = function () {
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if (!$user || $user->role !== 'admin') {
+            abort(403, 'Akses ditolak. Halaman ini hanya untuk Admin.');
+        }
+    };
+
+    // Dashboard
+    Route::get('/', function () use ($onlyAdmin) {
+        $onlyAdmin();
+        return view('admin.dashboardPage');
+    })->name('dashboard');
+
+    // Financial Wallet
+    Route::get('/financial-wallet', function () use ($onlyAdmin) {
+        $onlyAdmin();
+        return view('admin.financialWalletPage');
+    })->name('financial-wallet');
+
+    // Data Users (list)
+    Route::get('/users', function () use ($onlyAdmin) {
+        $onlyAdmin();
+        return view('admin.dataUserPage');
+    })->name('users');
+
+    // Data User Detail
+    Route::get('/users/{id}', function ($id) use ($onlyAdmin) {
+        $onlyAdmin();
+        $user = \App\Models\User::findOrFail($id);
+        return view('admin.userDetailPage', compact('user'));
+    })->name('users.detail');
+
+    // Data Items (list)
+    Route::get('/items', function () use ($onlyAdmin) {
+        $onlyAdmin();
+        return view('admin.dataItemPage');
+    })->name('items');
+
+    // Data Item Detail
+    Route::get('/items/{id}', function ($id) use ($onlyAdmin) {
+        $onlyAdmin();
+        $item = \App\Models\Barang::with(['user', 'kategori', 'reviews.user'])->findOrFail($id);
+        return view('admin.itemDetailPage', compact('item'));
+    })->name('items.detail');
+
+    // Data Transactions (list)
+    Route::get('/transactions', function () use ($onlyAdmin) {
+        $onlyAdmin();
+        return view('admin.dataTransactions');
+    })->name('transactions');
+
+    // Data Transaction Detail
+    Route::get('/transactions/{id}', function ($id) use ($onlyAdmin) {
+        $onlyAdmin();
+        $transaksi = \App\Models\TransaksiPenyewaan::with(['user', 'barang.user', 'pembayaran', 'review'])->findOrFail($id);
+        return view('admin.transactionDetailPage', compact('transaksi'));
+    })->name('transactions.detail');
+});
+
+

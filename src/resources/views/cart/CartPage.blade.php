@@ -179,18 +179,29 @@
        
         // simpan ke database
         fetch(`/cart/${itemId}/quantity`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ quantity: newVal })
-        }).then(res => res.json())
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ quantity: newVal })
+        }).then(res => {
+            if (!res.ok) {
+                return res.json().then(err => { throw err; });
+            }
+            return res.json();
+        })
         .then(data => {
             // update subtotal baris ini
             const subtotalCell = row.querySelector('.subtotal-cell');
             subtotalCell.textContent = 'Rp ' + data.subtotal.toLocaleString('id-ID');
             updateSubtotal();
+        })
+        .catch(err => {
+            alert(err.error || 'Terjadi kesalahan saat memperbarui kuantitas.');
+            // Revert back to the old value
+            input.value = current < 10 ? '0' + current : current;
         });
     }
     }
