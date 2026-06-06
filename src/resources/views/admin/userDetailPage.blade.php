@@ -13,8 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700;800&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Amethysta&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/sewain/assets/css/home.css">
-  <link rel="stylesheet" href="/sewain/assets/css/admin.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
 </head>
 <body>
 
@@ -189,7 +189,7 @@
                   <div class="catalog-card">
                     <span class="catalog-badge">AVAILABLE</span>
                     <div class="product-img">
-                      <img src="/sewain/assets/img/alat masak camp.webp" alt="Alat Masak">
+                      <img src="{{ asset('assets/img/alat masak camp.webp') }}" alt="Alat Masak">
                     </div>
                     <div class="catalog-card-info">
                       <div class="head-row">
@@ -211,7 +211,7 @@
                   <div class="catalog-card">
                     <span class="catalog-badge active">ACTIVE RENTAL</span>
                     <div class="product-img">
-                      <img src="/sewain/assets/img/tenda altrek.webp" alt="Tenda">
+                      <img src="{{ asset('assets/img/tenda altrek.webp') }}" alt="Tenda">
                     </div>
                     <div class="catalog-card-info">
                       <div class="head-row">
@@ -251,7 +251,7 @@
                         <path d="M19.0299 20.3268C20.8415 8.62969 30.9106 0 42.7471 0L213.215 0C228.845 0 240.304 14.7009 236.49 29.8575L206.037 150.858C203.353 161.524 193.761 169 182.763 169H24.0071C9.2881 169 -1.96293 155.872 0.289844 141.327L19.0299 20.3268Z"/>
                       </clipPath>
                       <path d="M19.0299 20.3268C20.8415 8.62969 30.9106 0 42.7471 0L213.215 0C228.845 0 240.304 14.7009 236.49 29.8575L206.037 150.858C203.353 161.524 193.761 169 182.763 169H24.0071C9.2881 169 -1.96293 155.872 0.289844 141.327L19.0299 20.3268Z" fill="#D9D9D9"/>
-                      <image href="/sewain/assets/img/ip 18b air.webp"
+                      <image href="{{ asset('assets/img/ip 18b air.webp') }}"
                             x="0" y="0" width="238" height="169"
                             preserveAspectRatio="xMidYMid slice"
                             clip-path="url(#photoClip1)"/>
@@ -312,7 +312,7 @@
                           <path d="M19.0299 20.3268C20.8415 8.62969 30.9106 0 42.7471 0L213.215 0C228.845 0 240.304 14.7009 236.49 29.8575L206.037 150.858C203.353 161.524 193.761 169 182.763 169H24.0071C9.2881 169 -1.96293 155.872 0.289844 141.327L19.0299 20.3268Z"/>
                         </clipPath>
                         <path d="M19.0299 20.3268C20.8415 8.62969 30.9106 0 42.7471 0L213.215 0C228.845 0 240.304 14.7009 236.49 29.8575L206.037 150.858C203.353 161.524 193.761 169 182.763 169H24.0071C9.2881 169 -1.96293 155.872 0.289844 141.327L19.0299 20.3268Z" fill="#D9D9D9"/>
-                        <image href="/sewain/assets/img/lampu camp.webp"
+                        <image href="{{ asset('assets/img/lampu camp.webp') }}"
                               x="0" y="0" width="238" height="169"
                               preserveAspectRatio="xMidYMid slice"
                               clip-path="url(#photoClip2)"/>

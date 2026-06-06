@@ -354,6 +354,7 @@
                 cart.forEach((item, index) => {
                     const el = document.createElement('div');
                     el.className = 'minicart-item';
+                    el.setAttribute('data-id', item.id);
                     el.innerHTML = `
                         <div class="minicart-thumb">
                             ${item.label ? `<span class="thumb-label">${item.label}</span>` : ''}
@@ -373,11 +374,65 @@
 
                     el.querySelector('.qty-minus').addEventListener('click', () => {
                         const cart = getCart();
-                        if (cart[index].qty > 1) { cart[index].qty--; saveCart(cart); renderMinicart(); }
+                        if (cart[index].qty > 1) {
+                            const newQty = cart[index].qty - 1;
+                            const itemId = el.getAttribute('data-id');
+                            cart[index].qty = newQty;
+                            saveCart(cart);
+                            renderMinicart();
+                            // Sync with backend
+                            fetch(`/cart/${itemId}/quantity`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({ quantity: newQty })
+                            }).then(res => {
+                                if (!res.ok) return res.json().then(err => { throw err; });
+                            }).catch(err => {
+                                alert(err.error || 'Gagal memperbarui kuantitas');
+                                // revert UI change
+                                cart[index].qty = newQty + 1;
+                                saveCart(cart);
+                                renderMinicart();
+                            });
+                        }
                     });
                     el.querySelector('.qty-plus').addEventListener('click', () => {
                         const cart = getCart();
-                        if (cart[index].qty < 99) { cart[index].qty++; saveCart(cart); renderMinicart(); }
+                        const itemId = el.getAttribute('data-id');
+                        const newQty = cart[index].qty + 1;
+                        // Find max stock for this item
+                        const maxStock = cart[index].stok ?? Infinity;
+                        if (newQty > maxStock) {
+                            alert('Stok tidak mencukupi');
+                            return;
+                        }
+                        // Optimistically update UI
+                        cart[index].qty = newQty;
+                        saveCart(cart);
+                        renderMinicart();
+                        // Sync with backend
+                        fetch(`/cart/${itemId}/quantity`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({ quantity: newQty })
+                        }).then(res => {
+                            if (!res.ok) return res.json().then(err => { throw err; });
+                            return res.json();
+                        }).then(data => {
+                            // success, nothing else needed
+                        }).catch(err => {
+                            alert(err.error || 'Gagal memperbarui kuantitas');
+                            // revert UI change
+                            cart[index].qty = newQty - 1;
+                            saveCart(cart);
+                            renderMinicart();
+                        });
                     });
                     el.querySelector('.minicart-remove').addEventListener('click', () => {
                         const cart = getCart();

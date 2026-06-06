@@ -53,6 +53,16 @@ class CheckoutController extends Controller
             return redirect()->route('cart')->with('error', 'Keranjang kosong');
         }
 
+        foreach ($cartItems as $item) {
+            $barang = $item->barang;
+            if (!$barang) {
+                return redirect()->route('cart')->with('error', 'Produk tidak ditemukan.');
+            }
+            if ($item->jumlah > $barang->stok) {
+                return redirect()->route('cart')->with('error', "Stok barang '{$barang->nama_barang}' tidak mencukupi. Stok tersedia: {$barang->stok}. Silakan kurangi kuantitas di keranjang.");
+            }
+        }
+
         $cartTotal = 0;
         foreach($cartItems as $item) {
             $days = Carbon::parse($item->tanggal_sewa)->diffInDays(Carbon::parse($item->tanggal_kembali_rencana));
@@ -113,6 +123,16 @@ class CheckoutController extends Controller
             if ($item->barang && $item->barang->user_id === Auth::id()) {
                 return redirect()->route('cart')
                     ->with('error', 'Anda tidak dapat checkout barang milik Anda sendiri.');
+            }
+        }
+
+        // ---- Check stock availability for all items before proceeding ----
+        foreach ($cartItems as $item) {
+            $barang = $item->barang;
+            if (!$barang || $barang->stok < $item->jumlah) {
+                $nama = $barang ? $barang->nama_barang : 'Barang';
+                $stok = $barang ? $barang->stok : 0;
+                return redirect()->route('cart')->with('error', "Stok barang '{$nama}' tidak mencukupi. Stok tersedia: {$stok}.");
             }
         }
 
@@ -183,6 +203,16 @@ class CheckoutController extends Controller
             $days = Carbon::parse($item->tanggal_sewa)->diffInDays(Carbon::parse($item->tanggal_kembali_rencana));
             if ($days == 0) $days = 1;
             $subtotal = ($item->barang->harga_sewa ?? 0) * $item->jumlah * $days;
+
+            // Kurangi stok barang dan perbarui status jika habis
+            $barang = $item->barang;
+            if ($barang) {
+                $barang->stok -= $item->jumlah;
+                if ($barang->stok <= 0) {
+                    $barang->status = 'tidak_tersedia';
+                }
+                $barang->save();
+            }
 
             TransaksiPenyewaan::create([
                 'user_id' => Auth::id(),
