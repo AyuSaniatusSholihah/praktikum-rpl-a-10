@@ -15,42 +15,28 @@
     </div>
     <form id="checkoutForm" action="{{ route('checkout.post') }}" method="POST">
         @csrf
-        <input type="hidden" name="shipping_method" id="shipping_method" value="cod" />
+        <input type="hidden" name="shipping_method" id="shipping_method" value="delivery" />
         @if(isset($barangId))
             <input type="hidden" name="single_barang_id" value="{{ $barangId }}" />
         @endif
-        <main>
+        <main class="checkout-main">
             <div class="form-side">
                 <div class="form-section">
                     <div class="contact-header">
                         <div class="form-section-title">Contact</div>
                         <div class="have-account">
                             <span>Have an Account? </span>
-                            <a href="{{ route('login') }}">Sign In</a>
+                            <a href="{{ route('register') }}">Create Account</a>
                         </div>
-                    </div>
-                    <div class="form-row form-field" id="nameFields">
-                        <input type="text" name="first_name" placeholder="First Name" required />
-                        <input type="text" name="last_name" placeholder="Last Name" required />
                     </div>
                     <div class="form-field"><input type="email" name="email" placeholder="Email Address" required /></div>
                     <div class="form-field"><input type="tel" name="phone" placeholder="Phone Number" required /></div>
                 </div>
 
-                <div class="form-section">
-                    <div class="form-section-title">Metode Pengiriman</div>
-                    <div class="shipping-toggle">
-                        <div class="toggle-options">
-                            <button type="button" class="toggle-btn active" onclick="selectShipping('cod', this)">COD (Ambil Sendiri)</button>
-                            <button type="button" class="toggle-btn" onclick="selectShipping('delivery', this)">Delivery</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section delivery-section" id="deliverySection" style="display:none;">
+                <div class="form-section delivery-section visible" id="deliverySection">
                     <div class="form-section-title">Delivery</div>
                     <div class="form-field">
-                        <select>
+                        <select name="country">
                             <option value="" disabled selected>Country / Region</option>
                             <option>Indonesia</option>
                             <option>Malaysia</option>
@@ -58,13 +44,13 @@
                         </select>
                     </div>
                     <div class="form-row form-field">
-                        <input type="text" placeholder="First Name" />
-                        <input type="text" placeholder="Last Name" />
+                        <input type="text" name="first_name" placeholder="First Name" required />
+                        <input type="text" name="last_name" placeholder="Last Name" required />
                     </div>
-                    <div class="form-field"><input type="text" placeholder="Address" /></div>
+                    <div class="form-field"><input type="text" name="address" placeholder="Address" /></div>
                     <div class="form-row form-field">
-                        <input type="text" placeholder="City & Province" />
-                        <input type="text" placeholder="Kode Pos" />
+                        <input type="text" name="city" placeholder="City & Province" />
+                        <input type="text" name="kode_pos" placeholder="Kode Pos" />
                     </div>
                     <label class="checkbox-row"><input type="checkbox" /> Save This Info For Future</label>
                 </div>
@@ -229,7 +215,8 @@
                         $price = $item->barang->harga_sewa ?? 0;
                         $subtotal = $price * $item->jumlah * $durasi;
                         $jaminan = round($price * $item->jumlah / 2);
-                        $rowTotal = $subtotal + $jaminan;
+                        $shipping = 20000; // biaya kirim flat per item (harus sama dengan CheckoutController)
+                        $rowTotal = $subtotal + $jaminan + $shipping;
                     @endphp
                     <input type="hidden" name="prices[]" value="{{ $price }}" />
                     <div class="summary-product">
@@ -248,14 +235,14 @@
                         <div class="sum-rows">
                             <div class="sum-row"><span class="lbl">Durasi Sewa</span><span class="val">{{ $durasi }} Hari</span></div>
                             <div class="sum-row"><span class="lbl">Subtotal</span><span class="val">Rp {{ number_format($subtotal,0,',','.') }}</span></div>
-                            <div class="sum-row"><span class="lbl">Shipping</span><span class="val">-</span></div>
+                            <div class="sum-row"><span class="lbl">Shipping</span><span class="val">Rp {{ number_format($shipping,0,',','.') }}</span></div>
                             <div class="sum-row"><span class="lbl">Jaminan</span><span class="val">Rp {{ number_format($jaminan,0,',','.') }}</span></div>
                             <div class="sum-row"><span class="lbl" style="font-weight:700;">Total</span><span class="val" style="font-weight:700;">Rp {{ number_format($rowTotal,0,',','.') }}</span></div>
                         </div>
                     </div>
                 @endforeach
 
-                <div class="summary-total"><span class="lbl">Grand Total</span><span class="val">Rp {{ number_format($cartTotal,0,',','.') }}</span></div>
+                <div class="summary-total"><span class="lbl">Total</span><span class="val">Rp {{ number_format($cartTotal,0,',','.') }}</span></div>
                 <p class="summary-note">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.</p>
                 <div class="action-group">
                     <input type="hidden" name="checkout_cart" id="checkout_cart" />

@@ -18,7 +18,7 @@
 
 
 
-  <main>
+  <main class="checkout-main">
     <!-- Left: Confirmation Status -->
     <div class="confirm-side">
       <div class="check-circle">
