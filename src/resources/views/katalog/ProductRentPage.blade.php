@@ -439,7 +439,7 @@
                         if (targetItem.cart_item_id) {
                             fetch(`/cart/${targetItem.cart_item_id}/quantity`, {
                                 method: 'PATCH',
-                                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF },
+                                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
                                 body: JSON.stringify({ quantity: newVal })
                             })
                             .then(res => {
@@ -468,7 +468,7 @@
                     if (targetItem.cart_item_id) {
                         fetch(`/cart/${targetItem.cart_item_id}/quantity`, {
                             method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF },
+                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
                             body: JSON.stringify({ quantity: newVal })
                         })
                         .then(res => {
@@ -495,7 +495,7 @@
                     if (targetItem.cart_item_id) {
                         fetch(`/cart/${targetItem.cart_item_id}`, {
                             method: 'DELETE',
-                            headers: { 'X-CSRF-TOKEN': CSRF }
+                            headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }
                         })
                         .then(res => {
                             if (!res.ok) throw new Error();

@@ -15,7 +15,7 @@
     </div>
     <form id="checkoutForm" action="{{ route('checkout.post') }}" method="POST">
         @csrf
-        <input type="hidden" name="shipping_method" id="shipping_method" value="delivery" />
+        <input type="hidden" name="shipping_method" id="shipping_method" value="cod" />
         @if(isset($barangId))
             <input type="hidden" name="single_barang_id" value="{{ $barangId }}" />
         @endif
@@ -29,11 +29,25 @@
                             <a href="{{ route('register') }}">Create Account</a>
                         </div>
                     </div>
+                    <div class="form-row form-field" id="nameFields">
+                        <input type="text" name="first_name" placeholder="First Name" required />
+                        <input type="text" name="last_name" placeholder="Last Name" required />
+                    </div>
                     <div class="form-field"><input type="email" name="email" placeholder="Email Address" required /></div>
                     <div class="form-field"><input type="tel" name="phone" placeholder="Phone Number" required /></div>
                 </div>
 
-                <div class="form-section delivery-section visible" id="deliverySection">
+                <div class="form-section">
+                    <div class="form-section-title">Metode Pengiriman</div>
+                    <div class="shipping-toggle">
+                        <div class="toggle-options">
+                            <button type="button" class="toggle-btn active" onclick="selectShipping('cod', this)">COD (Ambil Sendiri)</button>
+                            <button type="button" class="toggle-btn" onclick="selectShipping('delivery', this)">Delivery</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section delivery-section" id="deliverySection">
                     <div class="form-section-title">Delivery</div>
                     <div class="form-field">
                         <select name="country">
@@ -44,8 +58,8 @@
                         </select>
                     </div>
                     <div class="form-row form-field">
-                        <input type="text" name="first_name" placeholder="First Name" required />
-                        <input type="text" name="last_name" placeholder="Last Name" required />
+                        <input type="text" name="ship_first_name" placeholder="First Name" />
+                        <input type="text" name="ship_last_name" placeholder="Last Name" />
                     </div>
                     <div class="form-field"><input type="text" name="address" placeholder="Address" /></div>
                     <div class="form-row form-field">
@@ -358,6 +372,38 @@
             }
             // Copy helper
             function copyText(text) { navigator.clipboard.writeText(text).then(() => alert('Disalin: '+text)); }
+
+            // ===== VALIDASI: tombol "Pay Now" nonaktif selama masih ada kolom yang belum diisi =====
+            (function () {
+                const form = document.getElementById('checkoutForm');
+                const payBtn = document.querySelector('.btn-pay');
+                if (!form || !payBtn) return;
+
+                function isVisible(el) {
+                    return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+                }
+
+                function validatePayButton() {
+                    const fields = form.querySelectorAll(
+                        'input[type=text], input[type=email], input[type=tel], input[type=date], input[type=number], select, textarea'
+                    );
+                    let semuaTerisi = true;
+                    fields.forEach(function (el) {
+                        // abaikan kolom tersembunyi / readonly / disabled
+                        if (el.disabled || el.readOnly || el.type === 'hidden' || !isVisible(el)) return;
+                        if (!el.value || el.value.trim() === '') semuaTerisi = false;
+                    });
+                    payBtn.disabled = !semuaTerisi;
+                    payBtn.style.opacity = semuaTerisi ? '1' : '0.5';
+                    payBtn.style.cursor = semuaTerisi ? 'pointer' : 'not-allowed';
+                }
+
+                form.addEventListener('input', validatePayButton);
+                form.addEventListener('change', validatePayButton);
+                // re-cek saat ganti panel metode pembayaran/pengiriman
+                form.addEventListener('click', function () { setTimeout(validatePayButton, 50); });
+                validatePayButton(); // cek saat halaman dimuat
+            })();
          </script>
     </x-slot:scripts>
 </x-layout>
