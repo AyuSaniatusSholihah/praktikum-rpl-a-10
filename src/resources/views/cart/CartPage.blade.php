@@ -42,11 +42,11 @@
         <tr data-id="{{ $item->id }}">
         <td>
           <input type="checkbox" class="item-check" checked
-          data-subtotal="{{ $item->barang->harga_sewa * $item->quantity * $item->duration_days }}">
+          data-subtotal="{{ ($item->barang->harga_sewa ?? 0) * $item->jumlah * $item->duration_days }}">
         </td>
           <td>
             <div class="product-info">
-              <img src="{{ asset('storage/' . $item->barang->foto_barang ? $item->barang->foto_barang : "") }}" alt="{{ $item->barang->nama_barang }}">
+              <img src="{{ $item->barang->foto_barang ? asset('storage/' . $item->barang->foto_barang) : 'https://placehold.co/400x300?text=No+Image' }}" alt="{{ $item->barang->nama_barang }}">
               <div class="product-details">
                 <p>{{ $item->barang->nama_barang }}</p>
               </div>
@@ -56,14 +56,14 @@
           <td class="qty-cell">
             <div class="qty-box">
               <button onclick="updateQty(this, -1)">-</button>
-              <input type="text" value="{{ str_pad($item->quantity, 2, '0', STR_PAD_LEFT) }}" readonly>
+              <input type="text" value="{{ str_pad($item->jumlah, 2, '0', STR_PAD_LEFT) }}" readonly>
               <button onclick="updateQty(this, 1)">+</button>
             </div>
           </td>
           <td class="duration-cell">{{ $item->duration_days }} Hari</td>
           <td>
             <div class="subtotal-wrap">
-              <span class="subtotal-cell">Rp {{ number_format($item->barang->harga_sewa * $item->quantity * $item->duration_days, 0, ',', '.') }}</span>
+              <span class="subtotal-cell">Rp {{ number_format(($item->barang->harga_sewa ?? 0) * $item->jumlah * $item->duration_days, 0, ',', '.') }}</span>
               <td>
               <button class="remove-btn" onclick="deleteRow(this)" title="Hapus">
                 {{-- icon trash --}}

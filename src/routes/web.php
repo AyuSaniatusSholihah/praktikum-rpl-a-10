@@ -21,13 +21,20 @@ Route::get('/', function () {
 
 // Rentals page
 Route::get('/rentals', function () {
-    $barangs = Barang::where('status', 'tersedia')->get();
-    return view('katalog.RentalsPage', compact('barangs'));
+    $barangs   = Barang::with('kategori')->where('status', 'tersedia')->get();
+    $locations = $barangs->pluck('lokasi')->unique()->filter()->values()->toArray();
+    $categories = $barangs->map(fn($b) => $b->kategori->nama_kategori ?? null)
+                          ->unique()->filter()->values()->toArray();
+    return view('katalog.RentalsPage', compact('barangs', 'locations', 'categories'));
 })->name('rentals');
 
-// Dashboard (requires auth)
+// My Katalog – tampilkan barang milik user yang login (atau semua jika guest)
 Route::get('/katalog', function () {
-    $barangs = Barang::where('status', 'tersedia')->get();
+    $query = Barang::with(['kategori', 'user']);
+    if (Auth::check()) {
+        $query->where('user_id', Auth::id());
+    }
+    $barangs = $query->get();
     return view('katalog.MyKatalog', compact('barangs'));
 })->name('katalog');
 Route::get('/dashboard', function () {
@@ -65,9 +72,9 @@ Route::get('/auth/google/callback', [SocialiteController::class, 'callback'])->n
 
 // Product detail page
 Route::get('/product/{id}', function ($id) {
-    $product = Barang::findOrFail($id);
+    $product = Barang::with(['kategori', 'user'])->findOrFail($id);
     return view('katalog.ProductRentPage', compact('product'));
-})->name('product.show');
+})->name('product');
 
 // Auth‑protected routes
 Route::middleware('auth')->group(function () {
@@ -89,10 +96,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/cart/{id}/quantity', [CartController::class, 'updateQuantity']);
 
     // Checkout
+    // PENTING: Route spesifik harus SEBELUM route dengan parameter wildcard
+    Route::get('/checkout/confirmation', [OrderController::class, 'confirmation'])->name('checkout.confirmation');
     Route::get('/checkout/{id?}', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.post');
-    // Checkout confirmation page
-    Route::get('/checkout/confirmation', [OrderController::class, 'confirmation'])->name('checkout.confirmation');
+
     // Add item routes (owner upload)
     Route::get('/katalog/add-item', [KatalogUploadController::class, 'create'])->name('katalog.add-item');
     Route::post('/katalog/add-item', [KatalogUploadController::class, 'store'])->name('katalog.add-item.post');

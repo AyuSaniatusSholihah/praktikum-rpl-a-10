@@ -35,6 +35,12 @@ class LoginController extends Controller
                 return redirect()->route('admin.dashboard')->with('success', 'Selamat datang, Admin!');
             }
 
+            // Jika ada parameter redirect (misalnya dari tombol Rent Now), gunakan URL tersebut
+            $redirectUrl = $request->input('redirect');
+            if ($redirectUrl && str_starts_with($redirectUrl, config('app.url'))) {
+                return redirect($redirectUrl)->with('success', 'Welcome back!');
+            }
+
             return redirect()->intended(route('home'))->with('success', 'Welcome back!');
         }
 

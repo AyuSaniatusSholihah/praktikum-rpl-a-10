@@ -235,7 +235,7 @@
    <p class="section-subtitle">Temukan berbagai barang pilihan yang siap mendukung aktivitasmu.<br/>Proses sewa mudah, barang berkualitas, dan siap antar kapan saja.</p>
    <div class="products-grid" id="rent-items-grid">
      @foreach($barangs->take(6) as $barang)
-     <article class="product-card" onclick="location.href='{{ route('product.show', $barang->id) }}'">
+     <article class="product-card" onclick="location.href='{{ route('product', $barang->id) }}'">
        <div class="product-img"><img src="{{ $barang->foto_barang ? asset('storage/' . $barang->foto_barang) : 'https://placehold.co/400x300?text=No+Image' }}" alt="{{ $barang->nama_barang }}" /></div>
        <div class="head-row">
          <h4>{{ $barang->nama_barang }}</h4>
@@ -268,7 +268,7 @@
 
 <x-slot:scripts>
 <script>
-  const productUrl = "{{ Route::has('product') ? route('product') : '#' }}";
+  const productUrl = "{{ Route::has('product') ? route('product', ['id' => ':id']) : '#' }}";
 </script>
 <script>
  /* ============ TESTIMONIALS CAROUSEL ============ */

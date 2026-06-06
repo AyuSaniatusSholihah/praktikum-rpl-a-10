@@ -3,10 +3,8 @@
  background: #fff;
 }
 .add-item-card {
-  min-height: /* nilai yang sama dengan tinggi kartu produk */;
+  min-height: 500px;
 }
-
-
 
 
 /* Title + Breadcrumb (reuse from katalog) */

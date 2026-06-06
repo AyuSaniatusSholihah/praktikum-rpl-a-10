@@ -13,6 +13,9 @@
 
         <form action="{{ route('login.post') }}" method="POST">
           @csrf
+          @if(request('redirect'))
+            <input type="hidden" name="redirect" value="{{ request('redirect') }}" />
+          @endif
           <div class="auth-field">
             <input type="email" id="email" name="email" placeholder="Email" autocomplete="email" value="{{ old('email') }}" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Format email tidak valid. Pastikan menggunakan domain yang benar (contoh: .com, .id)." />
             @error('email') <small style="color: #ef4444;">{{ $message }}</small> @enderror

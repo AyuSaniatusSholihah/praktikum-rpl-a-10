@@ -1,16 +1,15 @@
-<x-layout>
+<x-layout title="404 Halaman Tidak Ditemukan — SEWAIN">
     <x-slot:styles>
         <link rel="stylesheet" href="{{ asset('assets/css/404.css') }}" />
     </x-slot:styles>
 
-    <section class="error-page">
-        <div class="container">
-            <h1>404</h1>
-            <p>Halaman yang Anda cari tidak ditemukan.</p>
-            
-            <img src="{{ asset('assets/images/error.png') }}" class="error-img" style="max-width:100%; height:auto; margin-top:1rem;" alt="Error Gambar"/>
-            
-            <a href="{{ route('home') }}" class="btn-home">Kembali ke Beranda</a>
-        </div>
-    </section>
+    <div class="illustration-wrap">
+        <img src="{{ asset('assets/img/error.png') }}" alt="Error Gambar" />
+    </div>
+
+    <div class="text-block">
+        <h1 class="title-404">404</h1>
+        <p class="subtitle">Halaman yang Anda cari tidak ditemukan.</p>
+        <a href="{{ route('home') }}" class="btn-home">Kembali ke Beranda</a>
+    </div>
 </x-layout>

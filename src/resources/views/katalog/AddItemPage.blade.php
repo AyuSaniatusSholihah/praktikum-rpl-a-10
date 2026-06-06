@@ -146,14 +146,17 @@
                                 <input type="text" name="nama_barang" id="itemName" placeholder="ex: Tas Carrier Geiser Adv 60 Liter Arei Outdoorgear" value="{{ old('nama_barang') }}" required/>
                             </div>
 
-                            <div class="form-group">
-                                <label for="category">Category</label>
-                                <select name="kategori_id" id="category" required>
-                                    <option value="">Select Category</option>
-                                    @foreach($kategoris as $kategori)
-                                        <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="form-group" style="position: relative;">
+                                <label for="categorySearch">Category</label>
+                                <div class="searchable-select-wrapper" style="position: relative; width: 100%;">
+                                    <input type="text" id="categorySearch" placeholder="Cari kategori..." autocomplete="off" style="width: 100%; padding: 10px 14px; background: rgba(178, 201, 221, 0.5); border: 1px solid #8A8A8A; border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 13px; color: #484848; outline: none;" required />
+                                    <input type="hidden" name="kategori_id" id="kategori_id_hidden" value="{{ old('kategori_id') }}" />
+                                    <ul id="categoryOptions" style="display: none; position: absolute; left: 0; right: 0; top: 100%; max-height: 200px; overflow-y: auto; background: #fff; border: 1px solid #8A8A8A; border-radius: 0 0 6px 6px; z-index: 1000; list-style: none; margin: 0; padding: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                        @foreach($kategoris as $kategori)
+                                            <li class="option-item" data-value="{{ $kategori->id }}" style="padding: 10px 14px; cursor: pointer; color: #484848; font-family: 'Poppins', sans-serif; font-size: 13px; border-bottom: 1px solid #f0f0f0;" onmouseover="this.style.background='#DDE9F5'" onmouseout="this.style.background='none'">{{ $kategori->nama_kategori }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -231,6 +234,83 @@
                 stokInput.value = stockQty;
             }
         });
+
+        /* ============ SEARCHABLE CATEGORY SELECT ============ */
+        const categorySearch = document.getElementById('categorySearch');
+        const categoryOptions = document.getElementById('categoryOptions');
+        const kategoriIdHidden = document.getElementById('kategori_id_hidden');
+        const optionItems = document.querySelectorAll('#categoryOptions .option-item');
+
+        // Toggle dropdown on input focus
+        categorySearch.addEventListener('focus', () => {
+            categoryOptions.style.display = 'block';
+        });
+
+        // Filter options on input
+        categorySearch.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            optionItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            categoryOptions.style.display = 'block';
+        });
+
+        // Select option on click
+        optionItems.forEach(item => {
+            item.addEventListener('click', () => {
+                categorySearch.value = item.textContent;
+                kategoriIdHidden.value = item.getAttribute('data-value');
+                categoryOptions.style.display = 'none';
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!categorySearch.contains(e.target) && !categoryOptions.contains(e.target)) {
+                categoryOptions.style.display = 'none';
+                
+                const currentText = categorySearch.value.trim().toLowerCase();
+                let matched = false;
+                optionItems.forEach(item => {
+                    if (item.textContent.trim().toLowerCase() === currentText) {
+                        categorySearch.value = item.textContent;
+                        kategoriIdHidden.value = item.getAttribute('data-value');
+                        matched = true;
+                    }
+                });
+                if (!matched && currentText !== '') {
+                    const currentId = kategoriIdHidden.value;
+                    let idMatched = false;
+                    optionItems.forEach(item => {
+                        if (item.getAttribute('data-value') === currentId && item.textContent.trim().toLowerCase().includes(currentText)) {
+                            categorySearch.value = item.textContent;
+                            idMatched = true;
+                        }
+                    });
+                    if (!idMatched) {
+                        categorySearch.value = '';
+                        kategoriIdHidden.value = '';
+                    }
+                } else if (currentText === '') {
+                    kategoriIdHidden.value = '';
+                }
+            }
+        });
+
+        // Prefill from old value if validation failed
+        const oldId = "{{ old('kategori_id') }}";
+        if (oldId) {
+            const item = document.querySelector(`#categoryOptions .option-item[data-value="${oldId}"]`);
+            if (item) {
+                categorySearch.value = item.textContent;
+                kategoriIdHidden.value = oldId;
+            }
+        }
 
         /* ============ IMAGE UPLOAD PREVIEW ============ */
         document.querySelectorAll('input[type="file"]').forEach(input => {
