@@ -22,8 +22,8 @@
   </button>
   <a href="#" class="nav-logo">SEWA<span>IN</span></a>
   <ul class="nav-links">
-    <li><a href="#">Home</a></li>
-    <li><a href="#" class="active">Admin</a></li>
+    <li><a href="{{ route('home') }}">Home</a></li>
+    <li><a href="{{ route('admin.dashboard') }}" class="active">Admin</a></li>
   </ul>
   <div class="nav-search">
      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -57,7 +57,7 @@
     </a></li>
 
     <!-- FINANCIAL WALLET -->
-    <li><a href="financial-wallet.html">
+    <li><a href="{{ route('admin.financial-wallet') }}">
       <svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M22.9608 3.32089V2.96522C22.9608 1.33022 21.6306 0 19.9956 0H2.96522C1.33016 5.07813e-05 0 1.33022 0 2.96522V3.32089H22.9608Z" fill="currentColor"/>
         <path d="M13.5651 12.8592C13.5651 11.3211 14.0598 9.85913 14.9731 8.6543H0V12.7905C0 14.4255 1.33016 15.7557 2.96522 15.7557H14.1911C13.7813 14.8581 13.5651 13.8754 13.5651 12.8592ZM11.4804 11.9605H8.92125V10.437H11.4804V11.9605ZM3.41545 10.437H7.39781V11.9605H3.41545V10.437Z" fill="currentColor"/>
@@ -68,7 +68,7 @@
     </a></li>
 
     <!-- USERS -->
-    <li><a href="data-user.html">
+    <li><a href="{{ route('admin.users') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
         fill="currentColor" stroke="none">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" 
@@ -78,7 +78,7 @@
     </a></li>
 
     <!-- ITEMS -->
-    <li><a href="data-items.html">
+    <li><a href="{{ route('admin.items') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375z"/>
         <path fill-rule="evenodd" d="M3.087 9l.54 9.176A3 3 0 006.62 21h10.757a3 3 0 002.995-2.824L20.913 9H3.087zm6.163 3.75A.75.75 0 0110 12h4a.75.75 0 010 1.5h-4a.75.75 0 01-.75-.75z" clip-rule="evenodd"/>
@@ -87,7 +87,7 @@
     </a></li>
 
     <!-- TRANSACTIONS -->
-    <li><a href="data-transactions.html">
+    <li><a href="{{ route('admin.transactions') }}">
       <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M5.20703 22.9168C5.20769 23.4692 5.42739 23.9987 5.81795 24.3892C6.20851 24.7798 6.73803 24.9995 7.29036 25.0002H17.707C18.2594 24.9995 18.7889 24.7798 19.1794 24.3892C19.57 23.9987 19.7897 23.4692 19.7904 22.9168V22.0054H5.20703V22.9168Z" fill="currentColor"/>
         <path d="M19.7904 2.08333C19.7897 1.531 19.57 1.00148 19.1794 0.610917C18.7889 0.220358 18.2594 0.00065473 17.707 0L7.29036 0C6.73803 0.00065473 6.20851 0.220358 5.81795 0.610917C5.42739 1.00148 5.20769 1.531 5.20703 2.08333V3.125H19.7904V2.08333Z" fill="currentColor"/>
@@ -175,7 +175,7 @@
     <!-- Financial Wallet Preview -->
     <div class="section-header">
       <h3>Financial Wallet</h3>
-      <a href="financial-wallet.html">See All</a>
+      <a href="{{ route('admin.financial-wallet') }}">See All</a>
     </div>
     <div class="wallet-cards-grid">
       <div class="wallet-card">
@@ -272,7 +272,7 @@
     <!-- Data User Preview -->
     <div class="section-header">
       <h3>Data User</h3>
-      <a href="data-user.html">See All</a>
+      <a href="{{ route('admin.users') }}">See All</a>
     </div>
     <div class="users-grid" style="margin-bottom:24px;">
       <div class="user-card">
@@ -281,7 +281,7 @@
           <span class="owner-badge">OWNER</span>
           <h4>Camping Groups Bandung</h4>
           <p>campinggroups.bandung1@gmail.com</p>
-          <button class="btn-view-more" onclick="location.href='data-user.html'">View More</button>
+          <button class="btn-view-more" onclick="location.href='{{ route('admin.users') }}'">View More</button>
         </div>
       </div>
       <div class="user-card">
@@ -290,7 +290,7 @@
           <span class="owner-badge">OWNER</span>
           <h4>Rental Car Surakarta</h4>
           <p>rencar.surakarta@gmail.com</p>
-          <button class="btn-view-more" onclick="location.href='data-user.html'">View More</button>
+          <button class="btn-view-more" onclick="location.href='{{ route('admin.users') }}'">View More</button>
         </div>
       </div>
       <div class="user-card">
@@ -298,7 +298,7 @@
         <div class="user-card-info">
           <h4>Ayu Sanitus Sholihah</h4>
           <p>ayu.sanitus@gmail.com</p>
-          <button class="btn-view-more" onclick="location.href='data-user.html'">View More</button>
+          <button class="btn-view-more" onclick="location.href='{{ route('admin.users') }}'">View More</button>
         </div>
       </div>
     </div>
@@ -306,7 +306,7 @@
     <!-- Data Items Preview -->
     <div class="section-header">
       <h3>Data Items</h3>
-      <a href="data-items.html">See All</a>
+      <a href="{{ route('admin.items') }}">See All</a>
     </div>
     <div class="table-card">
       <table class="data-table">
@@ -366,7 +366,7 @@
     <!-- Data Transactions Preview -->
     <div class="section-header">
       <h3>Data Transactions</h3>
-      <a href="data-transactions.html">See All</a>
+      <a href="{{ route('admin.transactions') }}">See All</a>
     </div>
     <div class="table-card">
       <table class="data-table">
@@ -379,35 +379,35 @@
             <td><div class="item-info"><img class="item-thumb" src="sony camera.jpg" alt="">Sony Alpha A7 IV</div></td>
             <td>02 Jan 2026, 12.30</td><td>QRIS</td>
             <td><span class="badge badge-completed">Completed Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='data-transactions.html'">View Details</button></td>
+            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
           </tr>
           <tr>
             <td>T0002</td><td>Aprilia Alfa</td><td>Camping Groups Bandung</td>
             <td><div class="item-info"><img class="item-thumb" src="tenda altrek.webp" alt="">ALLTREK Tenda Camping</div></td>
             <td>12 Mar 2026, 09.45</td><td>Transfer Bank BCA</td>
             <td><span class="badge badge-active">Active Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='transaction-detail.html'">View Details</button></td>
+            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
           </tr>
           <tr>
             <td>T0003</td><td>Ayu Saniatus</td><td>Rent Car Baliness</td>
             <td><div class="item-info"><img class="item-thumb" src="fortuner mobil.jpg" alt="">Mobil Fortuner Hitam</div></td>
             <td>10 Feb 2026, 11.15</td><td>ShopeePay</td>
             <td><span class="badge badge-cancelled">Cancelled Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='transaction-detail.html'">View Details</button></td>
+            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
           </tr>
           <tr>
             <td>T0004</td><td>Laila Khoirunisa</td><td>Sewa SoundSystem Full Surakarta</td>
             <td><div class="item-info"><img class="item-thumb" src="sound system.jpg" alt="">Yamaha Pro Audio</div></td>
             <td>3 Apr 2026, 06.00</td><td>Transfer Bank BRI</td>
             <td><span class="badge badge-completed">Completed Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='transaction-detail.html'">View Details</button></td>
+            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
           </tr>
           <tr>
             <td>T0005</td><td>Ghazi Fahmi</td><td>AppleSewa Jogjaa</td>
             <td><div class="item-info"><img class="item-thumb" src="ip 18b air.webp" alt="">Iphone 17 Air (Hijau)</div></td>
             <td>18 Feb 2026, 07.00</td><td>QRIS</td>
             <td><span class="badge badge-processing">UpComing Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='transaction-detail.html'">View Details</button></td>
+            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
           </tr>
         </tbody>
       </table>

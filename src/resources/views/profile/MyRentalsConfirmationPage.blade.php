@@ -1,3 +1,7 @@
+@php
+    $barang = $trx->barang;
+@endphp
+
 <x-profile-layout active="rentals" pageTitle="Confirmation">
     <x-slot:styles>
         <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
@@ -5,7 +9,7 @@
 
     <div class="welcome-section">
         <h2 class="section-title">My Rentals</h2>
-        <p class="section-subtitle">Konfirmasi pengembalian barang</p>
+        <p class="section-subtitle">Konfirmasi pengembalian: {{ $barang->nama_barang ?? 'Barang' }}</p>
     </div>
 
     <div class="confirm-window">

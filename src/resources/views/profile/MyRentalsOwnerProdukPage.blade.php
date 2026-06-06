@@ -1,25 +1,16 @@
 @php
-    // Data contoh — detail transaksi barang milik owner yang sedang disewa orang lain.
-    $trx = [
-        'img'      => 'sound system.jpg',
-        'title'    => 'Yamaha Pro Audio Paket 12P Paket Sound System',
-        'id'       => 'T0007',
-        'owner'    => $user->name,
-        'user'     => 'Aprilia Alfa',
-        'denda'    => '-',
-        'date'     => '03 April 2026, 10.15 AM',
-        'status'   => 'Active Rent',
-        'receiptName' => 'Yamaha Pro Audio Paket 12P Paket Sound System',
-        'perday'   => 'Rp 250.000/hari',
-        'mulai'    => '03 April 2026',
-        'selesai'  => '06 April 2026',
-        'durasi'   => '3 Hari',
-        'subtotal' => 'Rp 750.000',
-        'shipping' => 'Rp 50.000',
-        'jaminan'  => 'Rp 500.000',
-        'total'    => 'Rp 1.300.000',
-        'denda_note' => 'Rp 20.000/jam',
-    ];
+    $barang  = $trx->barang;
+    $foto    = $barang && $barang->foto_barang ? asset('storage/' . $barang->foto_barang) : asset('assets/img/default-avatar.svg');
+    $durasi  = ($trx->tanggal_sewa && $trx->tanggal_kembali_rencana)
+        ? max(1, $trx->tanggal_sewa->diffInDays($trx->tanggal_kembali_rencana))
+        : 1;
+    $hargaSewa = $barang->harga_sewa ?? 0;
+    $jumlah    = $trx->jumlah ?? 1;
+    $subtotal  = $hargaSewa * $jumlah * $durasi;
+    $statusBadge = [
+        'aktif' => 'Active Rent', 'upcoming' => 'UpComing Rent', 'diproses' => 'Diproses',
+        'selesai' => 'Selesai', 'pengembalian' => 'Return Rent',
+    ][$trx->status] ?? ucfirst($trx->status);
 @endphp
 
 <x-profile-layout active="owner" pageTitle="Rentals Owner">
@@ -29,69 +20,68 @@
 
     <div class="welcome-section">
         <h2 class="section-title">My Rentals Owner</h2>
-        <p class="section-subtitle">Here is your quick overview</p>
+        <p class="section-subtitle">Detail penyewaan barang Anda</p>
     </div>
 
     <div class="detail-head">
-        <img class="detail-img" src="{{ asset('assets/img/' . $trx['img']) }}" alt="{{ $trx['title'] }}">
-        <h3 class="detail-title">{{ $trx['title'] }}</h3>
+        <img class="detail-img" src="{{ $foto }}" alt="{{ $barang->nama_barang ?? 'Barang' }}">
+        <h3 class="detail-title">{{ $barang->nama_barang ?? 'Barang dihapus' }}</h3>
     </div>
 
     <div class="detail-form-grid">
         <div class="form-group">
             <label>ID Transaction</label>
-            <input type="text" value="{{ $trx['id'] }}" readonly>
+            <input type="text" value="T{{ str_pad($trx->id, 4, '0', STR_PAD_LEFT) }}" readonly>
         </div>
         <div class="form-group">
             <label>Owner</label>
-            <input type="text" value="{{ $trx['owner'] }}" readonly>
+            <input type="text" value="{{ $user->name }}" readonly>
         </div>
         <div class="form-group">
-            <label>User</label>
-            <input type="text" value="{{ $trx['user'] }}" readonly>
+            <label>Penyewa</label>
+            <input type="text" value="{{ $trx->user->name ?? '-' }}" readonly>
         </div>
         <div class="form-group">
             <label>Denda</label>
-            <input type="text" value="{{ $trx['denda'] }}" readonly>
+            <input type="text" value="Rp {{ number_format($trx->total_denda ?? 0, 0, ',', '.') }}" readonly>
         </div>
         <div class="form-group">
             <label>Date</label>
-            <input type="text" value="{{ $trx['date'] }}" readonly>
+            <input type="text" value="{{ optional($trx->created_at)->format('d M Y, H.i') }}" readonly>
         </div>
         <div class="form-group">
             <label>Status</label>
-            <input type="text" value="{{ $trx['status'] }}" readonly>
+            <input type="text" value="{{ $statusBadge }}" readonly>
         </div>
     </div>
 
     <h3 class="section-divider-title">Receipt</h3>
     <div class="receipt-card">
         <div class="receipt-head">
-            <img class="receipt-img" src="{{ asset('assets/img/' . $trx['img']) }}" alt="{{ $trx['receiptName'] }}">
+            <img class="receipt-img" src="{{ $foto }}" alt="{{ $barang->nama_barang ?? 'Barang' }}">
             <div>
-                <div class="receipt-prodname">{{ $trx['receiptName'] }}</div>
-                <div class="receipt-perday">{{ $trx['perday'] }}</div>
+                <div class="receipt-prodname">{{ $barang->nama_barang ?? 'Barang dihapus' }}</div>
+                <div class="receipt-perday">Rp {{ number_format($hargaSewa, 0, ',', '.') }}/hari</div>
                 <div class="receipt-dates">
                     <div>
                         <div class="lbl">Tanggal Mulai Penyewaan</div>
-                        <div class="val"><i class="fa-regular fa-calendar"></i> {{ $trx['mulai'] }}</div>
+                        <div class="val"><i class="fa-regular fa-calendar"></i> {{ optional($trx->tanggal_sewa)->format('d M Y') ?? '-' }}</div>
                     </div>
                     <div>
                         <div class="lbl">Tanggal Selesai Penyewaan</div>
-                        <div class="val"><i class="fa-regular fa-calendar"></i> {{ $trx['selesai'] }}</div>
+                        <div class="val"><i class="fa-regular fa-calendar"></i> {{ optional($trx->tanggal_kembali_rencana)->format('d M Y') ?? '-' }}</div>
                     </div>
                 </div>
             </div>
-            <span class="paid-badge">PAID</span>
+            <span class="paid-badge">{{ $trx->pembayaran ? 'PAID' : 'UNPAID' }}</span>
         </div>
 
         <div class="receipt-rows">
-            <div class="receipt-row"><span>Durasi Sewa</span><span>{{ $trx['durasi'] }}</span></div>
-            <div class="receipt-row"><span>Subtotal</span><span>{{ $trx['subtotal'] }}</span></div>
-            <div class="receipt-row"><span>Shipping</span><span>{{ $trx['shipping'] }}</span></div>
-            <div class="receipt-row"><span>Jaminan</span><span>{{ $trx['jaminan'] }}</span></div>
-            <div class="receipt-row total"><span>Total</span><span>{{ $trx['total'] }}</span></div>
-            <div class="receipt-row note"><span>#Catatan Denda Pengembalian</span><span>{{ $trx['denda_note'] }}</span></div>
+            <div class="receipt-row"><span>Durasi Sewa</span><span>{{ $durasi }} Hari</span></div>
+            <div class="receipt-row"><span>Subtotal ({{ $jumlah }} x {{ $durasi }} hari)</span><span>Rp {{ number_format($subtotal, 0, ',', '.') }}</span></div>
+            <div class="receipt-row"><span>Jaminan</span><span>Rp {{ number_format($barang->harga_jaminan ?? 0, 0, ',', '.') }}</span></div>
+            <div class="receipt-row total"><span>Total</span><span>Rp {{ number_format($trx->total_harga ?? 0, 0, ',', '.') }}</span></div>
+            <div class="receipt-row note"><span>#Catatan Denda Pengembalian</span><span>Rp {{ number_format($barang->harga_denda_perjam ?? 0, 0, ',', '.') }}/jam</span></div>
         </div>
     </div>
 

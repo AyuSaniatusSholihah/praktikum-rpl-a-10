@@ -90,13 +90,13 @@ Route::middleware('auth')->group(function () {
     // Profile dashboard pages
     Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
     Route::post('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/profile/rentals', fn () => view('profile.MyRentalsPage', ['user' => Auth::user()]))->name('profile.rentals');
-    Route::get('/profile/rentals/produk', fn () => view('profile.MyRentalsProdukPage', ['user' => Auth::user()]))->name('profile.rentals.produk');
-    Route::get('/profile/rentals/pengembalian', fn () => view('profile.MyRentalsPengembalianPage', ['user' => Auth::user()]))->name('profile.rentals.pengembalian');
-    Route::get('/profile/rentals/confirmation', fn () => view('profile.MyRentalsConfirmationPage', ['user' => Auth::user()]))->name('profile.rentals.confirmation');
-    Route::get('/profile/owner', fn () => view('profile.MyRentalsOwnerPage', ['user' => Auth::user()]))->name('profile.owner');
-    Route::get('/profile/owner/produk', fn () => view('profile.MyRentalsOwnerProdukPage', ['user' => Auth::user()]))->name('profile.owner.produk');
-    Route::get('/profile/wallet', fn () => view('profile.MyWalletPage', ['user' => Auth::user()]))->name('profile.wallet');
+    Route::get('/profile/rentals', [\App\Http\Controllers\ProfileController::class, 'rentals'])->name('profile.rentals');
+    Route::get('/profile/rentals/{id}', [\App\Http\Controllers\ProfileController::class, 'rentalDetail'])->name('profile.rentals.produk');
+    Route::get('/profile/rentals/{id}/pengembalian', [\App\Http\Controllers\ProfileController::class, 'pengembalian'])->name('profile.rentals.pengembalian');
+    Route::get('/profile/rentals/{id}/confirmation', [\App\Http\Controllers\ProfileController::class, 'confirmation'])->name('profile.rentals.confirmation');
+    Route::get('/profile/owner', [\App\Http\Controllers\ProfileController::class, 'owner'])->name('profile.owner');
+    Route::get('/profile/owner/{id}', [\App\Http\Controllers\ProfileController::class, 'ownerDetail'])->name('profile.owner.produk');
+    Route::get('/profile/wallet', [\App\Http\Controllers\ProfileController::class, 'wallet'])->name('profile.wallet');
 
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart');

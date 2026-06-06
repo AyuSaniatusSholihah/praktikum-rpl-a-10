@@ -71,7 +71,8 @@ class CheckoutController extends Controller
             $harga   = $item->barang->harga_sewa ?? 0;
             $subtotal = $harga * $item->jumlah * $days;
             $jaminan  = (int) round($harga * $item->jumlah / 2);
-            $cartTotal += $subtotal + $jaminan;
+            $shipping = 20000; // biaya kirim flat per item (harus sama dengan CheckoutPage.blade.php)
+            $cartTotal += $subtotal + $jaminan + $shipping;
         }
 
         return view('checkout.CheckoutPage', compact('cartItems', 'cartTotal'))->with('barangId', $id);
@@ -142,7 +143,8 @@ class CheckoutController extends Controller
             $harga   = $item->barang->harga_sewa ?? 0;
             $subtotal = $harga * $item->jumlah * $days;
             $jaminan  = (int) round($harga * $item->jumlah / 2);
-            $cartTotal += $subtotal + $jaminan;
+            $shipping = 20000; // biaya kirim flat per item (harus sama dengan CheckoutPage.blade.php)
+            $cartTotal += $subtotal + $jaminan + $shipping;
         }
 
         // Map incoming payment method to database enum values: 'transfer bank', 'e-wallet', 'qris'

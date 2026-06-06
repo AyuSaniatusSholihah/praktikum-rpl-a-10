@@ -114,6 +114,12 @@ class CartController extends Controller
     public function updateQuantity(Request $request, $id)
     {
         $item = Keranjang::where('user_id', Auth::id())->with('barang')->where('id', $id)->first();
+        if (!$item) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Item keranjang tidak ditemukan.'], 404);
+            }
+            return redirect()->route('cart')->with('error', 'Item keranjang tidak ditemukan.');
+        }
         if ($item && $request->has('quantity')) {
             $newQty = (int) $request->quantity;
             $stok = $item->barang->stok ?? 0;

@@ -385,6 +385,7 @@
                                 method: 'PATCH',
                                 headers: {
                                     'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                 },
                                 body: JSON.stringify({ quantity: newQty })
@@ -418,6 +419,7 @@
                             method: 'PATCH',
                             headers: {
                                 'Content-Type': 'application/json',
+                                'Accept': 'application/json',
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
                             },
                             body: JSON.stringify({ quantity: newQty })
