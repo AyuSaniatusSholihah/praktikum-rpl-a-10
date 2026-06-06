@@ -1,462 +1,417 @@
-/* RESET tambahan khusus profile — umum sudah dari general.css */
-body {
-    background-color: #ffffff;
-    color: #333;
+.profile-page {
+    padding: 40px 0 80px;
+    background: #fff;
 }
 
-/* DASHBOARD CONTAINER */
-.dashboard-container {
-    display: flex;
-    max-width: 1300px;
-    margin: 20px auto;
-    background-color: #1f3144; /* Warna background gelap utama */
-    border-radius: 30px;
-    overflow: hidden;
-    min-height: 800px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
+/* Big dark panel */
+.profile-panel {
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
 }
 
-/* SIDEBAR */
-.sidebar {
-    width: 25%;
-    background-color: #344c5e; /* Slate Blue terang */
-    padding: 30px 20px;
+
+/* Header: greeting + profile photo */
+.profile-greeting {
+    font-family: 'Abhaya Libre', serif;
+    font-weight: 800;
+    font-size: 26px;
+    color: #E6E8EF;
+    margin-bottom: 6px;
+}
+
+.profile-greeting span {
+    font-family: 'Abril Fatface', serif;
+    font-weight: 400;
+    color: #E6E8EF;
+}
+
+/* Subtitle "Here is your quick overview" */
+/* Tambahkan elemen <p> ini di HTML, tepat di bawah <h1 class="profile-greeting"> */
+.profile-greeting-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #A1A2A7;
+    margin-bottom: 28px;
+}
+
+.profile-avatar-wrap {
+    position: absolute;
+    top: 36px;
+    right: 48px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
-.profile-selector {
+/* hapus position dari .profile-avatar yang lama, ganti jadi: */
+.profile-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    background: #ccc;
+}
+
+.btn-edit-avatar {
     display: flex;
     align-items: center;
-    background-color: #243747;
-    padding: 12px;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 13px;
-    margin-bottom: 40px;
+    justify-content: center;
+    gap: 5px;
+    background: #4D6674;
+    color: #E6E8EF;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
     cursor: pointer;
+    width: 64px;
+    transition: opacity .15s;
 }
 
-.avatar-mini {
-    width: 30px;
-    height: 30px;
-    background-color: #bbb;
-    border-radius: 5px;
-    margin-right: 10px;
+.btn-edit-avatar:hover {
+    opacity: 0.85;
+}
+
+.btn-edit-avatar svg {
     flex-shrink: 0;
 }
 
-.profile-selector > div:not(.avatar-mini) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+/* Two-column layout */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+    align-items: start;
 }
 
-.sidebar-menu {
-    list-style: none;
-    flex-grow: 1;
+
+/* Form fields */
+.profile-field {
+    margin-bottom: 18px;
 }
 
-.sidebar-menu li {
-    margin-bottom: 10px;
-}
-
-.sidebar-menu li a {
-    display: flex;
-    align-items: center;
-    color: #b0c4de;
-    text-decoration: none;
-    padding: 12px 15px;
-    border-radius: 10px;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-.sidebar-menu li.active a, 
-.sidebar-menu li a:hover {
-    background-color: #4a677f;
-    color: #ffffff;
-}
-
-.sidebar-menu li a i {
-    margin-right: 15px;
-    width: 20px;
-}
-
-.sidebar-divider {
-    border: none;
-    border-top: 1px solid #4a677f;
-    margin: 20px 0;
-}
-
-.sidebar-footer {
-    display: flex;
-    align-items: center;
-    background-color: #243747;
-    padding: 10px 15px;
-    border-radius: 15px;
-    color: #fff;
-}
-
-.footer-avatar {
-    border-radius: 50%;
-    margin-right: 12px;
-}
-
-.sidebar-footer div h5 {
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.sidebar-footer div p {
-    font-size: 10px;
-    color: #8da4be;
-}
-
-.logout-icon {
-    color: #8da4be;
-    cursor: pointer;
-}
-
-.logout-btn {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-.logout-btn:hover .logout-icon {
-    color: #ffffff;
-}
-
-/* MAIN CONTENT PANEL */
-.main-content {
-    width: 75%;
-    padding: 40px;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-}
-
-.welcome-section h2 {
-    font-family: 'Georgia', serif;
-    font-size: 26px;
-    margin-bottom: 5px;
-}
-
-.welcome-section p {
-    color: #8da4be;
-    font-size: 13px;
-    margin-bottom: 30px;
-}
-
-.content-grid {
-    display: flex;
-    gap: 40px;
-}
-
-/* FORM DATA DIRI */
-.profile-form {
-    flex: 1.3;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
+.profile-field label {
     display: block;
-    font-family: 'Georgia', serif;
-    font-size: 15px;
+    font-family: 'Abhaya Libre', serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: #E6E8EF;
     margin-bottom: 8px;
-    color: #e0e8f0;
+    letter-spacing: 0.1em;
+    /* ← tambah ini */
 }
 
-.form-group input, 
-.form-group textarea,
-.form-group select {
+.profile-field input,
+.profile-field textarea,
+.profile-field select {
     width: 100%;
-    background-color: #a4c2db;
-    border: none;
-    border-radius: 15px;
-    padding: 12px 20px;
-    color: #1f3144;
-    font-size: 14px;
-    font-weight: 500;
+    padding: 11px 16px;
+    background: #B2C9DD;
+    border: 1px solid #8A8A8A;
+    border-radius: 999px;
+    /* lengkung sempurna */
+    font-family: 'Amethysta', serif;
+    font-size: 15px;
+    color: #21394f;
     outline: none;
 }
 
-.form-group textarea {
-    resize: none;
+.profile-field input::placeholder,
+.profile-field textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
 }
 
-.select-wrapper {
-    position: relative;
+.profile-field input:focus,
+.profile-field textarea:focus,
+.profile-field select:focus {
+    border-color: #6A87A1;
+    background: #c8d9e8;
 }
 
-/* STATISTIK & FINANSIAL (KANAN) */
-.stats-panel {
-    flex: 1;
+.profile-field textarea {
+    border-radius: 16px;
+    /* textarea pakai rounded biasa, bukan pill */
+    resize: vertical;
+    min-height: 70px;
+}
+
+.profile-field select option {
+    color: #2e3f50;
+}
+
+.profile-field select {
+    border-radius: 999px;
+}
+
+.profile-field input::placeholder,
+.profile-field textarea::placeholder {
+    color: rgba(33, 57, 79, 0.5);
+}
+
+/* Right column */
+.profile-right {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 18px;
+    padding-top: 44px;
+    container-type: inline-size;
 }
 
-.profile-pic-large img {
-    border-radius: 50%;
-    border: 3px solid #ffffff;
+
+/* Saldo card */
+.saldo-card {
+    position: relative;
+    width: 100%;
+    margin-top: -30px;
+}
+
+.saldo-card .saldo-bg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.saldo-card .saldo-icon-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 72px;
+    height: 74px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.58);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.saldo-card .saldo-icon-btn svg {
+    width: 28px;
+    height: 28px;
+    stroke: #21394F;
+    fill: none;
+    stroke-width: 1.8;
+}
+
+/* Badge +2.3% */
+.saldo-card .saldo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1D4734;
     margin-bottom: 12px;
-    width: 80px;
-    height: 80px;
+}
+
+.saldo-texts {
+    position: absolute;
+    left: 10%;
+    right: 40%;
+    top: 35%;
+}
+
+/* Label Saldo */
+.saldo-label {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(12px, 5qw, 18px);
+    font-weight: 800;
+    color: #21394F;
+    margin-bottom: 6px;
+    margin-top: 2%;
+}
+
+/* Nominal */
+.saldo-amount {
+    font-family: 'Abril Fatface', serif;
+    font-weight: 400;
+    font-size: clamp(20px, 10cqw, 24px);
+    color: #000000;
+    line-height: 1.2;
+    margin-top: 15%;
+    white-space: nowrap;
+}
+
+/* Stat row */
+.profile-stat label {
+    display: block;
+    font-family: 'Abhaya Libre', serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: #E6E8EF;
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+}
+
+.profile-stat .stat-value {
+    width: 60%;
+    padding: 11px 16px;
+    background: #B2C9DD;
+    border: 1px solid #8A8A8A;
+    border-radius: 999px;
+    font-family: 'Amethysta', serif;
+    font-size: 15px;
+    color: #21394f;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+/* Save button */
+.btn-save-profile {
+    margin-top: 8px;
+    padding: 13px 0;
+    width: 100%;
+    background: #4D6674;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    transition: transform .15s, opacity .15s;
+}
+
+.btn-save-profile:hover {
+    transform: translateY(-2px);
+    opacity: 0.94;
+}
+
+/* ============ MY RENTALS SECTION (inside dark panel) ============ */
+.profile-rentals {
+    margin-top: 32px;
+    padding: 32px 48px 40px;
+    background: #1a2f40;
+    /* sedikit lebih gelap dari panel */
+    border-radius: 0 0 24px 24px;
+    margin-left: -48px;
+    margin-right: -48px;
+    margin-bottom: -48px;
+    border-top: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-rentals-title {
+    font-family: 'Volkhov', Georgia, serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 24px;
+}
+
+.profile-rentals-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.profile-rental-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.20);
+    cursor: pointer;
+    transition: transform .18s;
+}
+
+.profile-rental-card:hover {
+    transform: translateY(-3px);
+}
+
+.profile-rental-card .pr-img {
+    aspect-ratio: 4/3;
+    background: #ededed;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.profile-rental-card .pr-img img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 
-/* TOMBOL UBAH FOTO */
-.upload-foto {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #344c5e;
-    color: #fff;
-    font-size: 12px;
-    padding: 8px 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: 0.3s;
+.profile-rental-card h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #484848;
+    line-height: 1.35;
+    margin-bottom: 4px;
 }
 
-.upload-foto:hover { background-color: #4a677f; }
-
-/* ALERT PESAN */
-.alert {
-    border-radius: 12px;
-    padding: 12px 18px;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
-.alert-success {
-    background-color: #c7e0a8;
-    color: #2f4d1e;
-}
-
-.alert-error {
-    background-color: #f3c2c2;
-    color: #6e1f1f;
-}
-
-.alert-error ul {
-    margin: 0;
-    padding-left: 18px;
-}
-
-.saldo-card {
-    background-color: #a4c2db;
-    color: #1f3144;
-    width: 100%;
-    padding: 20px;
-    border-radius: 20px;
-    position: relative;
-    margin-bottom: 25px;
-}
-
-.saldo-header {
+.profile-rental-card .pr-loc {
     display: flex;
-    gap: 10px;
     align-items: center;
-    margin-bottom: 10px;
-}
-
-.badge {
-    background-color: #ffffff;
-    padding: 2px 8px;
-    border-radius: 10px;
+    gap: 5px;
+    font-family: 'Poppins', sans-serif;
     font-size: 11px;
-    font-weight: bold;
+    color: #8A8A8A;
 }
 
-.saldo-title {
-    font-size: 12px;
-    font-weight: bold;
+.profile-rental-card .pr-loc svg {
+    width: 11px;
+    height: 11px;
+    stroke: #55959E;
 }
 
-.saldo-card h3 {
-    font-size: 22px;
-    font-weight: 800;
-}
-
-.currency-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #243747;
-    color: #fff;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-}
-
-.stat-box {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.stat-box label {
-    display: block;
-    font-family: 'Georgia', serif;
-    font-size: 14px;
-    margin-bottom: 5px;
-    text-align: left;
-    width: 100%;
-}
-
-.stat-value {
-    background-color: #a4c2db;
-    color: #1f3144;
-    text-align: center;
-    padding: 10px;
-    border-radius: 15px;
-    font-weight: bold;
-}
-
-.btn-save {
-    width: 100%;
-    background-color: #344c5e;
-    color: #fff;
-    border: none;
-    padding: 15px;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: 0.3s;
-    margin-top: 10px;
-}
-
-.btn-save:hover {
-    background-color: #4a677f;
-}
-
-/* MY RENTALS PREVIEW (BAWAH) */
-.my-rentals-section {
-    margin-top: 40px;
-    border-top: 2px solid #243747;
-    padding-top: 20px;
-}
-
-.my-rentals-section h3 {
-    font-family: 'Georgia', serif;
-    margin-bottom: 15px;
-}
-
-.rentals-preview-grid {
-    display: flex;
-    gap: 20px;
-}
-
-.rental-card {
-    background-color: #243747;
-    border-radius: 15px;
-    padding: 15px;
-    position: relative;
-    flex: 1;
-    height: 150px;
-}
-
-.status-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 8px;
-    color: white;
-}
-
-.status-badge.upcoming { background-color: #8da4be; color: #1f3144; }
-.status-badge.active-rent { background-color: #4a677f; }
-
-.card-placeholder-img {
-    width: 100%;
-    height: 100%;
-    background-color: #344c5e;
-    border-radius: 10px;
-}
-
-/* FOOTER */
-.main-footer {
-    background-color: #e2e8f0;
-    padding: 50px 8%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: 50px;
-}
-
-.footer-left {
-    max-width: 300px;
-}
-
-.footer-left p {
-    font-size: 14px;
-    color: #666;
-    margin: 15px 0;
-}
-
-.social-icons a {
-    color: #333;
-    margin-right: 15px;
-    font-size: 16px;
-    text-decoration: none;
-}
-
-.footer-links-container {
-    display: flex;
-    gap: 60px;
-}
-
-.footer-column h4 {
-    font-size: 15px;
-    margin-bottom: 15px;
-    color: #1a2a3a;
-}
-
-.footer-column a {
-    display: block;
-    color: #666;
-    text-decoration: none;
+.profile-rental-card .pr-price {
+    font-family: 'Poppins', sans-serif;
     font-size: 13px;
-    margin-bottom: 10px;
+    font-weight: 700;
+    color: #484848;
+    margin-top: 8px;
 }
 
-/* RESPONSIVE LAYOUT (UNTUK LAYAR KECIL) */
+
+/* ============ RESPONSIVE ============ */
 @media (max-width: 900px) {
-    .dashboard-container {
-        flex-direction: column;
+    .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
     }
-    .sidebar, .main-content {
-        width: 100%;
+
+    .profile-right {
+        padding-top: 0;
     }
-    .content-grid {
-        flex-direction: column;
+
+    .profile-rentals-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-    .footer-links-container {
-        gap: 30px;
-        flex-wrap: wrap;
+
+    .profile-avatar {
+        position: static;
+        margin-bottom: 16px;
     }
-    .main-footer {
-        flex-direction: column;
-        gap: 30px;
+
+    .profile-greeting {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 560px) {
+    .profile-panel {
+        padding: 24px 20px 32px;
+    }
+
+    .profile-rentals-grid {
+        grid-template-columns: 1fr;
     }
 }
