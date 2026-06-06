@@ -2,13 +2,6 @@
     $fotoProfil = $user->foto_profil
         ? asset('storage/' . $user->foto_profil)
         : asset('assets/img/default-avatar.svg');
-
-    // Data contoh — siap diganti query Pembayaran/TransaksiPenyewaan milik user.
-    $transaksi = [
-        ['img' => 'ip 18b air.webp',     'name' => 'Iphone 17 Air (Hijau)',                       'price' => 'Rp 300.000', 'sewa' => '17/04/2026 s.d 18/04/2026'],
-        ['img' => 'lampu camp.webp',     'name' => '1 Sunrei Lampu Camping Wraith (Hike and Ride)', 'price' => 'Rp 25.000',  'sewa' => '17/04/2026 s.d 18/04/2026'],
-        ['img' => 'sound system.jpg',    'name' => 'Yamaha Pro Audio Paket 12P Paket Sound System', 'price' => 'Rp 750.000', 'sewa' => '18/04/2026 s.d 22/04/2026'],
-    ];
 @endphp
 
 <x-profile-layout active="wallet" pageTitle="My Wallet">
@@ -56,17 +49,29 @@
     </div>
 
     <h3 class="section-divider-title">My Wallet &mdash; Riwayat Transaksi</h3>
-    <div class="transaksi-grid">
-        @foreach ($transaksi as $item)
-            <div class="rent-card column">
-                <img class="rent-img" src="{{ asset('assets/img/' . $item['img']) }}" alt="{{ $item['name'] }}">
-                <div class="rent-info">
-                    <span class="rent-name">{{ $item['name'] }}</span>
-                    <span class="rent-price">{{ $item['price'] }}</span>
-                    <span class="rent-dates">Tanggal Sewa: {{ $item['sewa'] }}</span>
-                </div>
-            </div>
-        @endforeach
-    </div>
+    @if ($transaksi->isEmpty())
+        <p style="color:#8da4be; font-size:13px;">Belum ada transaksi. Riwayat pembayaran sewa Anda akan muncul di sini.</p>
+    @else
+        <div class="transaksi-grid">
+            @foreach ($transaksi as $t)
+                @php
+                    $foto = $t->barang && $t->barang->foto_barang ? asset('storage/' . $t->barang->foto_barang) : asset('assets/img/default-avatar.svg');
+                @endphp
+                <a href="{{ route('profile.rentals.produk', $t->id) }}" class="rent-card column" style="text-decoration:none;">
+                    <img class="rent-img" src="{{ $foto }}" alt="{{ $t->barang->nama_barang ?? 'Barang' }}">
+                    <div class="rent-info">
+                        <span class="rent-name">{{ $t->barang->nama_barang ?? 'Barang dihapus' }}</span>
+                        <span class="rent-price">Rp {{ number_format($t->total_harga ?? 0, 0, ',', '.') }}</span>
+                        <span class="rent-dates">
+                            Tanggal Sewa: {{ optional($t->tanggal_sewa)->format('d/m/Y') ?? '-' }}
+                            @if ($t->pembayaran)
+                                <br>Metode: {{ ucfirst($t->pembayaran->metode) }}
+                            @endif
+                        </span>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    @endif
 
 </x-profile-layout>

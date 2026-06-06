@@ -85,13 +85,13 @@
             </div>
 
             <div class="stat-box">
-                <label>Status Akun:</label>
-                <div class="stat-value">{{ ucfirst($user->role) }}</div>
+                <label>Total DiSewa:</label>
+                <div class="stat-value">{{ $rentalCount }} kali</div>
             </div>
 
             <div class="stat-box">
-                <label>Email Terverifikasi:</label>
-                <div class="stat-value">{{ $user->email_verified_at ? 'Sudah' : 'Belum' }}</div>
+                <label>Jumlah Katalog Barang:</label>
+                <div class="stat-value">{{ $katalogCount }} Barang</div>
             </div>
 
             <button type="submit" class="btn-save">SAVE</button>
@@ -100,16 +100,31 @@
 
     <div class="my-rentals-section">
         <h3>My Rentals</h3>
-        <div class="rentals-preview-grid">
-            <div class="rental-card">
-                <span class="status-badge upcoming">UpComing Rent</span>
-                <div class="card-placeholder-img"></div>
+        @if ($recentRentals->isEmpty())
+            <p style="color:#8da4be; font-size:13px;">Belum ada penyewaan. Riwayat sewa Anda akan muncul di sini.</p>
+        @else
+            <div class="rentals-preview-grid">
+                @foreach ($recentRentals as $t)
+                    @php
+                        $badge = [
+                            'aktif'    => ['Active Rent', 'active-rent'],
+                            'upcoming' => ['UpComing Rent', 'upcoming'],
+                            'selesai'  => ['Selesai', 'upcoming'],
+                            'tunggu verifikasi pengembalian' => ['Return Rent', 'active-rent'],
+                        ][$t->status] ?? ['Rent', 'upcoming'];
+                        $foto = $t->barang && $t->barang->foto_barang ? asset('storage/' . $t->barang->foto_barang) : null;
+                    @endphp
+                    <a class="rental-card" href="{{ route('profile.rentals.produk', $t->id) }}" style="text-decoration:none;">
+                        <span class="status-badge {{ $badge[1] }}">{{ $badge[0] }}</span>
+                        @if ($foto)
+                            <div class="card-placeholder-img" style="background-image:url('{{ $foto }}'); background-size:cover; background-position:center;"></div>
+                        @else
+                            <div class="card-placeholder-img"></div>
+                        @endif
+                    </a>
+                @endforeach
             </div>
-            <div class="rental-card">
-                <span class="status-badge active-rent">Active Rent</span>
-                <div class="card-placeholder-img"></div>
-            </div>
-        </div>
+        @endif
     </div>
 
 </x-profile-layout>

@@ -1,27 +1,11 @@
 @php
-    // Data contoh — siap diganti query TransaksiPenyewaan milik user yang login.
-    $aktif = [
-        [
-            'img'   => 'lampu camp.webp',
-            'name'  => 'Penyewaan Peralatan Fotografi (Khusus Lampu Studio & Aksesoris)',
-            'price' => 'Rp 100.000',
-            'sewa'  => '20/04/2026 s.d 23/04/2026 (06.00 WIB)',
-            'extra' => 'Return Item: 22/04/2026 (06.00 WIB)',
-            'badge' => ['UpComing Rent', 'upcoming'],
-        ],
-        [
-            'img'   => 'sound system.jpg',
-            'name'  => 'ALLTREK Tenda Camping 1 Bedroom + 1 Guest Room',
-            'price' => 'Rp 750.000',
-            'sewa'  => '20/04/2026 s.d 23/04/2026 (06.00 WIB)',
-            'extra' => 'Return Item: 06/04/2026 (06.00 WIB)',
-            'badge' => ['Active Rent', 'active'],
-        ],
-    ];
-
-    $history = [
-        ['img' => 'ip 18b air.webp',     'name' => 'Iphone 17 Air (Hijau)',  'price' => 'Rp 300.000', 'sewa' => '17/04/2026 s.d 18/04/2026'],
-        ['img' => 'fortuner mobil.jpg',  'name' => 'Mobil Fortuner Hitam',   'price' => 'Rp 300.000', 'sewa' => '02/02/2026 s.d 02/02/2026'],
+    // Pemetaan status -> [label, kelas badge]
+    $badgeMap = [
+        'upcoming'                        => ['UpComing Rent', 'upcoming'],
+        'aktif'                           => ['Active Rent', 'active'],
+        'tunggu verifikasi pengembalian'  => ['Return Rent', 'returning'],
+        'selesai'                         => ['Selesai', 'confirmed'],
+        'dibatalkan'                      => ['Dibatalkan', 'returning'],
     ];
 @endphp
 
@@ -36,34 +20,55 @@
     </div>
 
     {{-- Penyewaan aktif / berlangsung --}}
-    <div class="rentals-grid">
-        @foreach ($aktif as $item)
-            <div class="rent-card">
-                <span class="rent-badge {{ $item['badge'][1] }}">{{ $item['badge'][0] }}</span>
-                <img class="rent-img" src="{{ asset('assets/img/' . $item['img']) }}" alt="{{ $item['name'] }}">
-                <div class="rent-info">
-                    <span class="rent-name">{{ $item['name'] }}</span>
-                    <span class="rent-price">{{ $item['price'] }}</span>
-                    <span class="rent-dates">Tanggal Sewa: {{ $item['sewa'] }}<br>{{ $item['extra'] }}</span>
+    @if ($aktif->isEmpty())
+        <p style="color:#8da4be; font-size:13px;">Belum ada penyewaan yang sedang berjalan.</p>
+    @else
+        <div class="rentals-grid">
+            @foreach ($aktif as $t)
+                @php
+                    $badge = $badgeMap[$t->status] ?? ['Rent', 'active'];
+                    $foto = $t->barang && $t->barang->foto_barang ? asset('storage/' . $t->barang->foto_barang) : asset('assets/img/default-avatar.svg');
+                @endphp
+                <div class="rent-card">
+                    <span class="rent-badge {{ $badge[1] }}">{{ $badge[0] }}</span>
+                    <img class="rent-img" src="{{ $foto }}" alt="{{ $t->barang->nama_barang ?? 'Barang' }}">
+                    <div class="rent-info">
+                        <span class="rent-name">{{ $t->barang->nama_barang ?? 'Barang dihapus' }}</span>
+                        <span class="rent-price">Rp {{ number_format($t->total_harga ?? 0, 0, ',', '.') }}</span>
+                        <span class="rent-dates">
+                            Tanggal Sewa: {{ optional($t->tanggal_sewa)->format('d/m/Y') ?? '-' }}
+                            s.d {{ optional($t->tanggal_kembali_rencana)->format('d/m/Y') ?? '-' }}
+                        </span>
+                    </div>
+                    <a href="{{ route('profile.rentals.produk', $t->id) }}" class="rent-action-btn">Detail</a>
                 </div>
-                <a href="{{ route('profile.rentals.produk') }}" class="rent-action-btn">Return Item</a>
-            </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
+    @endif
 
     {{-- Riwayat sewa --}}
     <h3 class="section-divider-title">My Rentals &mdash; History</h3>
-    <div class="history-grid">
-        @foreach ($history as $item)
-            <div class="rent-card">
-                <img class="rent-img" src="{{ asset('assets/img/' . $item['img']) }}" alt="{{ $item['name'] }}">
-                <div class="rent-info">
-                    <span class="rent-name">{{ $item['name'] }}</span>
-                    <span class="rent-price">{{ $item['price'] }}</span>
-                    <span class="rent-dates">Tanggal Sewa: {{ $item['sewa'] }}</span>
-                </div>
-            </div>
-        @endforeach
-    </div>
+    @if ($history->isEmpty())
+        <p style="color:#8da4be; font-size:13px;">Belum ada riwayat penyewaan yang selesai.</p>
+    @else
+        <div class="history-grid">
+            @foreach ($history as $t)
+                @php
+                    $foto = $t->barang && $t->barang->foto_barang ? asset('storage/' . $t->barang->foto_barang) : asset('assets/img/default-avatar.svg');
+                @endphp
+                <a href="{{ route('profile.rentals.produk', $t->id) }}" class="rent-card" style="text-decoration:none;">
+                    <img class="rent-img" src="{{ $foto }}" alt="{{ $t->barang->nama_barang ?? 'Barang' }}">
+                    <div class="rent-info">
+                        <span class="rent-name">{{ $t->barang->nama_barang ?? 'Barang dihapus' }}</span>
+                        <span class="rent-price">Rp {{ number_format($t->total_harga ?? 0, 0, ',', '.') }}</span>
+                        <span class="rent-dates">
+                            Tanggal Sewa: {{ optional($t->tanggal_sewa)->format('d/m/Y') ?? '-' }}
+                            s.d {{ optional($t->tanggal_kembali_rencana)->format('d/m/Y') ?? '-' }}
+                        </span>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    @endif
 
 </x-profile-layout>
