@@ -48,13 +48,27 @@ class CartController extends Controller
                          ->where('barang_id', $request->barang_id)
                          ->first();
 
+        $currentInCart = $item ? $item->jumlah : 0;
+        $totalRequested = $currentInCart + $request->qty;
+
+        if ($totalRequested > $barang->stok) {
+            $msg = "Jumlah barang di keranjang melebihi stok yang tersedia. Stok tersedia: {$barang->stok}";
+            if ($currentInCart > 0) {
+                $msg .= " (Anda sudah memiliki {$currentInCart} unit di keranjang).";
+            }
+            if ($request->wantsJson()) {
+                return response()->json(['error' => $msg], 422);
+            }
+            return redirect()->back()->with('error', $msg);
+        }
+
         if ($item) {
-            $item->jumlah += $request->qty;
+            $item->jumlah = $totalRequested;
             $item->tanggal_sewa = $request->start_date;
             $item->tanggal_kembali_rencana = $request->end_date;
             $item->save();
         } else {
-            Keranjang::create([
+            $item = Keranjang::create([
                 'user_id'                => Auth::id(),
                 'barang_id'              => $request->barang_id,
                 'jumlah'                 => $request->qty,
@@ -71,7 +85,11 @@ class CartController extends Controller
         ]);
 
         if ($request->wantsJson()) {
-            return response()->json(['success' => true, 'message' => 'Barang ditambahkan ke keranjang']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Barang ditambahkan ke keranjang',
+                'cart_item_id' => $item->id
+            ]);
         }
         return redirect()->route('cart')->with('success', 'Barang ditambahkan ke keranjang');
     }
@@ -97,7 +115,18 @@ class CartController extends Controller
     {
         $item = Keranjang::where('user_id', Auth::id())->with('barang')->where('id', $id)->first();
         if ($item && $request->has('quantity')) {
-            $item->jumlah = $request->quantity;
+            $newQty = (int) $request->quantity;
+            $stok = $item->barang->stok ?? 0;
+            if ($newQty > $stok) {
+                if ($request->wantsJson()) {
+                    return response()->json([
+                        'error' => "Jumlah barang melebihi stok yang tersedia. Stok tersedia: {$stok}",
+                        'max' => $stok
+                    ], 422);
+                }
+                return redirect()->back()->with('error', "Jumlah barang melebihi stok yang tersedia. Stok tersedia: {$stok}");
+            }
+            $item->jumlah = $newQty;
             $item->save();
         }
         

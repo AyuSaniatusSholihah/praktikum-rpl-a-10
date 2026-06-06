@@ -10,8 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Abril+Fatface&family=Abhaya+Libre:wght@400;700&family=Abyssinica+SIL&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/sewain/assets/css/home.css">
-  <link rel="stylesheet" href="/sewain/assets/css/admin.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
 </head>
 <body>
 

@@ -432,13 +432,83 @@
                     <button class="minicart-remove">${SVG_REMOVE}</button>`;
 
                 el.querySelector('.qty-minus').addEventListener('click', () => {
-                    const c = getCart(); if (c[index].qty > 1) { c[index].qty--; saveCart(c); renderMinicart(); }
+                    const c = getCart();
+                    const targetItem = c[index];
+                    if (targetItem.qty > 1) {
+                        const newVal = targetItem.qty - 1;
+                        if (targetItem.cart_item_id) {
+                            fetch(`/cart/${targetItem.cart_item_id}/quantity`, {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF },
+                                body: JSON.stringify({ quantity: newVal })
+                            })
+                            .then(res => {
+                                if (!res.ok) return res.json().then(err => { throw err; });
+                                return res.json();
+                            })
+                            .then(() => {
+                                c[index].qty = newVal;
+                                saveCart(c);
+                                renderMinicart();
+                            })
+                            .catch(err => {
+                                alert(err.error || 'Gagal mengubah kuantitas.');
+                            });
+                        } else {
+                            c[index].qty--;
+                            saveCart(c);
+                            renderMinicart();
+                        }
+                    }
                 });
                 el.querySelector('.qty-plus').addEventListener('click', () => {
-                    const c = getCart(); if (c[index].qty < 99) { c[index].qty++; saveCart(c); renderMinicart(); }
+                    const c = getCart();
+                    const targetItem = c[index];
+                    const newVal = targetItem.qty + 1;
+                    if (targetItem.cart_item_id) {
+                        fetch(`/cart/${targetItem.cart_item_id}/quantity`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF },
+                            body: JSON.stringify({ quantity: newVal })
+                        })
+                        .then(res => {
+                            if (!res.ok) return res.json().then(err => { throw err; });
+                            return res.json();
+                        })
+                        .then(() => {
+                            c[index].qty = newVal;
+                            saveCart(c);
+                            renderMinicart();
+                        })
+                        .catch(err => {
+                            alert(err.error || 'Gagal mengubah kuantitas.');
+                        });
+                    } else {
+                        c[index].qty++;
+                        saveCart(c);
+                        renderMinicart();
+                    }
                 });
                 el.querySelector('.minicart-remove').addEventListener('click', () => {
-                    const c = getCart(); c.splice(index, 1); saveCart(c); renderMinicart();
+                    const c = getCart();
+                    const targetItem = c[index];
+                    if (targetItem.cart_item_id) {
+                        fetch(`/cart/${targetItem.cart_item_id}`, {
+                            method: 'DELETE',
+                            headers: { 'X-CSRF-TOKEN': CSRF }
+                        })
+                        .then(res => {
+                            if (!res.ok) throw new Error();
+                            c.splice(index, 1);
+                            saveCart(c);
+                            renderMinicart();
+                        })
+                        .catch(() => alert('Gagal menghapus barang dari keranjang.'));
+                    } else {
+                        c.splice(index, 1);
+                        saveCart(c);
+                        renderMinicart();
+                    }
                 });
                 itemsCont.appendChild(el);
             });
@@ -453,49 +523,95 @@
         document.getElementById('qtyPlus').addEventListener('click',  () => { if (qty < PRODUCT.stok) { qty++; document.getElementById('qtyNum').textContent = qty; } });
 
         document.getElementById('btnAddToCart').addEventListener('click', function () {
+            // Kasus 1: Belum login
+            if (!IS_LOGGED_IN) {
+                showRentToast({
+                    iconClass   : 'info',
+                    iconEmoji   : '🔐',
+                    title       : 'Login Diperlukan',
+                    msg         : 'Kamu perlu login terlebih dahulu sebelum menambahkan barang ke keranjang.',
+                    actionLabel : 'Login Sekarang',
+                    actionHref  : LOGIN_URL + '?redirect=' + encodeURIComponent(window.location.href),
+                });
+                return;
+            }
+
+            // Kasus 2: Produk milik sendiri
+            if (IS_OWN_PRODUCT) {
+                showRentToast({
+                    iconClass   : 'warning',
+                    iconEmoji   : '⚠️',
+                    title       : 'Produk Milik Kamu',
+                    msg         : 'Kamu tidak dapat menambahkan produk milikmu sendiri ke keranjang.',
+                });
+                return;
+            }
+
             const startDate = document.getElementById('dateStart').value || @json($product->tanggal_item_mulai?->format('Y-m-d'));
             const endDate   = document.getElementById('dateEnd').value   || @json($product->tanggal_item_tidak_tersedia?->format('Y-m-d'));
             const imgEl     = document.getElementById('productMainImage');
 
-            // 1. Animasi gambar terbang ke cart icon
-            if (imgEl && cartBtn) {
-                const imgRect  = imgEl.getBoundingClientRect();
-                const cartRect = cartBtn.getBoundingClientRect();
-                const flyEl    = document.createElement('div');
-                flyEl.className = 'fly-item';
-                flyEl.innerHTML = `<img src="${imgEl.src}" alt=""/>`;
-                flyEl.style.cssText = `left:${imgRect.left}px;top:${imgRect.top}px;width:${imgRect.width}px;height:${imgRect.height}px;`;
-                document.body.appendChild(flyEl);
-                requestAnimationFrame(() => requestAnimationFrame(() => {
-                    flyEl.style.left   = (cartRect.left + cartRect.width/2 - 15) + 'px';
-                    flyEl.style.top    = (cartRect.top  + cartRect.height/2 - 15) + 'px';
-                    flyEl.style.width  = '30px';
-                    flyEl.style.height = '30px';
-                    flyEl.classList.add('fly-go');
-                }));
-                setTimeout(() => { flyEl.remove(); cartBtn?.classList.add('cart-bounce'); }, 850);
-                setTimeout(() => cartBtn?.classList.remove('cart-bounce'), 1250);
-            }
-
-            // 2. Simpan ke localStorage (tampilan sidebar)
-            const cart = getCart();
-            const idx  = cart.findIndex(c => c.id === PRODUCT.id);
-            if (idx > -1) { cart[idx].qty += qty; } else {
-                cart.push({ id: PRODUCT.id, nama: PRODUCT.nama, harga: PRODUCT.harga, img: PRODUCT.img, qty });
-            }
-            saveCart(cart);
-
-            // 3. Kirim ke backend via AJAX (simpan di database)
+            // Kirim ke backend via AJAX (simpan di database)
             fetch(ADD_CART_URL, {
                 method : 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
                 body   : JSON.stringify({ barang_id: PRODUCT.id, qty, start_date: startDate, end_date: endDate }),
-            }).then(r => {
-                if (!r.ok && r.status !== 302) console.warn('Cart add warning:', r.status);
-            }).catch(err => console.warn('Cart AJAX error (non-fatal):', err));
+            })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { throw err; });
+                }
+                return res.json();
+            })
+            .then(data => {
+                // 1. Animasi gambar terbang ke cart icon
+                if (imgEl && cartBtn) {
+                    const imgRect  = imgEl.getBoundingClientRect();
+                    const cartRect = cartBtn.getBoundingClientRect();
+                    const flyEl    = document.createElement('div');
+                    flyEl.className = 'fly-item';
+                    flyEl.innerHTML = `<img src="${imgEl.src}" alt=""/>`;
+                    flyEl.style.cssText = `left:${imgRect.left}px;top:${imgRect.top}px;width:${imgRect.width}px;height:${imgRect.height}px;`;
+                    document.body.appendChild(flyEl);
+                    requestAnimationFrame(() => requestAnimationFrame(() => {
+                        flyEl.style.left   = (cartRect.left + cartRect.width/2 - 15) + 'px';
+                        flyEl.style.top    = (cartRect.top  + cartRect.height/2 - 15) + 'px';
+                        flyEl.style.width  = '30px';
+                        flyEl.style.height = '30px';
+                        flyEl.classList.add('fly-go');
+                    }));
+                    setTimeout(() => { flyEl.remove(); cartBtn?.classList.add('cart-bounce'); }, 850);
+                    setTimeout(() => cartBtn?.classList.remove('cart-bounce'), 1250);
+                }
 
-            // 4. Buka minicart sidebar setelah animasi selesai
-            setTimeout(() => openMinicart(), 900);
+                // 2. Simpan ke localStorage (tampilan sidebar)
+                const cart = getCart();
+                const idx  = cart.findIndex(c => c.id === PRODUCT.id);
+                if (idx > -1) {
+                    cart[idx].qty += qty;
+                    cart[idx].cart_item_id = data.cart_item_id;
+                } else {
+                    cart.push({ id: PRODUCT.id, nama: PRODUCT.nama, harga: PRODUCT.harga, img: PRODUCT.img, qty, cart_item_id: data.cart_item_id });
+                }
+                saveCart(cart);
+
+                // 3. Update global navbar cart count badge if available
+                if (cartBadge) {
+                    const currentCount = parseInt(cartBadge.textContent || '0');
+                    cartBadge.textContent = currentCount + qty;
+                }
+
+                // 4. Buka minicart sidebar setelah animasi selesai
+                setTimeout(() => openMinicart(), 900);
+            })
+            .catch(err => {
+                showRentToast({
+                    iconClass: 'error',
+                    iconEmoji: '❌',
+                    title: 'Gagal Menambahkan',
+                    msg: err.error || 'Terjadi kesalahan saat menambahkan barang ke keranjang.',
+                });
+            });
         });
 
         /* ============================================================
@@ -576,15 +692,23 @@
                 method : 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
                 body   : JSON.stringify({ barang_id: PRODUCT.id, qty: 1, start_date: startDate, end_date: endDate }),
-            }).then(r => {
-                if (r.ok || r.status === 201) {
-                    window.location.href = CHECKOUT_URL;
-                } else {
-                    // Tetap redirect ke checkout, controller yang handle error
-                    window.location.href = CHECKOUT_URL;
+            })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { throw err; });
                 }
-            }).catch(() => {
+                return res.json();
+            })
+            .then(data => {
                 window.location.href = CHECKOUT_URL;
+            })
+            .catch(err => {
+                showRentToast({
+                    iconClass: 'error',
+                    iconEmoji: '❌',
+                    title: 'Gagal Menyewa',
+                    msg: err.error || 'Terjadi kesalahan saat melanjutkan ke penyewaan.',
+                });
             });
         });
 
@@ -684,8 +808,95 @@
          * ============================================================ */
         document.getElementById('viewingNow').textContent = (Math.floor(Math.random() * 20) + 5) + ' people are viewing this right now';
 
+        // Init localStorage from database on load if logged in
+        @auth
+            const dbCart = {!! json_encode(\App\Models\Keranjang::where('user_id', auth()->id())->with('barang')->get()->map(function($item) {
+                return [
+                    'id' => $item->barang_id,
+                    'nama' => $item->barang->nama_barang,
+                    'harga' => (int) $item->barang->harga_sewa,
+                    'img' => $item->barang->foto_barang ? asset('storage/'.$item->barang->foto_barang) : 'https://placehold.co/400x300?text=No+Image',
+                    'qty' => $item->jumlah,
+                    'stok' => (int) $item->barang->stok,
+                    'cart_item_id' => $item->id
+                ];
+            })->toArray()) !!};
+            saveCart(dbCart);
+        @else
+            saveCart([]);
+        @endauth
+
         /* Init recalc badge */
         recalc();
+
+        /* ============================================================
+         * REAL-TIME STOCK POLLING
+         * Setiap 30 detik, ambil stok terbaru dari server lalu update UI
+         * ============================================================ */
+        const STOK_URL = '/product/{{ $product->id }}/stok';
+
+        function updateStockUI(stok, status) {
+            // Update PRODUCT.stok agar qty-plus juga ikut terbatas
+            PRODUCT.stok = stok;
+
+            // Update teks badge stok
+            const stockTextEl = document.querySelector('.stock-text');
+            if (stockTextEl) {
+                if (stok <= 0) {
+                    stockTextEl.innerHTML = '<strong>Stok habis!</strong>';
+                } else {
+                    stockTextEl.innerHTML = `Only <strong>${stok}</strong> item(s) left in stock!`;
+                }
+            }
+
+            // Update progress bar stok
+            const barFill = document.querySelector('.stock-bar-fill');
+            if (barFill) {
+                const pct = stok > 0 ? Math.min((stok / 10) * 100, 100) : 0;
+                barFill.style.width = pct + '%';
+            }
+
+            // Clamp qty selector agar tidak melebihi stok baru
+            if (qty > stok) {
+                qty = Math.max(1, stok);
+                const qtyNumEl = document.getElementById('qtyNum');
+                if (qtyNumEl) qtyNumEl.textContent = qty;
+            }
+
+            // Disable/enable tombol Add to Cart & Rent Now
+            const btnAdd  = document.getElementById('btnAddToCart');
+            const btnRent = document.getElementById('btnRentNow');
+            const outOfStock = (stok <= 0 || status === 'tidak_tersedia');
+            if (btnAdd) {
+                btnAdd.disabled = outOfStock;
+                btnAdd.style.opacity = outOfStock ? '0.5' : '';
+                btnAdd.style.cursor  = outOfStock ? 'not-allowed' : '';
+                btnAdd.textContent   = outOfStock ? 'Stok Habis' : 'Add to cart';
+            }
+            if (btnRent) {
+                if (outOfStock) {
+                    btnRent.style.pointerEvents = 'none';
+                    btnRent.style.opacity = '0.5';
+                    btnRent.textContent = 'Stok Habis';
+                } else {
+                    btnRent.style.pointerEvents = '';
+                    btnRent.style.opacity = '';
+                    btnRent.textContent = 'Rent Now!';
+                }
+            }
+        }
+
+        function pollStock() {
+            fetch(STOK_URL)
+                .then(res => res.json())
+                .then(data => updateStockUI(data.stok, data.status))
+                .catch(() => { /* silent fail jika network error */ });
+        }
+
+        // Jalankan polling tiap 30 detik
+        setInterval(pollStock, 30000);
+        // Juga jalankan 1x saat halaman dimuat (agar langsung sinkron)
+        pollStock();
         </script>
     </x-slot:scripts>
 </x-layout>
