@@ -12,8 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Abril+Fatface&family=Abhaya+Libre:wght@400;700&family=Abyssinica+SIL&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700;800&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+  <link rel="stylesheet" href="/sewain/assets/css/home.css">
+  <link rel="stylesheet" href="/sewain/assets/css/admin.css">
 </head>
 <body>
 
@@ -24,8 +24,8 @@
   </button>
   <a href="#" class="nav-logo">SEWA<span>IN</span></a>
   <ul class="nav-links">
-    <li><a href="{{ route('home') }}">Home</a></li>
-    <li><a href="{{ route('admin.dashboard') }}" class="active">Admin</a></li>
+    <li><a href="#">Home</a></li>
+    <li><a href="#" class="active">Admin</a></li>
   </ul>
   <div class="nav-search">
      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -51,7 +51,7 @@
   <ul class="sidebar-menu">
 
     <!-- DASHBOARD -->
-    <li><a href="{{ route('admin.dashboard') }}">
+    <li><a href="dashboard.html">
       <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M24.326 10.8738C24.3254 10.8732 24.3248 10.8727 24.3242 10.8721L14.1262 0.674438C13.6915 0.239563 13.1136 0 12.4989 0C11.8841 0 11.3062 0.239372 10.8713 0.674248L0.67866 10.8667C0.675227 10.8702 0.671794 10.8738 0.668361 10.8772C-0.224279 11.775 -0.222753 13.2317 0.672747 14.1272C1.08187 14.5365 1.62223 14.7736 2.19996 14.7984C2.22342 14.8006 2.24707 14.8018 2.27091 14.8018H2.67737V22.3066C2.67737 23.7917 3.88568 25 5.37112 25H9.36091C9.76527 25 10.0933 24.6721 10.0933 24.2676V18.3838C10.0933 17.7061 10.6446 17.1549 11.3222 17.1549H13.6755C14.3532 17.1549 14.9044 17.7061 14.9044 18.3838V24.2676C14.9044 24.6721 15.2323 25 15.6368 25H19.6266C21.1121 25 22.3204 23.7917 22.3204 22.3066V14.8018H22.6973C23.3118 14.8018 23.8898 14.5624 24.3248 14.1275C25.2213 13.2305 25.2217 11.7714 24.326 10.8738Z" fill="currentColor"/>
       </svg>
@@ -59,7 +59,7 @@
     </a></li>
 
     <!-- FINANCIAL WALLET -->
-    <li><a href="{{ route('admin.financial-wallet') }}">
+    <li><a href="financial-wallet.html">
       <svg width="26" height="19" viewBox="0 0 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M22.9608 3.32089V2.96522C22.9608 1.33022 21.6306 0 19.9956 0H2.96522C1.33016 5.07813e-05 0 1.33022 0 2.96522V3.32089H22.9608Z" fill="currentColor"/>
         <path d="M13.5651 12.8592C13.5651 11.3211 14.0598 9.85913 14.9731 8.6543H0V12.7905C0 14.4255 1.33016 15.7557 2.96522 15.7557H14.1911C13.7813 14.8581 13.5651 13.8754 13.5651 12.8592ZM11.4804 11.9605H8.92125V10.437H11.4804V11.9605ZM3.41545 10.437H7.39781V11.9605H3.41545V10.437Z" fill="currentColor"/>
@@ -70,7 +70,7 @@
     </a></li>
 
     <!-- USERS -->
-    <li><a href="{{ route('admin.users') }}" class="active">
+    <li><a href="data-user.html" class="active">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
         fill="currentColor" stroke="none">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" 
@@ -80,7 +80,7 @@
     </a></li>
 
     <!-- ITEMS -->
-    <li><a href="{{ route('admin.items') }}">
+    <li><a href="data-items.html">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375z"/>
         <path fill-rule="evenodd" d="M3.087 9l.54 9.176A3 3 0 006.62 21h10.757a3 3 0 002.995-2.824L20.913 9H3.087zm6.163 3.75A.75.75 0 0110 12h4a.75.75 0 010 1.5h-4a.75.75 0 01-.75-.75z" clip-rule="evenodd"/>
@@ -89,7 +89,7 @@
     </a></li>
 
     <!-- TRANSACTIONS -->
-    <li><a href="{{ route('admin.transactions') }}">
+    <li><a href="data-transactions.html">
       <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M5.20703 22.9168C5.20769 23.4692 5.42739 23.9987 5.81795 24.3892C6.20851 24.7798 6.73803 24.9995 7.29036 25.0002H17.707C18.2594 24.9995 18.7889 24.7798 19.1794 24.3892C19.57 23.9987 19.7897 23.4692 19.7904 22.9168V22.0054H5.20703V22.9168Z" fill="currentColor"/>
         <path d="M19.7904 2.08333C19.7897 1.531 19.57 1.00148 19.1794 0.610917C18.7889 0.220358 18.2594 0.00065473 17.707 0L7.29036 0C6.73803 0.00065473 6.20851 0.220358 5.81795 0.610917C5.42739 1.00148 5.20769 1.531 5.20703 2.08333V3.125H19.7904V2.08333Z" fill="currentColor"/>
@@ -267,7 +267,7 @@
 </footer>
 <script>
   function showUserDetail(id) {
-    location.href = '/admin/users/' + id;
+    location.href = 'user-detail.html?id=' + id;
   }
 
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');

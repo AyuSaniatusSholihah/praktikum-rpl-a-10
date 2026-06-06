@@ -1,0 +1,1670 @@
+.dash-page {
+    padding: 36px 0 80px;
+    background: #fff;
+}
+
+
+.dash-panel {
+    background: #4D6674;
+    border-radius: 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+    overflow: hidden;
+    /* ← ganti visible → hidden */
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+    display: grid;
+    grid-template-columns: 232px 1fr;
+    min-height: 640px;
+    align-items: start;
+}
+
+.profile-page .dash-panel {
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.profile-field textarea {
+    border-radius: 16px;
+    resize: none;
+    /* ← biar ga bisa di-resize manual */
+    min-height: unset;
+    /* ← biar ngikutin rows="4" */
+    line-height: 1.7;
+}
+
+/* ============ SIDEBAR ============ */
+/* SESUDAH */
+.dash-sidebar {
+    background: #4D6674;
+    padding: 28px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-self: stretch;
+    min-height: 100%;
+    /* ← ganti height: 100vh */
+    /* hapus position: sticky, top: 0, overflow-y: auto */
+}
+
+.dash-profile-mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px 22px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.dash-profile-mini .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 4px;
+    /* ← ikutin rx="4" di SVG */
+    overflow: visible;
+    background: transparent;
+    border: none;
+}
+
+.dash-profile-mini .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dash-profile-mini .name {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+}
+
+
+.dash-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.dash-nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #21394F;
+    text-decoration: none;
+    transition: background .15s, color .15s;
+}
+
+.dash-nav a svg {
+    width: 18px;
+    height: 18px;
+    stroke: #fff;
+    fill: white;
+    flex-shrink: 0;
+}
+
+.dash-nav a:hover {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='48' viewBox='0 0 200 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M195.685 0.5C198.692 0.5 200.299 4.04164 198.319 6.30469L169.295 39.4746C164.833 44.5745 158.386 47.5 151.609 47.5H-3.5V0.5H195.685Z' fill='rgba(255%2C255%2C255%2C0.10)' stroke='url(%23paint0_linear)'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear' x1='213' y1='14.5' x2='-16' y2='27.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='white' stop-opacity='0.5'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    color: #fff;
+    border-radius: 0;
+}
+
+.dash-nav a.active {
+    color: #21394F;
+    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='48' viewBox='0 0 200 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M195.685 0.5C198.692 0.5 200.299 4.04164 198.319 6.30469L169.295 39.4746C164.833 44.5745 158.386 47.5 151.609 47.5H-3.5V0.5H195.685Z' fill='%2378A5B5' stroke='url(%23paint0_linear)'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear' x1='213' y1='14.5' x2='-16' y2='27.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='white' stop-opacity='0.5'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border-radius: 0;
+}
+
+/* Logout di bawah sidebar */
+.dash-logout {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.dash-logout a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    transition: background .15s;
+}
+
+.dash-logout a svg {
+    width: 18px;
+    height: 18px;
+    stroke: #fff;
+    fill: none;
+    flex-shrink: 0;
+}
+
+.dash-logout a:hover {
+    background: rgba(255, 255, 255, 0.10);
+}
+
+.dash-nav a svg,
+.dash-logout a svg {
+    width: 20px;
+    height: 20px;
+    stroke: none;
+    fill: white;
+    flex-shrink: 0;
+}
+
+/* ============ CONTENT ============ */
+.dash-content {
+    padding: 20px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #4D6674;
+}
+
+.dash-content-card {
+    background: #21394F;
+    border-radius: 20px;
+    padding: 32px 36px 40px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    position: relative;
+    /* tambah ini biar avatar absolute-nya relatif ke card */
+}
+
+.dash-section-title {
+    font-family: 'Volkhov', Georgia, serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 6px;
+}
+
+.dash-section-title.history {
+    margin-top: 36px;
+}
+
+.dash-section-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 20px;
+}
+
+
+/* ============ RENTAL CARDS (horizontal: thumb + info) ============ */
+.dash-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.dash-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    transition: transform .15s;
+}
+
+.dash-card:hover {
+    transform: translateY(-2px);
+}
+
+.dash-card .dc-thumb {
+    width: 120px;
+    height: 90px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ededed;
+}
+
+.dash-card .dc-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dash-card .dc-info {
+    min-width: 0;
+}
+
+.dash-card .dc-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #484848;
+    line-height: 1.35;
+    margin-bottom: 6px;
+}
+
+.dash-card .dc-price {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #4D6674;
+    margin-bottom: 6px;
+}
+
+.dash-card .dc-dates {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: #8A8A8A;
+    line-height: 1.6;
+}
+
+.dash-card .dc-dates strong {
+    color: #484848;
+    font-weight: 600;
+}
+
+.dash-card .dc-action {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+
+/* Status badge */
+.dc-badge {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+.dc-badge.paid {
+    background: #d1f0dd;
+    color: #1f7a47;
+}
+
+.dc-badge.active {
+    background: #C3D4E9;
+    color: #1e3a5f;
+}
+
+.dc-badge.return {
+    background: #ffe3c4;
+    color: #a35a17;
+}
+
+.dc-badge.done {
+    background: #d1f0dd;
+    color: #1f7a47;
+}
+
+
+.dc-btn {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #6A87A1;
+    color: #fff;
+    white-space: nowrap;
+    transition: opacity .15s;
+}
+
+.dc-btn:hover {
+    opacity: 0.9;
+}
+
+.dc-btn.outline {
+    background: transparent;
+    border: 1px solid #d8d8d8;
+    color: #484848;
+}
+
+
+/* ============ WALLET ============ */
+.wallet-top {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.wallet-saldo {
+    background: #6A87A1;
+    border-radius: 14px;
+    padding: 24px 26px;
+    color: #fff;
+}
+
+.wallet-saldo .label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    opacity: 0.85;
+    margin-bottom: 6px;
+}
+
+.wallet-saldo .amount {
+    font-family: 'Volkhov', Georgia, serif;
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.wallet-saldo .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.wallet-saldo .actions button {
+    flex: 1;
+    padding: 9px 0;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.wallet-saldo .actions button:hover {
+    background: rgba(255, 255, 255, 0.30);
+}
+
+
+.wallet-rekening {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+.wallet-rekening h4 {
+    font-family: 'Abril Fatface', serif;
+    font-size: 18px;
+    color: #E8F4FB;
+    margin-bottom: 12px;
+}
+
+.wallet-rekening .rek-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-direction: column;
+    /* label di atas, value di bawah */
+    gap: 0;
+}
+
+.wallet-rekening .rek-row span {
+    font-family: 'Abril Fatface', serif;
+    font-size: 15px;
+    color: #E8F4FB;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.wallet-rekening .rek-row strong {
+    width: 100%;
+    display: block;
+    background: #B2C9DD;
+    border: 1px solid #8A8A8A;
+    border-radius: 999px;
+    padding: 11px 16px;
+    font-family: 'Amethysta', serif;
+    font-size: 15px;
+    color: #21394F;
+    font-weight: 400;
+}
+
+/* Transaction list */
+.wallet-trans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 8px;
+}
+
+.trans-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.trans-card .tc-thumb {
+    aspect-ratio: 16/10;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ededed;
+    margin-bottom: 10px;
+}
+
+.trans-card .tc-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.trans-card .tc-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #484848;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.trans-card .tc-amount {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f7a47;
+}
+
+.trans-card .tc-amount.out {
+    color: #d8262c;
+}
+
+.trans-card .tc-date {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10.5px;
+    color: #8A8A8A;
+    margin-top: 4px;
+}
+
+.btn-ajukan-return {
+    position: absolute;
+    top: 32px;
+    right: 125px;
+    padding: 12px 24px;
+    background: #6A87A1;
+    color: #fff;
+    font-family: 'Abril Fatface', serif;
+    font-size: 17px;
+    font-weight: 400;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: opacity .15s;
+    width: 170px;
+    text-align: center;
+    line-height: 1.5;
+    display: flex;
+    /* tambah */
+    flex-direction: column;
+    /* tambah */
+    align-items: center;
+    /* tambah */
+    justify-content: center;
+    /* tambah */
+}
+
+.btn-ajukan-return:hover {
+    opacity: 0.85;
+}
+
+.btn-kirim-return {
+    position: static !important;
+    display: flex !important;
+    margin: 24px auto 0 !important;
+    width: 170px;
+}
+
+/* ============ RENTAL DETAIL (form on dark) ============ */
+.rental-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: nowrap;
+}
+
+.rental-detail-header .rd-thumb {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ededed;
+    flex-shrink: 0;
+}
+
+.rental-detail-header .rd-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rental-detail-header h3 {
+    font-family: 'Abril Fatface', serif;
+    font-weight: 500;
+    font-size: 25px;
+    color: #E6E8EF;
+    line-height: 1.3;
+}
+
+/* dari admin.css — hanya yang dipakai di receipt */
+.receipt-item {
+    background: #ebf2f8;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.receipt-product {
+    padding: 18px;
+}
+
+.receipt-product-header {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+    position: relative;
+    flex-wrap: wrap;
+    /* tambah ini */
+}
+
+.rec-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.rec-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rec-info {
+    flex: 1;
+}
+
+.rec-product-name {
+    font-family: 'Volkhov', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #000;
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.rec-price {
+    font-size: 15px;
+    color: #6A87A1;
+    font-weight: 600;
+}
+
+.paid-badge {
+    color: #2e7d32;
+    font-size: 17px;
+    font-weight: 900;
+    padding: 8px 15px;
+    letter-spacing: 0.2em;
+    border: 3.5px solid #2e7d32;
+    border-radius: 4px;
+    transform: rotate(-15deg);
+    opacity: 0.75;
+    font-family: 'Volkhov', serif;
+    display: block;
+    margin: 10px auto 14px;
+    width: fit-content;
+    margin-left: auto;
+}
+
+.rec-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    max-width: 260px;
+    margin: 0 auto 14px;
+}
+
+.rec-date-item {
+    border-radius: 4px;
+    padding: 8px 10px;
+    text-align: center;
+}
+
+.rec-date-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 15.8px;
+    color: #000;
+    font-weight: 900;
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.rec-date-val {
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.rec-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rec-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    color: #21394F;
+}
+
+.rec-row .val {
+    width: 95px;
+}
+
+.rec-row.total-row {
+    font-size: 15px;
+    font-weight: 700;
+    border-top: 1px solid #DFEAF2;
+    padding-top: 6px;
+    margin-top: 2px;
+}
+
+.rec-row.denda {
+    font-style: italic;
+    font-size: 13px;
+}
+
+.reviews-header h3 {
+    font-family: 'Abril Fatface', serif;
+    color: #E6E8EF;
+    text-decoration: underline;
+    font-weight: 400;
+    font-size: 20px;
+    margin-bottom: 12px;
+    margin-top: 20px;
+}
+
+.item-badge {
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    background: var(--blue, #6A87A1);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.rd-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+    margin-bottom: 24px;
+}
+
+.rd-form-grid,
+#reviews-section {
+    padding-left: calc(70px + 18px);
+    /* lebar foto + gap */
+}
+
+.rd-field label {
+    font-family: 'Abril Fatface', serif;
+    font-size: 19px;
+    color: #E8F4FB;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.rd-field .rd-value {
+    width: 100%;
+    background: #E8F4FB;
+    border: 1px solid #DFEAF2;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #21394F;
+    font-size: 17px;
+    font-family: 'Amethysta', serif;
+}
+
+
+/* Inner detail card (PAID) */
+.rd-inner-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.rd-inner-card .ric-thumb {
+    width: 90px;
+    height: 70px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ededed;
+}
+
+.rd-inner-card .ric-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rd-inner-card .ric-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #484848;
+    margin-bottom: 8px;
+    line-height: 1.35;
+}
+
+.rd-inner-card .ric-dates {
+    display: flex;
+    gap: 24px;
+}
+
+.rd-inner-card .ric-date-block .lbl {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    color: #8A8A8A;
+    margin-bottom: 3px;
+}
+
+.rd-inner-card .ric-date-block .val {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #484848;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.rd-inner-card .ric-date-block .val svg {
+    width: 11px;
+    height: 11px;
+    stroke: #55959E;
+}
+
+
+/* ============ FORM PENGEMBALIAN ============ */
+.return-form-box {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-top: 24px;
+}
+
+.return-form-title {
+    font-family: 'Volkhov', Georgia, serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+}
+
+.return-form-grid {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.return-upload {
+    aspect-ratio: 1;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.return-upload svg {
+    width: 32px;
+    height: 32px;
+    stroke: rgba(255, 255, 255, 0.7);
+}
+
+.return-upload span {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+}
+
+.return-note textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12.5px;
+    color: #fff;
+    resize: vertical;
+    outline: none;
+}
+
+.return-note textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+.btn-confirm-return {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 24px auto 0;
+    padding: 13px 0;
+    background: #C3D4E9;
+    color: #2e3f50;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    transition: transform .15s;
+}
+
+.btn-confirm-return:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ============ CONFIRMED STATE ============ */
+.confirmed-box {
+    background: #E8F4FB;
+    border: 1px solid #DFEAF2;
+    border-radius: 14px;
+    padding: 44px 28px;
+    margin-top: 24px;
+    text-align: center;
+    margin-left: calc(70px + 18px);
+}
+
+.confirmed-box .check {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #6A87A1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.confirmed-box .check svg {
+    width: 50px;
+    height: 50px;
+    stroke: #C3D4E9;
+    /* ← warna centang biru muda */
+}
+
+.confirmed-box h3 {
+    font-family: 'Volkhov', Georgia, serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #484848;
+    /* ← gelap */
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+}
+
+.confirmed-box p {
+    font-family: 'Abhaya Libre', serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: #818181;
+    line-height: 1.6;
+    max-width: 460px;
+    margin: 0 auto 24px;
+}
+
+.confirmed-box p strong {
+    font-family: 'Abhaya Libre', serif;
+    font-weight: 800;
+    font-size: 19px;
+    color: #818181;
+    /* ← bagian "menunggu verifikasi" bold gelap */
+}
+
+.confirmed-box .btn-back {
+    display: inline-block;
+    padding: 12px 32px;
+    background: #6A87A1;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .15s;
+    width: 400px;
+}
+
+.confirmed-box .btn-back:hover {
+    transform: translateY(-2px);
+}
+
+/* ── RENTAL GRID ── */
+.rental-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px 8px;
+    /* ← atas-bawah 16px, kiri-kanan 8px */
+    max-width: 100%;
+}
+
+/* ── RENTAL CARD ── */
+.rental-card-wrapper {
+    position: relative;
+    width: 100%;
+    flex-shrink: 0;
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding-top: 0 !important;
+}
+
+.rental-card {
+    background: #21394F;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-top: 10px;
+    height: auto;
+    min-height: 0;
+    /* ← hapus min-height */
+    overflow: visible;
+    /* ← visible biar ga kepotong */
+    width: 100%;
+    max-width: 100%;
+    /* ← ganti dari 480px */
+}
+
+
+/* ── FOTO AREA ── */
+.rental-img-wrap {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    /* ← tetap hidden biar foto ga meluber */
+    border-radius: 12px 12px 0 0;
+    margin: 0;
+}
+
+.rental-foto {
+    width: 100%;
+    margin: 0 !important;
+    padding: 0;
+    position: static;
+    display: block;
+}
+
+.rental-foto svg {
+    display: block;
+    max-width: 90%;
+    height: auto;
+    margin-left: 0px;
+}
+
+.rental-card .rental-img-wrap img {
+    width: 100%;
+    height: 169px;
+    object-fit: cover;
+    display: block;
+}
+
+/* ── STATUS BADGE (di atas foto) ── */
+.rental-status-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 3;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    word-break: keep-all;
+    max-width: 100px;
+    line-height: 1.4;
+}
+
+/* ── CARD INFO ── */
+.rental-card-info {
+    padding: 12px 14px 24px;
+    margin-left: 55px;
+    width: 220px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+.rental-card-info h5 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    /* ← samain sama admin */
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 2px;
+}
+
+.rental-card-info .rental-loc {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-bottom: 6px;
+}
+
+.rental-card-info .rental-loc svg {
+    width: 10px;
+    height: 10px;
+    stroke: rgba(255, 255, 255, 0.5);
+    fill: none;
+    flex-shrink: 0;
+}
+
+.rental-card-info .rental-price {
+    font-family: 'Abril Fatface', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.rental-date-row {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    /* ← kurangin dari 15px */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 3px;
+}
+
+.rental-date-row svg {
+    width: 17px;
+    height: 18px;
+    fill: #fff;
+    flex-shrink: 0;
+    margin-top: -20px;
+}
+
+/* ── DIAGONAL SHAPE OVERLAY ── */
+.rental-card::after {
+    content: '';
+    position: absolute;
+    top: 35px;
+    left: 15px;
+    width: 100%;
+    height: 100%;
+    background: rgba(230, 232, 239, 0.10);
+    clip-path: path('M229.268 6.15479C248.774 -7.9614 276.062 5.97505 276.062 30.0532V283.31C276.062 299.602 262.855 312.81 246.562 312.81H30.0127C11.1241 312.81 -2.8983 295.306 1.22363 276.873L26.9805 161.693C28.5522 154.665 32.6398 148.455 38.4736 144.233L229.268 6.15479Z');
+    transform: scaleY(var(--scale-y, 1.2));
+    transform-origin: top center;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── EMPTY STATE ── */
+.rental-empty {
+    text-align: center;
+    padding: 28px 16px;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+    .rental-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── STATUS DOT LEGEND ── */
+.status-legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    margin-top: 4px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+}
+
+.legend-dot.upcoming {
+    background: rgba(235, 245, 48, 0.9);
+}
+
+.legend-dot.active {
+    background: rgba(67, 140, 250, 0.9);
+}
+
+.legend-dot.completed {
+    background: rgba(52, 237, 74, 0.9);
+}
+
+.legend-dot.canceled {
+    background: rgba(248, 50, 32, 0.9);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+    .rental-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============ FORM PENGEMBALIAN BOX ============ */
+.return-box {
+    background: #E8F4FB;
+    border-radius: 16px;
+    padding: 28px;
+    /* ← sama semua sisinya */
+    margin-top: 20px;
+    margin-left: calc(70px + 18px);
+    /* ← hapus margin-left */
+}
+
+.return-box-title {
+    font-family: 'Abril Fatface', serif;
+    font-size: 25px;
+    color: #E6E8EF;
+    text-align: center;
+    margin-bottom: 16px;
+    margin-top: 24px;
+    letter-spacing: 0.06em;
+    margin-left: calc(70px + 18px);
+}
+
+.return-box-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    /* gedein dari 24px */
+    align-items: stretch;
+}
+
+.return-box-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 30px;
+    /* ← naikkan angka kedua (kolom) dari 48px */
+    margin-bottom: 20px;
+    align-items: start;
+}
+
+.return-box-field-label {
+    font-family: 'Abril Fatface', serif;
+    font-size: 17px;
+    color: #21394F;
+    margin-bottom: 6px;
+}
+
+.return-box-value {
+    background: #21394F;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'Amethysta', serif;
+    font-size: 15px;
+    color: #DFEAF2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.return-box-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.return-box-bottom>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.return-box-upload {
+    flex: 1;
+    aspect-ratio: unset;
+    min-height: 300px;
+    background: #21394F;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.return-box-upload img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.return-box-stars {
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.return-box-stars .star-on {
+    color: #f5b800;
+    font-size: 26px;
+}
+
+.return-box-stars .star-off {
+    color: #ccc;
+    font-size: 26px;
+}
+
+.return-box-textarea {
+    flex: 1;
+    min-height: unset;
+    width: 100%;
+    min-height: 140px;
+    background: #21394F;
+    border: 1px solid #DFEAF2;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'Amethysta', serif;
+    font-size: 14px;
+    color: #DFEAF2;
+    resize: vertical;
+    outline: none;
+}
+
+.return-box-textarea::placeholder {
+    color: rgba(223, 234, 242, 0.5);
+}
+
+/* ── TXN GRID & CARD (untuk My Wallet) ── */
+.txn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 1000px;
+}
+
+.txn-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+}
+
+.txn-card {
+    background: #21394F;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-top: 10px;
+    height: auto;
+    min-height: 280px;
+    overflow: hidden;
+    max-width: 480px;
+    width: 100%;
+}
+
+.txn-img-wrap img {
+    width: 100%;
+    height: 100%;
+
+}
+
+.txn-card .txn-img-wrap img {
+    width: 100%;
+    height: 169px;
+    object-fit: cover;
+    display: block;
+}
+
+.txn-img-wrap {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+    margin: 0;
+    border-radius: 12px 12px 0 0;
+}
+
+.txn-foto {
+    width: 100%;
+    margin: 0 !important;
+    padding: 0;
+    position: static;
+    display: block;
+    margin-left: -20px;
+}
+
+/* Badge di dalam foto */
+.pembayaran-badge,
+.pemasukan-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 3;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    word-break: keep-all;
+    max-width: 100px;
+}
+
+.txn-shape-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.txn-foto svg {
+    display: block;
+    max-width: 90%;
+    height: auto;
+    margin-left: 0px;
+}
+
+.txn-card-info {
+    padding: 12px 14px 18px;
+    margin-left: 55px;
+    width: auto;
+    /* ← auto */
+    max-width: 250px;
+    /* ← batasi max lebarnya */
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 0px;
+}
+
+.txn-card-info h5 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.txn-card-info .loc {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-bottom: 6px;
+}
+
+.txn-card-info .loc svg {
+    width: 10px;
+    height: 10px;
+    stroke: rgba(255, 255, 255, 0.5);
+    fill: none;
+    flex-shrink: 0;
+}
+
+.txn-card-info .amount {
+    font-family: 'Abril Fatface', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.txn-card-info .date-row {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 3px;
+}
+
+.txn-card-info .date-row svg {
+    width: 17px;
+    height: 18px;
+    fill: #fff;
+    flex-shrink: 0;
+    margin-top: -20px;
+}
+
+#owner-catalog-section .section-header h3 {
+    font-family: 'Abril Fatface', serif;
+    color: #E6E8EF;
+    text-decoration: underline;
+    font-weight: 400;
+}
+
+.txn-card-info>* {
+    position: relative;
+    z-index: 1;
+}
+
+.txn-badge-wrap {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 3;
+}
+
+.txn-card::after {
+    content: '';
+    position: absolute;
+    top: 35px;
+    left: 15px;
+    width: 100%;
+    height: 100%;
+    background: rgba(230, 232, 239, 0.10);
+    clip-path: path('M229.268 6.15479C248.774 -7.9614 276.062 5.97505 276.062 30.0532V283.31C276.062 299.602 262.855 312.81 246.562 312.81H30.0127C11.1241 312.81 -2.8983 295.306 1.22363 276.873L26.9805 161.693C28.5522 154.665 32.6398 148.455 38.4736 144.233L229.268 6.15479Z');
+    transform: scaleY(var(--scale-y, 1.2));
+    transform-origin: top center;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Wrapper Card 1 */
+.txn-card-1-wrapper {
+    position: relative;
+    width: 100%;
+    flex-shrink: 0;
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding-top: 0 !important;
+}
+
+/* foto SVG tetap absolute, nongol di atas card */
+.txn-card-1-wrapper>svg {
+    position: absolute;
+    top: -40px;
+    right: 20px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Badge di wrapper (atas foto) */
+.txn-card-1-wrapper .pembayaran-badge,
+.txn-card-1-wrapper .pemasukan-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 5;
+}
+
+/* Card info Card 1 — hapus padding/margin inline */
+.txn-card-1-wrapper .txn-card {
+    overflow: visible;
+    flex: 1;
+}
+
+.txn-card-1-wrapper .txn-card-info {
+    padding-top: 12px;
+    padding-left: 20px;
+    padding-right: 14px;
+    height: auto;
+}
+
+.pembayaran-badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    background: rgba(248, 50, 32, 0.35);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    max-width: 100px;
+    /* ← ini yang bikin wrap */
+    line-height: 1.4;
+}
+
+.pemasukan-badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    background: rgba(52, 237, 74, 0.35);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    max-width: 100px;
+    /* ← ini yang bikin wrap */
+    line-height: 1.4;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+    .dash-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-sidebar {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .dash-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .wallet-top {
+        grid-template-columns: 1fr;
+    }
+
+    .wallet-trans-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rd-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-card {
+        grid-template-columns: 90px 1fr;
+    }
+
+    .dash-card .dc-action {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .return-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
