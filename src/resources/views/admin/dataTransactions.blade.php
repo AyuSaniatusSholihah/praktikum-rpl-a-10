@@ -12,8 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Abril+Fatface&family=Abhaya+Libre:wght@400;700&family=Abyssinica+SIL&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700;800&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/sewain/assets/css/home.css">
-  <link rel="stylesheet" href="/sewain/assets/css/admin.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
 </head>
 <body>
 
@@ -125,7 +125,7 @@
             <th>ID</th><th>User</th><th>Owner</th><th>Item</th><th>Date</th><th>Wallet</th><th>Status</th><th></th>
           </tr></thead>
           <tbody>
-            <tr><td>T0001</td><td>Faris R</td><td>Photography Sewa Tangerang</td><td><div class="item-info"><img class="item-thumb" src="/sewain/assets/img/sony camera.jpg" alt="">Sony Alpha A7 IV Mirrorless Digital Camera</div></td><td>
+            <tr><td>T0001</td><td>Faris R</td><td>Photography Sewa Tangerang</td><td><div class="item-info"><img class="item-thumb" src="{{ asset('assets/img/sony camera.jpg') }}" alt="">Sony Alpha A7 IV Mirrorless Digital Camera</div></td><td>
                 <div>02 Jan 2026,</div>
                 <div>12.30 AM</div>
             </td><td>QRIS</td><td><span class="badge badge-completed">Completed Rent</span></td><td><button class="btn-view" onclick="showTxnDetail()">View Details</button></td></tr>
