@@ -39,43 +39,34 @@ class DatabaseSeeder extends Seeder
 
         // 3. Buat Kategori Dummy
         \App\Models\Kategori::create([
-            'nama_kategori' => 'Videografi',
+            'nama_kategori' => 'Photography',
             'deskripsi' => 'Semua jenis kamera video, DSLR, Mirrorless, Drone, dan stabilizer.',
         ]);
 
         \App\Models\Kategori::create([
-            'nama_kategori' => 'Audio & Sound System',
+            'nama_kategori' => 'Electronics',
             'deskripsi' => 'Speaker, microphone, mixer, sound card, dan perangkat audio lainnya.',
         ]);
 
         \App\Models\Kategori::create([
-            'nama_kategori' => 'Alat Rumah Tangga',
+            'nama_kategori' => 'Tools',
             'deskripsi' => 'Vacuum cleaner, microwave, air fryer, blender, dan kebutuhan rumah tangga.',
         ]);
 
         \App\Models\Kategori::create([
-            'nama_kategori' => 'Alat Camping & Outdoor',
+            'nama_kategori' => 'Camping',
             'deskripsi' => 'Tenda, tas carrier, sleeping bag, kompor camp, dan peralatan mendaki.',
         ]);
 
         \App\Models\Kategori::create([
-            'nama_kategori' => 'Kendaraan',
+            'nama_kategori' => 'Vehicles',
             'deskripsi' => 'Penyewaan mobil, motor, sepeda, dan aksesoris kendaraan.',
         ]);
 
         \App\Models\Kategori::create([
-            'nama_kategori' => 'Fashion & Pakaian',
+            'nama_kategori' => 'Fashion',
             'deskripsi' => 'Gaun pesta, jas formal, pakaian adat, kostum, dan aksesoris fashion.',
         ]);
 
-        \App\Models\Kategori::create([
-            'nama_kategori' => 'Peralatan Kerja & Perkakas',
-            'deskripsi' => 'Bor listrik, gergaji mesin, tangga lipat, dan perkakas pertukangan.',
-        ]);
-
-        \App\Models\Kategori::create([
-            'nama_kategori' => 'Gadget & Elektronik',
-            'deskripsi' => 'Laptop, proyektor, televisi, tablet, dan konsol game.',
-        ]);
     }
 }
