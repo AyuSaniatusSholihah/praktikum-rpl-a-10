@@ -117,12 +117,12 @@
       <div class="stat-card">
         <div class="info">
           <div class="label">Total User</div>
-          <div class="value">30</div>
+          <div class="value">{{ $stats['total_user'] }}</div>
           <div class="change up">
             <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14 0L16.29 2.29L11.41 7.17L7.41 3.17L0 10.59L1.41 12L7.41 6L11.41 10L17.71 3.71L20 6V0H14Z" fill="#00B69B"/>
             </svg>
-            8.5% Up from yesterday
+            Total user terdaftar
           </div>
         </div>
         <div class="stat-right">
@@ -137,12 +137,12 @@
       <div class="stat-card">
         <div class="info">
           <div class="label">Total Owner</div>
-          <div class="value">17</div>
-          <div class="change down">
+          <div class="value">{{ $stats['total_owner'] }}</div>
+          <div class="change up">
             <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 12L16.29 9.71L11.41 4.83L7.41 8.83L0 1.41L1.41 0L7.41 6L11.41 2L17.71 8.29L20 6V12H14Z" fill="#F93C65"/>
+              <path d="M14 0L16.29 2.29L11.41 7.17L7.41 3.17L0 10.59L1.41 12L7.41 6L11.41 10L17.71 3.71L20 6V0H14Z" fill="#00B69B"/>
             </svg>
-            4.3% Down from yesterday
+            User yang punya katalog
           </div>
         </div>
         <div class="icon-box icon-green">
@@ -155,12 +155,12 @@
       <div class="stat-card">
         <div class="info">
           <div class="label">Total Rent</div>
-          <div class="value">10293</div>
+          <div class="value">{{ $stats['total_rent'] }}</div>
           <div class="change up">
             <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14 0L16.29 2.29L11.41 7.17L7.41 3.17L0 10.59L1.41 12L7.41 6L11.41 10L17.71 3.71L20 6V0H14Z" fill="#00B69B"/>
             </svg>
-            1.3% Up from past week
+            Total transaksi penyewaan
           </div>
         </div>
         <div class="icon-box icon-amber">
@@ -191,7 +191,7 @@
         </svg>
         </div>
         <div class="wc-total-label">Total Transaction Sewa User</div>
-        <div class="wc-amount">Rp 2.312.000</div>
+        <div class="wc-amount">Rp {{ number_format($walletByMethod['transfer bank'], 0, ',', '.') }}</div>
         <div class="wc-row"><span>CARD HOLDER</span><span>PAYMENT METHOD</span></div>
           <div class="wc-row">
             <span class="wc-name">SEWAIN</span>
@@ -215,7 +215,7 @@
         </svg>
         </div>
         <div class="wc-total-label">Total Transaction Sewa User</div>
-        <div class="wc-amount">Rp 2.720.000</div>
+        <div class="wc-amount">Rp {{ number_format($walletByMethod['e-wallet'], 0, ',', '.') }}</div>
         <div class="wc-row"><span>CARD HOLDER</span><span>PAYMENT METHOD</span></div>
           <div class="wc-row">
             <span class="wc-name">SEWAIN</span>
@@ -260,7 +260,7 @@
         </svg>
         </div>
         <div class="wc-total-label">Total Transaction Sewa User</div>
-        <div class="wc-amount">Rp 1.050.000</div>
+        <div class="wc-amount">Rp {{ number_format($walletByMethod['qris'], 0, ',', '.') }}</div>
         <div class="wc-row"><span>CARD HOLDER</span><span>PAYMENT METHOD</span></div>
           <div class="wc-row">
             <span class="wc-name">SEWAIN</span>
@@ -275,32 +275,23 @@
       <a href="{{ route('admin.users') }}">See All</a>
     </div>
     <div class="users-grid" style="margin-bottom:24px;">
+      @forelse($usersPreview as $u)
       <div class="user-card">
-        <img src="camp band.jpg" alt="Camping Groups Bandung">
+        <img src="{{ $u->foto_profil ? asset('storage/' . $u->foto_profil) : asset('assets/img/default-avatar.svg') }}" alt="{{ $u->name }}" onerror="this.src='{{ asset('assets/img/default-avatar.svg') }}'">
         <div class="user-card-info">
-          <span class="owner-badge">OWNER</span>
-          <h4>Camping Groups Bandung</h4>
-          <p>campinggroups.bandung1@gmail.com</p>
-          <button class="btn-view-more" onclick="location.href='{{ route('admin.users') }}'">View More</button>
+          @if($u->role === 'admin')
+            <span class="owner-badge" style="background:#2485A8;">ADMIN</span>
+          @elseif($u->barangs_count > 0)
+            <span class="owner-badge">OWNER</span>
+          @endif
+          <h4>{{ $u->name }}</h4>
+          <p>{{ $u->email }}</p>
+          <button class="btn-view-more" onclick="location.href='{{ route('admin.users.detail', $u->id) }}'">View More</button>
         </div>
       </div>
-      <div class="user-card">
-        <img src="rent car surakarta.webp" alt="Rental Car Surakarta">
-        <div class="user-card-info">
-          <span class="owner-badge">OWNER</span>
-          <h4>Rental Car Surakarta</h4>
-          <p>rencar.surakarta@gmail.com</p>
-          <button class="btn-view-more" onclick="location.href='{{ route('admin.users') }}'">View More</button>
-        </div>
-      </div>
-      <div class="user-card">
-        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Ayu Sanitus Sholihah">
-        <div class="user-card-info">
-          <h4>Ayu Sanitus Sholihah</h4>
-          <p>ayu.sanitus@gmail.com</p>
-          <button class="btn-view-more" onclick="location.href='{{ route('admin.users') }}'">View More</button>
-        </div>
-      </div>
+      @empty
+        <p style="grid-column:1/-1; color:#727272;">Belum ada user.</p>
+      @endforelse
     </div>
 
     <!-- Data Items Preview -->
@@ -314,51 +305,19 @@
           <th>ID</th><th>Name</th><th>Owner</th><th>Price</th><th>Category</th><th>Status</th><th></th>
         </tr></thead>
           <tbody>
+            @forelse($itemsPreview as $item)
             <tr>
-              <td>I001</td>
-              <td><div class="item-info"><img class="item-thumb" src="sony camera.jpg" alt="">Sony Alpha A7 IV</div></td>
-              <td>Photography Sewa Tangerang</td>
-              <td>Rp 100.000/hari</td>
-              <td>Photography</td>
-              <td><span class="badge badge-completed">Completed Rent</span></td>
-              <td><button class="btn-view">View Details</button></td>
+              <td>#{{ $item->id }}</td>
+              <td><div class="item-info"><img class="item-thumb" src="{{ $item->foto_barang ? asset('storage/' . $item->foto_barang) : 'https://placehold.co/60x60?text=No+Image' }}" alt="" onerror="this.src='https://placehold.co/60x60?text=No+Image'">{{ $item->nama_barang }}</div></td>
+              <td>{{ $item->user->name ?? '-' }}</td>
+              <td>Rp {{ number_format($item->harga_sewa, 0, ',', '.') }}/hari</td>
+              <td>{{ $item->kategori->nama_kategori ?? '-' }}</td>
+              <td><span class="badge {{ $item->statusBadgeClass() }}">{{ $item->statusLabel() }}</span></td>
+              <td><button class="btn-view" onclick="location.href='{{ route('admin.items.detail', $item->id) }}'">View Details</button></td>
             </tr>
-            <tr>
-              <td>IC001</td>
-              <td><div class="item-info"><img class="item-thumb" src="tenda altrek.webp" alt="">ALLTREK Tenda Camping</div></td>
-              <td>Camping Groups Bandung</td>
-              <td>Rp 450.000/hari</td>
-              <td>Camping</td>
-              <td><span class="badge badge-active">Active Rent</span></td>
-              <td><button class="btn-view">View Details</button></td>
-            </tr>
-            <tr>
-              <td>IC002</td>
-              <td><div class="item-info"><img class="item-thumb" src="fortuner mobil.jpg" alt="">Mobil Fortuner Hitam</div></td>
-              <td>Rent Car Baliness</td>
-              <td>Rp 500.000/hari</td>
-              <td>Otomotif</td>
-              <td><span class="badge badge-active">Active Rent</span></td>
-              <td><button class="btn-view">View Details</button></td>
-            </tr>
-            <tr>
-              <td>IC003</td>
-              <td><div class="item-info"><img class="item-thumb" src="sound system.jpg" alt="">Yamaha Pro Audio</div></td>
-              <td>Sewa SoundSystem Full Surakarta</td>
-              <td>Rp 750.000/hari</td>
-              <td>Audio</td>
-              <td><span class="badge badge-completed">Completed Rent</span></td>
-              <td><button class="btn-view">View Details</button></td>
-            </tr>
-            <tr>
-              <td>IC004</td>
-              <td><div class="item-info"><img class="item-thumb" src="ip 18b air.webp" alt="">Iphone 17 Air (Hijau)</div></td>
-              <td>AppleSewa Jogjaa</td>
-              <td>Rp 150.000/hari</td>
-              <td>Elektronik</td>
-              <td><span class="badge badge-processing">UpComing Rent</span></td>
-              <td><button class="btn-view">View Details</button></td>
-            </tr>
+            @empty
+            <tr><td colspan="7" style="text-align:center; color:#727272; padding:16px;">Belum ada item.</td></tr>
+            @endforelse
           </tbody>
       </table>
     </div>
@@ -374,41 +333,17 @@
           <th>ID</th><th>User</th><th>Owner</th><th>Item</th><th>Date</th><th>Wallet</th><th>Status</th><th>Receipt</th>
         </tr></thead>
         <tbody>
+          @forelse($transaksiPreview as $trans)
           <tr>
-            <td>T0001</td><td>Faris R</td><td>Photography Sewa Tangerang</td>
-            <td><div class="item-info"><img class="item-thumb" src="sony camera.jpg" alt="">Sony Alpha A7 IV</div></td>
-            <td>02 Jan 2026, 12.30</td><td>QRIS</td>
-            <td><span class="badge badge-completed">Completed Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
+            <td>#{{ $trans->id }}</td><td>{{ $trans->user->name ?? '-' }}</td><td>{{ $trans->barang->user->name ?? '-' }}</td>
+            <td><div class="item-info"><img class="item-thumb" src="{{ optional($trans->barang)->foto_barang ? asset('storage/' . $trans->barang->foto_barang) : 'https://placehold.co/60x60?text=No+Image' }}" alt="" onerror="this.src='https://placehold.co/60x60?text=No+Image'">{{ $trans->barang->nama_barang ?? '-' }}</div></td>
+            <td>{{ optional($trans->created_at)->translatedFormat('d M Y, H.i') }}</td><td>{{ $trans->pembayaran ? ucwords($trans->pembayaran->metode) : '-' }}</td>
+            <td><span class="badge {{ $trans->statusBadgeClass() }}">{{ $trans->statusLabel() }}</span></td>
+            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions.detail', $trans->id) }}'">View Details</button></td>
           </tr>
-          <tr>
-            <td>T0002</td><td>Aprilia Alfa</td><td>Camping Groups Bandung</td>
-            <td><div class="item-info"><img class="item-thumb" src="tenda altrek.webp" alt="">ALLTREK Tenda Camping</div></td>
-            <td>12 Mar 2026, 09.45</td><td>Transfer Bank BCA</td>
-            <td><span class="badge badge-active">Active Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
-          </tr>
-          <tr>
-            <td>T0003</td><td>Ayu Saniatus</td><td>Rent Car Baliness</td>
-            <td><div class="item-info"><img class="item-thumb" src="fortuner mobil.jpg" alt="">Mobil Fortuner Hitam</div></td>
-            <td>10 Feb 2026, 11.15</td><td>ShopeePay</td>
-            <td><span class="badge badge-cancelled">Cancelled Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
-          </tr>
-          <tr>
-            <td>T0004</td><td>Laila Khoirunisa</td><td>Sewa SoundSystem Full Surakarta</td>
-            <td><div class="item-info"><img class="item-thumb" src="sound system.jpg" alt="">Yamaha Pro Audio</div></td>
-            <td>3 Apr 2026, 06.00</td><td>Transfer Bank BRI</td>
-            <td><span class="badge badge-completed">Completed Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
-          </tr>
-          <tr>
-            <td>T0005</td><td>Ghazi Fahmi</td><td>AppleSewa Jogjaa</td>
-            <td><div class="item-info"><img class="item-thumb" src="ip 18b air.webp" alt="">Iphone 17 Air (Hijau)</div></td>
-            <td>18 Feb 2026, 07.00</td><td>QRIS</td>
-            <td><span class="badge badge-processing">UpComing Rent</span></td>
-            <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions') }}'">View Details</button></td>
-          </tr>
+          @empty
+          <tr><td colspan="8" style="text-align:center; color:#727272; padding:16px;">Belum ada transaksi.</td></tr>
+          @endforelse
         </tbody>
       </table>
     </div>

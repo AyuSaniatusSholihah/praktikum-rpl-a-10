@@ -84,12 +84,12 @@
                         <label class="upload-box" for="upload1">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                             <span class="upload-label">Angle 1</span>
-                            <input type="file" id="upload1" accept="image/*" hidden/>
+                            <input type="file" name="fotoproduk1" id="upload1" accept="image/*" hidden/>
                         </label>
                         <label class="upload-box" for="upload3">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                             <span class="upload-label">Angle 3</span>
-                            <input type="file" id="upload3" accept="image/*" hidden/>
+                            <input type="file" name="fotoproduk3" id="upload3" accept="image/*" hidden/>
                         </label>
                         <div class="upload-date">
                             <div class="date-title">Tanggal Item Mulai<br/>Tersedia</div>
@@ -111,12 +111,12 @@
                         <label class="upload-box" for="upload2">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                             <span class="upload-label">Angle 2</span>
-                            <input type="file" id="upload2" accept="image/*" hidden/>
+                            <input type="file" name="fotoproduk2" id="upload2" accept="image/*" hidden/>
                         </label>
                         <label class="upload-box" for="upload4">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                             <span class="upload-label">Angle 4</span>
-                            <input type="file" id="upload4" accept="image/*" hidden/>
+                            <input type="file" name="fotoproduk4" id="upload4" accept="image/*" hidden/>
                         </label>
                         <div class="upload-date">
                             <div class="date-title">Tanggal Item tidak<br/>Tersedia</div>

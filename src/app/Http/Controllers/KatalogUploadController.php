@@ -31,12 +31,25 @@ class KatalogUploadController extends Controller
             'tanggal_item_mulai' => 'required|date|after_or_equal:today',
             'tanggal_item_tidak_tersedia' => 'required|date|after_or_equal:tanggal_item_mulai',
             'foto_barang' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'fotoproduk1' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'fotoproduk2' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'fotoproduk3' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'fotoproduk4' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
+        // Foto utama (wajib) -> disimpan di storage publik
         $imagePath = null;
         if ($request->hasFile('foto_barang')) {
             // Upload file ke storage/app/public/katalog_images
             $imagePath = $request->file('foto_barang')->store('katalog_images', 'public');
+        }
+
+        // Foto produk tambahan (angle 1-4, opsional) -> disimpan di storage publik
+        $fotoProduk = [];
+        foreach (['fotoproduk1', 'fotoproduk2', 'fotoproduk3', 'fotoproduk4'] as $field) {
+            $fotoProduk[$field] = $request->hasFile($field)
+                ? $request->file($field)->store('katalog_images', 'public')
+                : null;
         }
 
         // Simpan ke database
@@ -51,6 +64,10 @@ class KatalogUploadController extends Controller
             'stok' => $request->stok,
             'lokasi' => $request->lokasi,
             'foto_barang' => $imagePath,
+            'fotoproduk1' => $fotoProduk['fotoproduk1'],
+            'fotoproduk2' => $fotoProduk['fotoproduk2'],
+            'fotoproduk3' => $fotoProduk['fotoproduk3'],
+            'fotoproduk4' => $fotoProduk['fotoproduk4'],
             'status' => 'tersedia',
             'tanggal_item_mulai' => $request->tanggal_item_mulai,
             'tanggal_item_tidak_tersedia' => $request->tanggal_item_tidak_tersedia,

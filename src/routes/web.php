@@ -127,68 +127,17 @@ Route::get('/katalog/edit-item/{id}', function ($id) {
 
 // ============================================================
 // ADMIN ROUTES – hanya bisa diakses oleh user dengan role admin
+// Data diambil dari database lewat AdminController.
 // ============================================================
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-
-    // Helper: pastikan user adalah admin, abort 403 jika bukan
-    $onlyAdmin = function () {
-        /** @var \App\Models\User|null $user */
-        $user = \Illuminate\Support\Facades\Auth::user();
-        if (!$user || $user->role !== 'admin') {
-            abort(403, 'Akses ditolak. Halaman ini hanya untuk Admin.');
-        }
-    };
-
-    // Dashboard
-    Route::get('/', function () use ($onlyAdmin) {
-        $onlyAdmin();
-        return view('admin.dashboardPage');
-    })->name('dashboard');
-
-    // Financial Wallet
-    Route::get('/financial-wallet', function () use ($onlyAdmin) {
-        $onlyAdmin();
-        return view('admin.financialWalletPage');
-    })->name('financial-wallet');
-
-    // Data Users (list)
-    Route::get('/users', function () use ($onlyAdmin) {
-        $onlyAdmin();
-        return view('admin.dataUserPage');
-    })->name('users');
-
-    // Data User Detail
-    Route::get('/users/{id}', function ($id) use ($onlyAdmin) {
-        $onlyAdmin();
-        $user = \App\Models\User::findOrFail($id);
-        return view('admin.userDetailPage', compact('user'));
-    })->name('users.detail');
-
-    // Data Items (list)
-    Route::get('/items', function () use ($onlyAdmin) {
-        $onlyAdmin();
-        return view('admin.dataItemPage');
-    })->name('items');
-
-    // Data Item Detail
-    Route::get('/items/{id}', function ($id) use ($onlyAdmin) {
-        $onlyAdmin();
-        $item = \App\Models\Barang::with(['user', 'kategori', 'reviews.user'])->findOrFail($id);
-        return view('admin.itemDetailPage', compact('item'));
-    })->name('items.detail');
-
-    // Data Transactions (list)
-    Route::get('/transactions', function () use ($onlyAdmin) {
-        $onlyAdmin();
-        return view('admin.dataTransactions');
-    })->name('transactions');
-
-    // Data Transaction Detail
-    Route::get('/transactions/{id}', function ($id) use ($onlyAdmin) {
-        $onlyAdmin();
-        $transaksi = \App\Models\TransaksiPenyewaan::with(['user', 'barang.user', 'pembayaran', 'review'])->findOrFail($id);
-        return view('admin.transactionDetailPage', compact('transaksi'));
-    })->name('transactions.detail');
+    Route::get('/', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/financial-wallet', [\App\Http\Controllers\AdminController::class, 'financialWallet'])->name('financial-wallet');
+    Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('users');
+    Route::get('/users/{id}', [\App\Http\Controllers\AdminController::class, 'userDetail'])->name('users.detail');
+    Route::get('/items', [\App\Http\Controllers\AdminController::class, 'items'])->name('items');
+    Route::get('/items/{id}', [\App\Http\Controllers\AdminController::class, 'itemDetail'])->name('items.detail');
+    Route::get('/transactions', [\App\Http\Controllers\AdminController::class, 'transactions'])->name('transactions');
+    Route::get('/transactions/{id}', [\App\Http\Controllers\AdminController::class, 'transactionDetail'])->name('transactions.detail');
 });
 
 

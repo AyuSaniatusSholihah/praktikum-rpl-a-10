@@ -121,7 +121,7 @@
           <div class="wallet-stat-card">
             <div class="info">
               <div class="label">Total Saldo User</div>
-              <div class="amount">Rp 7.890.000</div>
+              <div class="amount">Rp {{ number_format($totalSaldoUser, 0, ',', '.') }}</div>
             </div>
             <div class="stat-right">
               <div class="icon-box icon-green">
@@ -136,7 +136,7 @@
           <div class="wallet-stat-card">
             <div class="info">
               <div class="label">Total Saldo Owner</div>
-              <div class="amount">Rp 3.430.000</div>
+              <div class="amount">Rp {{ number_format($totalSaldoOwner, 0, ',', '.') }}</div>
             </div>
             <div class="stat-right">
               <div class="icon-box icon-amber">
@@ -164,7 +164,7 @@
         </svg>
         </div>
           <div class="wc-total-label">Total Transaction Sewa User</div>
-          <div class="wc-amount">Rp 2.312.000</div>
+          <div class="wc-amount">Rp {{ number_format($walletByMethod['transfer bank'], 0, ',', '.') }}</div>
           <div class="wc-row"><span>CARD HOLDER</span><span>PAYMENT METHOD</span></div>
           <div class="wc-row">
             <span class="wc-name">SEWAIN</span>
@@ -188,7 +188,7 @@
         </svg>
         </div>
           <div class="wc-total-label">Total Transaction Sewa User</div>
-          <div class="wc-amount">Rp 2.720.000</div>
+          <div class="wc-amount">Rp {{ number_format($walletByMethod['e-wallet'], 0, ',', '.') }}</div>
           <div class="wc-row"><span>CARD HOLDER</span><span>PAYMENT METHOD</span></div>
           <div class="wc-row">
             <span class="wc-name">SEWAIN</span>
@@ -234,7 +234,7 @@
             </svg>
             </div>
           <div class="wc-total-label">Total Transaction Sewa User</div>
-          <div class="wc-amount">Rp 1.050.000</div>
+          <div class="wc-amount">Rp {{ number_format($walletByMethod['qris'], 0, ',', '.') }}</div>
           <div class="wc-row"><span>CARD HOLDER</span><span>PAYMENT METHOD</span></div>
           <div class="wc-row">
             <span class="wc-name">SEWAIN</span>
@@ -248,9 +248,20 @@
         <table class="data-table">
           <thead><tr><th>ID</th><th>User</th><th>Owner</th><th>Item</th><th>Date</th><th>Payment Method</th><th>Status</th><th>Receipt</th></tr></thead>
           <tbody>
-            <tr><td>T0002</td><td>Aprilia Alfa</td><td>Camping Groups Bandung</td><td><div class="item-info"><img class="item-thumb" src="camp band.jpg" alt="">ALLTREK Tenda Camping</div></td><td>12 Mar 2026, 09.45</td><td>Transfer Bank BCA</td><td><span class="badge badge-active">Active Rent</span></td><td><button class="btn-view" onclick="showTxnDetail()">View Details</button></td></tr>
-            <tr><td>T0004</td><td>Laila Khoirunisa</td><td>Sewa SoundSystem Full Surakarta</td><td><div class="item-info"><img class="item-thumb" src="sound system.jpg" alt="">Yamaha Pro Audio</div></td><td>3 Apr 2026, 06.00</td><td>Transfer Bank BRI</td><td><span class="badge badge-completed">Completed</span></td><td><button class="btn-view">View Details</button></td></tr>
-            <tr><td>T0006</td><td>Muhammad Sholeh</td><td>Albeka Collection</td><td><div class="item-info"><img class="item-thumb" src="kebaya cream.jpg" alt="">Kebaya Cream</div></td><td>20 Mar 2026, 11.30</td><td>GoPay</td><td><span class="badge badge-return">Return Rent</span></td><td><button class="btn-view">View Details</button></td></tr>
+            @forelse($transaksiTerbaru as $trans)
+            <tr>
+              <td>#{{ $trans->id }}</td>
+              <td>{{ $trans->user->name ?? '-' }}</td>
+              <td>{{ $trans->barang->user->name ?? '-' }}</td>
+              <td><div class="item-info"><img class="item-thumb" src="{{ optional($trans->barang)->foto_barang ? asset('storage/' . $trans->barang->foto_barang) : 'https://placehold.co/60x60?text=No+Image' }}" alt="" onerror="this.src='https://placehold.co/60x60?text=No+Image'">{{ $trans->barang->nama_barang ?? '-' }}</div></td>
+              <td>{{ optional($trans->created_at)->translatedFormat('d M Y, H.i') }}</td>
+              <td>{{ $trans->pembayaran ? ucwords($trans->pembayaran->metode) . ($trans->pembayaran->detail_metode ? ' ' . $trans->pembayaran->detail_metode : '') : '-' }}</td>
+              <td><span class="badge {{ $trans->statusBadgeClass() }}">{{ $trans->statusLabel() }}</span></td>
+              <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions.detail', $trans->id) }}'">View Details</button></td>
+            </tr>
+            @empty
+            <tr><td colspan="8" style="text-align:center; color:#727272; padding:16px;">Belum ada transaksi.</td></tr>
+            @endforelse
           </tbody>
         </table>
       </div>

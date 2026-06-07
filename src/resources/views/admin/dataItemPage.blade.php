@@ -126,36 +126,33 @@
             <th>ID</th><th>Name</th><th>Owner</th><th>Price</th><th>Category</th><th>Status</th><th></th><th></th>
           </tr></thead>
           <tbody>
-            <tr><td>IP001</td><td><div class="item-info"><img class="item-thumb" src="sony camera.jpg" alt="">Sony Alpha A7 IV Mirrorless Digital Camera</div></td><td>Photography Sewa Tangerang</td><td>Rp 100.000/hari</td><td>Photography</td><td><span class="badge badge-completed">Completed Rent</span></td><td><button class="btn-view" onclick="showItemDetail()">View Details</button></td><td><button class="btn-delete">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.5312 3.23438H13.6562V1.4375C13.6562 0.644629 13.0116 0 12.2188 0H5.03125C4.23838 0 3.59375 0.644629 3.59375 1.4375V3.23438H0.71875C0.321191 3.23438 0 3.55557 0 3.95312V4.67188C0 4.7707 0.0808594 4.85156 0.179688 4.85156H1.53633L2.09111 16.5986C2.12705 17.3646 2.76045 17.9688 3.52637 17.9688H13.7236C14.4918 17.9688 15.1229 17.3668 15.1589 16.5986L15.7137 4.85156H17.0703C17.1691 4.85156 17.25 4.7707 17.25 4.67188V3.95312C17.25 3.55557 16.9288 3.23438 16.5312 3.23438ZM12.0391 3.23438H5.21094V1.61719H12.0391V3.23438Z" fill="#6A87A1"/>
-                </svg>
-            </button></td></tr>
-            <tr><td>IC001</td><td><div class="item-info"><img class="item-thumb" src="tenda altrek.webp" alt="">ALLTREK Tenda Camping 1 Bedroom + 1 Guest Room</div></td><td>Camping Groups Bandung</td><td>Rp 450.000/hari</td><td>Camping</td><td><span class="badge badge-active">Active Rent</span></td><td><button class="btn-view" onclick="showItemDetail()">View Details</button></td><td><button class="btn-delete">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.5312 3.23438H13.6562V1.4375C13.6562 0.644629 13.0116 0 12.2188 0H5.03125C4.23838 0 3.59375 0.644629 3.59375 1.4375V3.23438H0.71875C0.321191 3.23438 0 3.55557 0 3.95312V4.67188C0 4.7707 0.0808594 4.85156 0.179688 4.85156H1.53633L2.09111 16.5986C2.12705 17.3646 2.76045 17.9688 3.52637 17.9688H13.7236C14.4918 17.9688 15.1229 17.3668 15.1589 16.5986L15.7137 4.85156H17.0703C17.1691 4.85156 17.25 4.7707 17.25 4.67188V3.95312C17.25 3.55557 16.9288 3.23438 16.5312 3.23438ZM12.0391 3.23438H5.21094V1.61719H12.0391V3.23438Z" fill="#6A87A1"/>
-                </svg>
-            </button></td></tr>
-            <tr><td>IV001</td><td><div class="item-info"><img class="item-thumb" src="fortuner mobil.jpg" alt="">Mobil Fortuner Hitam</div></td><td>Rent Car Baliness</td><td>Rp 1000.000/hari</td><td>Vehicles</td><td><span class="badge badge-cancelled">Cancelled Rent</span></td><td><button class="btn-view" onclick="showItemDetail()">View Details</button></td><td><button class="btn-delete">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.5312 3.23438H13.6562V1.4375C13.6562 0.644629 13.0116 0 12.2188 0H5.03125C4.23838 0 3.59375 0.644629 3.59375 1.4375V3.23438H0.71875C0.321191 3.23438 0 3.55557 0 3.95312V4.67188C0 4.7707 0.0808594 4.85156 0.179688 4.85156H1.53633L2.09111 16.5986C2.12705 17.3646 2.76045 17.9688 3.52637 17.9688H13.7236C14.4918 17.9688 15.1229 17.3668 15.1589 16.5986L15.7137 4.85156H17.0703C17.1691 4.85156 17.25 4.7707 17.25 4.67188V3.95312C17.25 3.55557 16.9288 3.23438 16.5312 3.23438ZM12.0391 3.23438H5.21094V1.61719H12.0391V3.23438Z" fill="#6A87A1"/>
-                </svg>
-            </button></td></tr>
-            <tr><td>IE001</td><td><div class="item-info"><img class="item-thumb" src="sound system.jpg" alt="">Yamaha Pro Audio Paket 12P Paket Sound System</div></td><td>Sewa SoundSystem Full Surakarta</td><td>Rp 750.000/hari</td><td>Electronics</td><td><span class="badge badge-completed">Completed Rent</span></td><td><button class="btn-view" onclick="showItemDetail()">View Details</button></td><td><button class="btn-delete">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.5312 3.23438H13.6562V1.4375C13.6562 0.644629 13.0116 0 12.2188 0H5.03125C4.23838 0 3.59375 0.644629 3.59375 1.4375V3.23438H0.71875C0.321191 3.23438 0 3.55557 0 3.95312V4.67188C0 4.7707 0.0808594 4.85156 0.179688 4.85156H1.53633L2.09111 16.5986C2.12705 17.3646 2.76045 17.9688 3.52637 17.9688H13.7236C14.4918 17.9688 15.1229 17.3668 15.1589 16.5986L15.7137 4.85156H17.0703C17.1691 4.85156 17.25 4.7707 17.25 4.67188V3.95312C17.25 3.55557 16.9288 3.23438 16.5312 3.23438ZM12.0391 3.23438H5.21094V1.61719H12.0391V3.23438Z" fill="#6A87A1"/>
-                </svg>
-            </button></td></tr>
-            <tr><td>IE002</td><td><div class="item-info"><img class="item-thumb" src="ip 18b air.webp" alt="">Iphone 17 Air (Hijau)</div></td><td>AppleSewa Jogjaa</td><td>Rp 300.000/hari</td><td>Electronics</td><td><span class="badge badge-processing">UpComing Rent</span></td><td><button class="btn-view" onclick="showItemDetail()">View Details</button></td><td><button class="btn-delete">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.5312 3.23438H13.6562V1.4375C13.6562 0.644629 13.0116 0 12.2188 0H5.03125C4.23838 0 3.59375 0.644629 3.59375 1.4375V3.23438H0.71875C0.321191 3.23438 0 3.55557 0 3.95312V4.67188C0 4.7707 0.0808594 4.85156 0.179688 4.85156H1.53633L2.09111 16.5986C2.12705 17.3646 2.76045 17.9688 3.52637 17.9688H13.7236C14.4918 17.9688 15.1229 17.3668 15.1589 16.5986L15.7137 4.85156H17.0703C17.1691 4.85156 17.25 4.7707 17.25 4.67188V3.95312C17.25 3.55557 16.9288 3.23438 16.5312 3.23438ZM12.0391 3.23438H5.21094V1.61719H12.0391V3.23438Z" fill="#6A87A1"/>
-                </svg>
-            </button></td></tr>
-            <tr><td>IF001</td><td><div class="item-info"><img class="item-thumb" src="kebaya cream.jpg" alt="">Kebaya Cream (1 Set)</div></td><td>Albeka Collection</td><td>Rp 630.000/hari</td><td>Fashion</td><td><span class="badge badge-return">Return Rent</span></td><td><button class="btn-view" onclick="showItemDetail()">View Details</button></td><td><button class="btn-delete">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.5312 3.23438H13.6562V1.4375C13.6562 0.644629 13.0116 0 12.2188 0H5.03125C4.23838 0 3.59375 0.644629 3.59375 1.4375V3.23438H0.71875C0.321191 3.23438 0 3.55557 0 3.95312V4.67188C0 4.7707 0.0808594 4.85156 0.179688 4.85156H1.53633L2.09111 16.5986C2.12705 17.3646 2.76045 17.9688 3.52637 17.9688H13.7236C14.4918 17.9688 15.1229 17.3668 15.1589 16.5986L15.7137 4.85156H17.0703C17.1691 4.85156 17.25 4.7707 17.25 4.67188V3.95312C17.25 3.55557 16.9288 3.23438 16.5312 3.23438ZM12.0391 3.23438H5.21094V1.61719H12.0391V3.23438Z" fill="#6A87A1"/>
-                </svg>
-            </button></td></tr>
+            @forelse($items as $item)
+            <tr>
+              <td>#{{ $item->id }}</td>
+              <td>
+                <div class="item-info">
+                  <img class="item-thumb" src="{{ $item->foto_barang ? asset('storage/' . $item->foto_barang) : 'https://placehold.co/60x60?text=No+Image' }}" alt="" onerror="this.src='https://placehold.co/60x60?text=No+Image'">
+                  {{ $item->nama_barang }}
+                </div>
+              </td>
+              <td>{{ $item->user->name ?? '-' }}</td>
+              <td>Rp {{ number_format($item->harga_sewa, 0, ',', '.') }}/hari</td>
+              <td>{{ $item->kategori->nama_kategori ?? '-' }}</td>
+              <td><span class="badge {{ $item->statusBadgeClass() }}">{{ $item->statusLabel() }}</span></td>
+              <td><button class="btn-view" onclick="location.href='{{ route('admin.items.detail', $item->id) }}'">View Details</button></td>
+              <td>
+                <form action="{{ route('admin.items.detail', $item->id) }}" method="GET" onsubmit="return false;" style="display:inline;">
+                  <button type="button" class="btn-delete" title="Hapus item (lihat detail)" onclick="location.href='{{ route('admin.items.detail', $item->id) }}'">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.5312 3.23438H13.6562V1.4375C13.6562 0.644629 13.0116 0 12.2188 0H5.03125C4.23838 0 3.59375 0.644629 3.59375 1.4375V3.23438H0.71875C0.321191 3.23438 0 3.55557 0 3.95312V4.67188C0 4.7707 0.0808594 4.85156 0.179688 4.85156H1.53633L2.09111 16.5986C2.12705 17.3646 2.76045 17.9688 3.52637 17.9688H13.7236C14.4918 17.9688 15.1229 17.3668 15.1589 16.5986L15.7137 4.85156H17.0703C17.1691 4.85156 17.25 4.7707 17.25 4.67188V3.95312C17.25 3.55557 16.9288 3.23438 16.5312 3.23438ZM12.0391 3.23438H5.21094V1.61719H12.0391V3.23438Z" fill="#6A87A1"/>
+                    </svg>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            @empty
+            <tr><td colspan="8" style="text-align:center; color:#727272; padding:24px;">Belum ada item di database.</td></tr>
+            @endforelse
           </tbody>
         </table>
       </div>

@@ -129,8 +129,12 @@
 
             <!-- KOLOM KIRI: foto doang -->
             <div style="position:relative; flex-shrink:0;">
-              <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=200&q=80" alt="" class="detail-avatar" id="detail-avatar">
-              <div class="detail-badge" id="detail-role-badge" style="position:absolute; top:-10px; left:-20px;">OWNER</div>
+              <img src="{{ $user->foto_profil ? asset('storage/' . $user->foto_profil) : asset('assets/img/default-avatar.svg') }}" alt="{{ $user->name }}" class="detail-avatar" id="detail-avatar" onerror="this.src='{{ asset('assets/img/default-avatar.svg') }}'">
+              @if($user->role === 'admin')
+                <div class="detail-badge" id="detail-role-badge" style="position:absolute; top:-10px; left:-20px; background:#2485A8;">ADMIN</div>
+              @elseif($user->barangs_count > 0)
+                <div class="detail-badge" id="detail-role-badge" style="position:absolute; top:-10px; left:-20px;">OWNER</div>
+              @endif
             </div>
 
             <!-- KOLOM KANAN: SEMUA konten masuk sini -->
@@ -138,39 +142,39 @@
 
               <!-- Nama + BAN -->
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-                <div class="detail-title" id="detail-name">Camping Groups Bandung!</div>
-                <button class="btn-ban">BAN</button>
+                <div class="detail-title" id="detail-name">{{ $user->name }}</div>
+                <button class="btn-ban">{{ $user->is_banned ? 'UNBAN' : 'BAN' }}</button>
               </div>
 
               <!-- Field grid -->
               <div class="detail-grid">
                 <div class="detail-field">
                   <label>Username</label>
-                  <input type="text" id="detail-username" value="Camping Groups Bandung" readonly>
+                  <input type="text" id="detail-username" value="{{ $user->username ?? '-' }}" readonly>
                 </div>
                 <div class="detail-field">
                   <label>Email</label>
-                  <input type="text" id="detail-email" value="campinggroups.bandung1@gmail.com" readonly>
+                  <input type="text" id="detail-email" value="{{ $user->email }}" readonly>
                 </div>
                 <div class="detail-field">
                   <label>No. Telephone</label>
-                  <input type="text" id="detail-phone" value="0853-9017-6483" readonly>
+                  <input type="text" id="detail-phone" value="{{ $user->phone_number ?? '-' }}" readonly>
                 </div>
                 <div class="detail-field">
                   <label>Password</label>
                   <input type="password" value="••••••••" readonly>
                 </div>
                 <div class="detail-field">
-                  <label>Date of Birth</label>
-                  <input type="text" id="detail-dob" value="Bandung, 17 September 1995" readonly>
+                  <label>Saldo</label>
+                  <input type="text" value="Rp {{ number_format($user->saldo, 0, ',', '.') }}" readonly>
                 </div>
                 <div class="detail-field" style="grid-row: span 2;">
                   <label>Address</label>
-                  <textarea readonly id="detail-address" style="min-height:120px;">Jl. Ir. H. Juanda No. 50 (Dago), Tamansari, Kec. Bandung Wetan, Kota Bandung, Jawa Barat 40116</textarea>
+                  <textarea readonly id="detail-address" style="min-height:120px;">{{ $user->alamat ?? '-' }}</textarea>
                 </div>
                 <div class="detail-field">
-                  <label>Jenis Kelamin</label>
-                  <input type="text" id="detail-gender" value="-" readonly>
+                  <label>Bergabung</label>
+                  <input type="text" value="{{ optional($user->created_at)->translatedFormat('d F Y') }}" readonly>
                 </div>
               </div>
 
@@ -179,166 +183,74 @@
                 <div class="section-header">
                   <h3>Katalog Items</h3>
                 </div>
+                @php
+                  $allReviews = $user->barangs->flatMap->reviews;
+                  $avgRating = $allReviews->count() ? round($allReviews->avg('rating'), 1) : null;
+                @endphp
                 <div style="margin-bottom:12px;">
                   <div class="rating-box">
                     <span style="color:#F59E0B; font-weight:700;">★</span>
-                    <span>4.3 (120 Reviews)</span>
+                    <span>{{ $avgRating ? $avgRating . ' (' . $allReviews->count() . ' Reviews)' : 'Belum ada review' }}</span>
                   </div>
                 </div>
                 <div class="catalog-grid">
+                  @foreach($user->barangs as $barang)
                   <div class="catalog-card">
-                    <span class="catalog-badge">AVAILABLE</span>
+                    <span class="catalog-badge {{ $barang->status === 'tersedia' ? '' : 'active' }}">{{ strtoupper($barang->statusLabel()) }}</span>
                     <div class="product-img">
-                      <img src="{{ asset('assets/img/alat masak camp.webp') }}" alt="Alat Masak">
+                      <img src="{{ $barang->foto_barang ? asset('storage/' . $barang->foto_barang) : 'https://placehold.co/300x200?text=No+Image' }}" alt="{{ $barang->nama_barang }}" onerror="this.src='https://placehold.co/300x200?text=No+Image'">
                     </div>
                     <div class="catalog-card-info">
                       <div class="head-row">
-                        <h5>Soleil Set 5 Pcs Alat Masak Camping Nesting Aluminium - Hitam</h5>
-                        <span class="rating">★★★★☆</span>
+                        <h5>{{ $barang->nama_barang }}</h5>
                       </div>
                       <div class="loc">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        Kota Bandung
+                        {{ $barang->lokasi ?? '-' }}
                       </div>
-                      <div class="reviews">(40) Customer Reviews</div>
-                      <div class="price">Rp 50.000/hari</div>
+                      <div class="reviews">({{ $barang->reviews->count() }}) Customer Reviews</div>
+                      <div class="price">Rp {{ number_format($barang->harga_sewa, 0, ',', '.') }}/hari</div>
                       <div class="stock-footer">
                         <svg width="16" height="14" viewBox="0 0 20 17" fill="none"><path d="M17.4997 5.16667V16H2.49967V5.16667M8.33301 8.5H11.6663M0.833008 1H19.1663V5.16667H0.833008V1Z" stroke="#484848" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <span>18 Units in Stock</span>
+                        <span>{{ $barang->stok }} Units in Stock</span>
                       </div>
                     </div>
                   </div>
-                  <div class="catalog-card">
-                    <span class="catalog-badge active">ACTIVE RENTAL</span>
-                    <div class="product-img">
-                      <img src="{{ asset('assets/img/tenda altrek.webp') }}" alt="Tenda">
-                    </div>
-                    <div class="catalog-card-info">
-                      <div class="head-row">
-                        <h5>ALLTREK Tenda Camping 1 Bedroom + 1 Guest Room</h5>
-                        <span class="rating">★★★★☆</span>
-                      </div>
-                      <div class="loc">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        Kota Bandung
-                      </div>
-                      <div class="reviews">(70) Customer Reviews</div>
-                      <div class="price">Rp 450.000/hari</div>
-                      <div class="stock-footer">
-                        <svg width="16" height="14" viewBox="0 0 20 17" fill="none"><path d="M17.4997 5.16667V16H2.49967V5.16667M8.33301 8.5H11.6663M0.833008 1H19.1663V5.16667H0.833008V1Z" stroke="#484848" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <span>1 Unit in Stock</span>
-                      </div>
-                    </div>
-                  </div>
+                  @endforeach
                 </div>
 
                 <!-- Transactions -->
+                @if($user->transaksiPenyewaan->count() > 0)
                 <div id="reviews-section">
                   <div class="reviews-header">
                     <h3>Transactions</h3>
                   </div>
                   <div class="txn-grid">
-
-                  <!-- Card 1 -->
-                  <div class="txn-card-1-wrapper">
-                    <!-- Badge pembayaran - taruh di dalam wrapper, di atas SVG foto -->
-
-                  <div class="txn-card">
-                  <div class="txn-img-wrap">
-                  <div class="txn-foto">
-                    <svg width="238" height="169" viewBox="0 0 238 169" fill="none">
-                      <clipPath id="photoClip1">
-                        <path d="M19.0299 20.3268C20.8415 8.62969 30.9106 0 42.7471 0L213.215 0C228.845 0 240.304 14.7009 236.49 29.8575L206.037 150.858C203.353 161.524 193.761 169 182.763 169H24.0071C9.2881 169 -1.96293 155.872 0.289844 141.327L19.0299 20.3268Z"/>
-                      </clipPath>
-                      <path d="M19.0299 20.3268C20.8415 8.62969 30.9106 0 42.7471 0L213.215 0C228.845 0 240.304 14.7009 236.49 29.8575L206.037 150.858C203.353 161.524 193.761 169 182.763 169H24.0071C9.2881 169 -1.96293 155.872 0.289844 141.327L19.0299 20.3268Z" fill="#D9D9D9"/>
-                      <image href="{{ asset('assets/img/ip 18b air.webp') }}"
-                            x="0" y="0" width="238" height="169"
-                            preserveAspectRatio="xMidYMid slice"
-                            clip-path="url(#photoClip1)"/>
-                    </svg>
-                  </div>
-                  <span class="pembayaran-badge">Pembayaran Sewa</span>
-                  </div>
-                    <!-- foto timbul -->
-
-                    <!-- card deskripsi -->
-                
-                      <div class="txn-card-info">
-                        <h5>Iphone 17 Air (Hijau)</h5>
-                        <div class="loc">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                          Kota Surakarta, Indonesia
+                    @foreach($user->transaksiPenyewaan as $trx)
+                    <div class="txn-card-1-wrapper">
+                      <div class="txn-card">
+                        <div class="txn-img-wrap">
+                          <div class="txn-foto">
+                            <img src="{{ optional($trx->barang)->foto_barang ? asset('storage/' . $trx->barang->foto_barang) : 'https://placehold.co/238x169?text=No+Image' }}" alt="" style="width:238px;height:169px;object-fit:cover;border-radius:20px;" onerror="this.src='https://placehold.co/238x169?text=No+Image'">
+                          </div>
+                          <span class="pembayaran-badge">{{ $trx->statusLabel() }}</span>
                         </div>
-                        <div class="amount">Rp 300.000</div>
-                        <div class="date-row">
-                          <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0_4266_1491)">
-                            <path d="M12.5 1.66667H11.6667V0.833333C11.6667 0.61232 11.5789 0.400358 11.4226 0.244078C11.2663 0.0877973 11.0543 0 10.8333 0C10.6123 0 10.4004 0.0877973 10.2441 0.244078C10.0878 0.400358 10 0.61232 10 0.833333V1.66667H5V0.833333C5 0.61232 4.9122 0.400358 4.75592 0.244078C4.59964 0.0877973 4.38768 0 4.16667 0C3.94565 0 3.73369 0.0877973 3.57741 0.244078C3.42113 0.400358 3.33333 0.61232 3.33333 0.833333V1.66667H2.5C1.83696 1.66667 1.20107 1.93006 0.732233 2.3989C0.263392 2.86774 0 3.50363 0 4.16667V14.1667C0 14.8297 0.263392 15.4656 0.732233 15.9344C1.20107 16.4033 1.83696 16.6667 2.5 16.6667H12.5C13.163 16.6667 13.7989 16.4033 14.2678 15.9344C14.7366 15.4656 15 14.8297 15 14.1667V4.16667C15 3.50363 14.7366 2.86774 14.2678 2.3989C13.7989 1.93006 13.163 1.66667 12.5 1.66667ZM4.16667 12.5C4.00185 12.5 3.84073 12.4511 3.70369 12.3596C3.56665 12.268 3.45984 12.1378 3.39677 11.9856C3.33369 11.8333 3.31719 11.6657 3.34935 11.5041C3.3815 11.3424 3.46087 11.194 3.57741 11.0774C3.69395 10.9609 3.84244 10.8815 4.00409 10.8493C4.16574 10.8172 4.3333 10.8337 4.48557 10.8968C4.63784 10.9598 4.76799 11.0667 4.85956 11.2037C4.95113 11.3407 5 11.5018 5 11.6667C5 11.8877 4.9122 12.0996 4.75592 12.2559C4.59964 12.4122 4.38768 12.5 4.16667 12.5ZM10.8333 12.5H7.5C7.27899 12.5 7.06702 12.4122 6.91074 12.2559C6.75446 12.0996 6.66667 11.8877 6.66667 11.6667C6.66667 11.4457 6.75446 11.2337 6.91074 11.0774C7.06702 10.9211 7.27899 10.8333 7.5 10.8333H10.8333C11.0543 10.8333 11.2663 10.9211 11.4226 11.0774C11.5789 11.2337 11.6667 11.4457 11.6667 11.6667C11.6667 11.8877 11.5789 12.0996 11.4226 12.2559C11.2663 12.4122 11.0543 12.5 10.8333 12.5ZM13.3333 7.5H1.66667V4.16667C1.66667 3.94565 1.75446 3.73369 1.91074 3.57741C2.06702 3.42113 2.27899 3.33333 2.5 3.33333H3.33333V4.16667C3.33333 4.38768 3.42113 4.59964 3.57741 4.75592C3.73369 4.9122 3.94565 5 4.16667 5C4.38768 5 4.59964 4.9122 4.75592 4.75592C4.9122 4.59964 5 4.38768 5 4.16667V3.33333H10V4.16667C10 4.38768 10.0878 4.59964 10.2441 4.75592C10.4004 4.9122 10.6123 5 10.8333 5C11.0543 5 11.2663 4.9122 11.4226 4.75592C11.5789 4.59964 11.6667 4.38768 11.6667 4.16667V3.33333H12.5C12.721 3.33333 12.933 3.42113 13.0893 3.57741C13.2455 3.73369 13.3333 3.94565 13.3333 4.16667V7.5Z" fill="white"/>
-                            </g>
-                            <defs>
-                            <clipPath id="clip0_4266_1491">
-                            <rect width="15" height="17" fill="white"/>
-                            </clipPath>
-                            </defs>
-                            </svg>
-                          Tanggal Sewa: 17/04/2026 s.d 18/04/2026
-                        </div>
-                        <div class="date-row">
-                          <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0_4266_1491)">
-                            <path d="M12.5 1.66667H11.6667V0.833333C11.6667 0.61232 11.5789 0.400358 11.4226 0.244078C11.2663 0.0877973 11.0543 0 10.8333 0C10.6123 0 10.4004 0.0877973 10.2441 0.244078C10.0878 0.400358 10 0.61232 10 0.833333V1.66667H5V0.833333C5 0.61232 4.9122 0.400358 4.75592 0.244078C4.59964 0.0877973 4.38768 0 4.16667 0C3.94565 0 3.73369 0.0877973 3.57741 0.244078C3.42113 0.400358 3.33333 0.61232 3.33333 0.833333V1.66667H2.5C1.83696 1.66667 1.20107 1.93006 0.732233 2.3989C0.263392 2.86774 0 3.50363 0 4.16667V14.1667C0 14.8297 0.263392 15.4656 0.732233 15.9344C1.20107 16.4033 1.83696 16.6667 2.5 16.6667H12.5C13.163 16.6667 13.7989 16.4033 14.2678 15.9344C14.7366 15.4656 15 14.8297 15 14.1667V4.16667C15 3.50363 14.7366 2.86774 14.2678 2.3989C13.7989 1.93006 13.163 1.66667 12.5 1.66667ZM4.16667 12.5C4.00185 12.5 3.84073 12.4511 3.70369 12.3596C3.56665 12.268 3.45984 12.1378 3.39677 11.9856C3.33369 11.8333 3.31719 11.6657 3.34935 11.5041C3.3815 11.3424 3.46087 11.194 3.57741 11.0774C3.69395 10.9609 3.84244 10.8815 4.00409 10.8493C4.16574 10.8172 4.3333 10.8337 4.48557 10.8968C4.63784 10.9598 4.76799 11.0667 4.85956 11.2037C4.95113 11.3407 5 11.5018 5 11.6667C5 11.8877 4.9122 12.0996 4.75592 12.2559C4.59964 12.4122 4.38768 12.5 4.16667 12.5ZM10.8333 12.5H7.5C7.27899 12.5 7.06702 12.4122 6.91074 12.2559C6.75446 12.0996 6.66667 11.8877 6.66667 11.6667C6.66667 11.4457 6.75446 11.2337 6.91074 11.0774C7.06702 10.9211 7.27899 10.8333 7.5 10.8333H10.8333C11.0543 10.8333 11.2663 10.9211 11.4226 11.0774C11.5789 11.2337 11.6667 11.4457 11.6667 11.6667C11.6667 11.8877 11.5789 12.0996 11.4226 12.2559C11.2663 12.4122 11.0543 12.5 10.8333 12.5ZM13.3333 7.5H1.66667V4.16667C1.66667 3.94565 1.75446 3.73369 1.91074 3.57741C2.06702 3.42113 2.27899 3.33333 2.5 3.33333H3.33333V4.16667C3.33333 4.38768 3.42113 4.59964 3.57741 4.75592C3.73369 4.9122 3.94565 5 4.16667 5C4.38768 5 4.59964 4.9122 4.75592 4.75592C4.9122 4.59964 5 4.38768 5 4.16667V3.33333H10V4.16667C10 4.38768 10.0878 4.59964 10.2441 4.75592C10.4004 4.9122 10.6123 5 10.8333 5C11.0543 5 11.2663 4.9122 11.4226 4.75592C11.5789 4.59964 11.6667 4.38768 11.6667 4.16667V3.33333H12.5C12.721 3.33333 12.933 3.42113 13.0893 3.57741C13.2455 3.73369 13.3333 3.94565 13.3333 4.16667V7.5Z" fill="white"/>
-                            </g>
-                            <defs>
-                            <clipPath id="clip0_4266_1491">
-                            <rect width="15" height="17" fill="white"/>
-                            </clipPath>
-                            </defs>
-                            </svg>
-                          Tanggal Transaksi: 17/04/2026
+                        <div class="txn-card-info">
+                          <h5>{{ $trx->barang->nama_barang ?? '-' }}</h5>
+                          <div class="loc">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            {{ optional($trx->barang)->lokasi ?? '-' }}
+                          </div>
+                          <div class="amount">Rp {{ number_format($trx->total_harga, 0, ',', '.') }}</div>
+                          <div class="date-row">Tanggal Sewa: {{ optional($trx->tanggal_sewa)->format('d/m/Y') }} s.d {{ optional($trx->tanggal_kembali_rencana)->format('d/m/Y') }}</div>
+                          <div class="date-row">Tanggal Transaksi: {{ optional($trx->created_at)->format('d/m/Y') }}</div>
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  <!-- Transaction Card 2 -->
-                  <div class="txn-card-1-wrapper">
-                    <div class="txn-card">
-                    <div class="txn-img-wrap">
-                    <span class="pemasukan-badge">Pemasukan Sewa</span>
-
-                    <div class="txn-foto">
-                      <svg width="238" height="169" viewBox="0 0 238 169" fill="none">
-                        <clipPath id="photoClip2">
-                          <path d="M19.0299 20.3268C20.8415 8.62969 30.9106 0 42.7471 0L213.215 0C228.845 0 240.304 14.7009 236.49 29.8575L206.037 150.858C203.353 161.524 193.761 169 182.763 169H24.0071C9.2881 169 -1.96293 155.872 0.289844 141.327L19.0299 20.3268Z"/>
-                        </clipPath>
-                        <path d="M19.0299 20.3268C20.8415 8.62969 30.9106 0 42.7471 0L213.215 0C228.845 0 240.304 14.7009 236.49 29.8575L206.037 150.858C203.353 161.524 193.761 169 182.763 169H24.0071C9.2881 169 -1.96293 155.872 0.289844 141.327L19.0299 20.3268Z" fill="#D9D9D9"/>
-                        <image href="{{ asset('assets/img/lampu camp.webp') }}"
-                              x="0" y="0" width="238" height="169"
-                              preserveAspectRatio="xMidYMid slice"
-                              clip-path="url(#photoClip2)"/>
-                      </svg>
-                    </div>
-                    </div>
-
-
-                      <div class="txn-card-info">
-                        <h5>1 Sunrei Lampu Camping Wraith</h5>
-                        <div class="loc">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                          Kota Surakarta, Indonesia
-                        </div>
-                        <div class="amount">Rp 25.000</div>
-                        <div class="date-row">
-                          <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4266_1491)"><path d="M12.5 1.66667H11.6667V0.833333C11.6667 0.61232 11.5789 0.400358 11.4226 0.244078C11.2663 0.0877973 11.0543 0 10.8333 0C10.6123 0 10.4004 0.0877973 10.2441 0.244078C10.0878 0.400358 10 0.61232 10 0.833333V1.66667H5V0.833333C5 0.61232 4.9122 0.400358 4.75592 0.244078C4.59964 0.0877973 4.38768 0 4.16667 0C3.94565 0 3.73369 0.0877973 3.57741 0.244078C3.42113 0.400358 3.33333 0.61232 3.33333 0.833333V1.66667H2.5C1.83696 1.66667 1.20107 1.93006 0.732233 2.3989C0.263392 2.86774 0 3.50363 0 4.16667V14.1667C0 14.8297 0.263392 15.4656 0.732233 15.9344C1.20107 16.4033 1.83696 16.6667 2.5 16.6667H12.5C13.163 16.6667 13.7989 16.4033 14.2678 15.9344C14.7366 15.4656 15 14.8297 15 14.1667V4.16667C15 3.50363 14.7366 2.86774 14.2678 2.3989C13.7989 1.93006 13.163 1.66667 12.5 1.66667ZM4.16667 12.5C4.00185 12.5 3.84073 12.4511 3.70369 12.3596C3.56665 12.268 3.45984 12.1378 3.39677 11.9856C3.33369 11.8333 3.31719 11.6657 3.34935 11.5041C3.3815 11.3424 3.46087 11.194 3.57741 11.0774C3.69395 10.9609 3.84244 10.8815 4.00409 10.8493C4.16574 10.8172 4.3333 10.8337 4.48557 10.8968C4.63784 10.9598 4.76799 11.0667 4.85956 11.2037C4.95113 11.3407 5 11.5018 5 11.6667C5 11.8877 4.9122 12.0996 4.75592 12.2559C4.59964 12.4122 4.38768 12.5 4.16667 12.5ZM10.8333 12.5H7.5C7.27899 12.5 7.06702 12.4122 6.91074 12.2559C6.75446 12.0996 6.66667 11.8877 6.66667 11.6667C6.66667 11.4457 6.75446 11.2337 6.91074 11.0774C7.06702 10.9211 7.27899 10.8333 7.5 10.8333H10.8333C11.0543 10.8333 11.2663 10.9211 11.4226 11.0774C11.5789 11.2337 11.6667 11.4457 11.6667 11.6667C11.6667 11.8877 11.5789 12.0996 11.4226 12.2559C11.2663 12.4122 11.0543 12.5 10.8333 12.5ZM13.3333 7.5H1.66667V4.16667C1.66667 3.94565 1.75446 3.73369 1.91074 3.57741C2.06702 3.42113 2.27899 3.33333 2.5 3.33333H3.33333V4.16667C3.33333 4.38768 3.42113 4.59964 3.57741 4.75592C3.73369 4.9122 3.94565 5 4.16667 5C4.38768 5 4.59964 4.9122 4.75592 4.75592C4.9122 4.59964 5 4.38768 5 4.16667V3.33333H10V4.16667C10 4.38768 10.0878 4.59964 10.2441 4.75592C10.4004 4.9122 10.6123 5 10.8333 5C11.0543 5 11.2663 4.9122 11.4226 4.75592C11.5789 4.59964 11.6667 4.38768 11.6667 4.16667V3.33333H12.5C12.721 3.33333 12.933 3.42113 13.0893 3.57741C13.2455 3.73369 13.3333 3.94565 13.3333 4.16667V7.5Z" fill="white"/></g><defs><clipPath id="clip0_4266_1491"><rect width="15" height="17" fill="white"/></clipPath></defs></svg>
-                          Tanggal Sewa: 17/04/2026 s.d 18/04/2026
-                        </div>
-                        <div class="date-row">
-                          <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4266_1491)"><path d="M12.5 1.66667H11.6667V0.833333C11.6667 0.61232 11.5789 0.400358 11.4226 0.244078C11.2663 0.0877973 11.0543 0 10.8333 0C10.6123 0 10.4004 0.0877973 10.2441 0.244078C10.0878 0.400358 10 0.61232 10 0.833333V1.66667H5V0.833333C5 0.61232 4.9122 0.400358 4.75592 0.244078C4.59964 0.0877973 4.38768 0 4.16667 0C3.94565 0 3.73369 0.0877973 3.57741 0.244078C3.42113 0.400358 3.33333 0.61232 3.33333 0.833333V1.66667H2.5C1.83696 1.66667 1.20107 1.93006 0.732233 2.3989C0.263392 2.86774 0 3.50363 0 4.16667V14.1667C0 14.8297 0.263392 15.4656 0.732233 15.9344C1.20107 16.4033 1.83696 16.6667 2.5 16.6667H12.5C13.163 16.6667 13.7989 16.4033 14.2678 15.9344C14.7366 15.4656 15 14.8297 15 14.1667V4.16667C15 3.50363 14.7366 2.86774 14.2678 2.3989C13.7989 1.93006 13.163 1.66667 12.5 1.66667ZM4.16667 12.5C4.00185 12.5 3.84073 12.4511 3.70369 12.3596C3.56665 12.268 3.45984 12.1378 3.39677 11.9856C3.33369 11.8333 3.31719 11.6657 3.34935 11.5041C3.3815 11.3424 3.46087 11.194 3.57741 11.0774C3.69395 10.9609 3.84244 10.8815 4.00409 10.8493C4.16574 10.8172 4.3333 10.8337 4.48557 10.8968C4.63784 10.9598 4.76799 11.0667 4.85956 11.2037C4.95113 11.3407 5 11.5018 5 11.6667C5 11.8877 4.9122 12.0996 4.75592 12.2559C4.59964 12.4122 4.38768 12.5 4.16667 12.5ZM10.8333 12.5H7.5C7.27899 12.5 7.06702 12.4122 6.91074 12.2559C6.75446 12.0996 6.66667 11.8877 6.66667 11.6667C6.66667 11.4457 6.75446 11.2337 6.91074 11.0774C7.06702 10.9211 7.27899 10.8333 7.5 10.8333H10.8333C11.0543 10.8333 11.2663 10.9211 11.4226 11.0774C11.5789 11.2337 11.6667 11.4457 11.6667 11.6667C11.6667 11.8877 11.5789 12.0996 11.4226 12.2559C11.2663 12.4122 11.0543 12.5 10.8333 12.5ZM13.3333 7.5H1.66667V4.16667C1.66667 3.94565 1.75446 3.73369 1.91074 3.57741C2.06702 3.42113 2.27899 3.33333 2.5 3.33333H3.33333V4.16667C3.33333 4.38768 3.42113 4.59964 3.57741 4.75592C3.73369 4.9122 3.94565 5 4.16667 5C4.38768 5 4.59964 4.9122 4.75592 4.75592C4.9122 4.59964 5 4.38768 5 4.16667V3.33333H10V4.16667C10 4.38768 10.0878 4.59964 10.2441 4.75592C10.4004 4.9122 10.6123 5 10.8333 5C11.0543 5 11.2663 4.9122 11.4226 4.75592C11.5789 4.59964 11.6667 4.38768 11.6667 4.16667V3.33333H12.5C12.721 3.33333 12.933 3.42113 13.0893 3.57741C13.2455 3.73369 13.3333 3.94565 13.3333 4.16667V7.5Z" fill="white"/></g><defs><clipPath id="clip0_4266_1491"><rect width="15" height="17" fill="white"/></clipPath></defs></svg>
-                          Tanggal Transaksi: 17/04/2026
-                        </div>
-                      </div>
+                    @endforeach
                   </div>
                 </div>
+                @endif
               </div><!-- akhir #owner-catalog-section -->
 
             </div><!-- akhir kolom kanan -->

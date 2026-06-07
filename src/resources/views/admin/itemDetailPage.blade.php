@@ -116,7 +116,7 @@
   <main class="main-content">
     <!-- ITEM DETAIL PAGE -->
     <section class="page-section" id="page-item-detail">
-      <button class="btn-back" onclick="showPage('items',document.querySelector('[data-page=items]'))">
+      <button class="btn-back" onclick="location.href='{{ route('admin.items') }}'">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         Back to Items
       </button>
@@ -126,51 +126,54 @@
         <div class="detail-header">
 
 
-            <!-- KOLOM KIRI: foto doang -->
-            <div style="position:relative; flex-shrink:0;">
-              <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=200&q=80" alt="" class="detail-avatar" style="border-radius:10px;width:80px;height:80px;">
+            <!-- KOLOM KIRI: foto utama + foto produk tambahan -->
+            <div style="position:relative; flex-shrink:0; display:flex; flex-direction:column; gap:8px;">
+              <img src="{{ $item->foto_barang ? asset('storage/' . $item->foto_barang) : 'https://placehold.co/120x120?text=No+Image' }}" alt="{{ $item->nama_barang }}" class="detail-avatar" style="border-radius:10px;width:120px;height:120px;object-fit:cover;" onerror="this.src='https://placehold.co/120x120?text=No+Image'">
+              @php $fotoTambahan = array_filter([$item->fotoproduk1, $item->fotoproduk2, $item->fotoproduk3, $item->fotoproduk4]); @endphp
+              @if(count($fotoTambahan))
+              <div style="display:flex; gap:6px; flex-wrap:wrap; max-width:120px;">
+                @foreach($fotoTambahan as $foto)
+                  <img src="{{ asset('storage/' . $foto) }}" alt="Foto produk" style="width:36px;height:36px;border-radius:6px;object-fit:cover;border:1px solid #cbd7de;">
+                @endforeach
+              </div>
+              @endif
             </div>
 
             <!-- KOLOM KANAN: SEMUA konten masuk sini -->
             <div style="flex:1; min-width:0;">
 
-              <!-- Nama + BAN -->
+              <!-- Nama + status -->
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-                <div class="detail-title">ALLTREK Tenda Camping 1 Bedroom + 1 Guest Room</div>
+                <div class="detail-title">{{ $item->nama_barang }}</div>
+                <span class="badge {{ $item->statusBadgeClass() }}">{{ $item->statusLabel() }}</span>
               </div>
 
                 <div class="item-detail-grid">
                   <!-- KOLOM KIRI FIELD -->
                   <div class="item-col">
-                    <div class="detail-field"><label>ID Items</label><input type="text" value="IC001" readonly></div>
-                    <div class="detail-field"><label>Owner</label><input type="text" value="Camping Groups Bandung" readonly></div>
-                    <div class="detail-field"><label>Category</label><input type="text" value="Camping" readonly></div>
-                    <div class="detail-field"><label>Price</label><input type="text" value="Rp 450.000/hari" readonly></div>
-                    <div class="detail-field"><label>No. Telephone</label><input type="text" value="0853-9017-6483" readonly></div>
+                    <div class="detail-field"><label>ID Items</label><input type="text" value="#{{ $item->id }}" readonly></div>
+                    <div class="detail-field"><label>Owner</label><input type="text" value="{{ $item->user->name ?? '-' }}" readonly></div>
+                    <div class="detail-field"><label>Category</label><input type="text" value="{{ $item->kategori->nama_kategori ?? '-' }}" readonly></div>
+                    <div class="detail-field"><label>Price</label><input type="text" value="Rp {{ number_format($item->harga_sewa, 0, ',', '.') }}/hari" readonly></div>
+                    <div class="detail-field"><label>No. Telephone</label><input type="text" value="{{ optional($item->user)->phone_number ?? '-' }}" readonly></div>
                     <div class="detail-field grow" style="flex:1;">
                       <label>Description</label>
-                      <textarea readonly style="height:100%; min-height:120px; overflow-y:auto;">Tenda yang cocok untuk kalian yang ingin mencoba camping bersama keluarga! Tentastic merupakan tenda keluarga yang terdiri atas 2 ruangan (Living Room dan Bedroom) dan bedroomnya dapat dibagi jadi 2 bedroom terpisah (untuk varian large). Tentastic memiliki material yang terbuat dari Oxford Waterproof PU 4500MM.</textarea>
+                      <textarea readonly style="height:100%; min-height:120px; overflow-y:auto;">{{ $item->deskripsi }}</textarea>
                     </div>
                   </div>
 
                   <!-- KOLOM KANAN FIELD -->
                   <div class="item-col">
-                    <div class="detail-field"><label>Jaminan</label><input type="text" value="KTP, SIM, + Setengah Harga Awal" readonly></div>
-                    <div class="detail-field"><label>Denda</label><input type="text" value="Rp 10.000/jam" readonly></div>
-                    <div class="detail-field"><label>Address</label><textarea readonly style="min-height:80px; max-height:80px; overflow-y:auto;">Jl. Ir. H. Juanda No. 50 (Dago), Tamansari, Kec. Bandung Wetan, Kota Bandung, Jawa Barat 40116</textarea></div>
+                    <div class="detail-field"><label>Jaminan</label><input type="text" value="Rp {{ number_format($item->harga_jaminan, 0, ',', '.') }}" readonly></div>
+                    <div class="detail-field"><label>Denda</label><input type="text" value="Rp {{ number_format($item->harga_denda_perjam, 0, ',', '.') }}/jam" readonly></div>
+                    <div class="detail-field"><label>Stok</label><input type="text" value="{{ $item->stok }} unit" readonly></div>
+                    <div class="detail-field"><label>Address</label><textarea readonly style="min-height:80px; max-height:80px; overflow-y:auto;">{{ $item->lokasi ?? '-' }}</textarea></div>
                     <div class="detail-field grow" style="flex:1;">
-                      <label>Additional Information</label>
-                      <textarea readonly style="height:100%; min-height:200px; overflow-y:auto;">Spesifikasi Produk
-                Kode : Tentastic PRO
-                Brand : ALLTREK
-                Material
-                - Inner : 210D Oxford Waterproof PU 4500MM + Seam Seal + Hi-Density Insect Proof Mesh
-                - Outer : 210D Oxford UPF50+ Waterproof PU 4500 MM + Seam Seal + Silver Coated
-                - Frame : Steel Pipe + Fiberglass
-                Ukuran (P x L x T)
-                A. Medium
-                - Outer : 380 x 260 x 185 cm
-                - Inner : 370 x 250 x 180 cm</textarea>
+                      <label>Ketersediaan</label>
+                      <textarea readonly style="height:100%; min-height:120px; overflow-y:auto;">Status: {{ $item->statusLabel() }}
+Tersedia mulai: {{ $item->tanggal_item_mulai ? $item->tanggal_item_mulai->translatedFormat('d F Y') : '-' }}
+Tidak tersedia: {{ $item->tanggal_item_tidak_tersedia ? $item->tanggal_item_tidak_tersedia->translatedFormat('d F Y') : '-' }}
+Ditambahkan: {{ optional($item->created_at)->translatedFormat('d F Y') }}</textarea>
                     </div>
                   </div>
                 </div>
@@ -181,44 +184,24 @@
         <h3>Reviews</h3>
       </div>
       <div style="background:#cbd7de;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        @forelse($item->reviews as $review)
         <div class="review-card">
           <div class="review-header">
-            <img class="review-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt="">
+            <img class="review-avatar" src="{{ optional($review->user)->foto_profil ? asset('storage/' . $review->user->foto_profil) : asset('assets/img/default-avatar.svg') }}" alt="" onerror="this.src='{{ asset('assets/img/default-avatar.svg') }}'">
             <div style="flex:1; min-width:0;">
-              <div class="review-name">Alex Stanton</div>
-              <div class="review-subtitle">CEO at Bukalapak</div>
+              <div class="review-name">{{ optional($review->user)->name ?? 'User' }}</div>
+              <div class="review-subtitle">{{ '@' . (optional($review->user)->username ?? 'user') }}</div>
             </div>
-              <div style="text-align:right; margin-left: 450px;">
-                <div class="review-date">21 July 2022</div>
-                <span class="rating-stars">★★★★☆</span>
+              <div style="text-align:right; margin-left: auto;">
+                <div class="review-date">{{ optional($review->created_at)->translatedFormat('d F Y') }}</div>
+                <span class="rating-stars">{{ str_repeat('★', (int) $review->rating) . str_repeat('☆', max(0, 5 - (int) $review->rating)) }}</span>
               </div>
-            <button class="btn-delete-review">
-              <svg width="27" height="28" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M25.1562 4.92188H20.7812V2.1875C20.7812 0.980957 19.8003 0 18.5938 0H7.65625C6.44971 0 5.46875 0.980957 5.46875 2.1875V4.92188H1.09375C0.48877 4.92188 0 5.41064 0 6.01562V7.10938C0 7.25977 0.123047 7.38281 0.273438 7.38281H2.33789L3.18213 25.2588C3.23682 26.4243 4.20068 27.3438 5.36621 27.3438H20.8838C22.0527 27.3438 23.0132 26.4277 23.0679 25.2588L23.9121 7.38281H25.9766C26.127 7.38281 26.25 7.25977 26.25 7.10938V6.01562C26.25 5.41064 25.7612 4.92188 25.1562 4.92188ZM18.3203 4.92188H7.92969V2.46094H18.3203V4.92188Z" fill="#6A87A1"/>
-              </svg>
-            </button>
           </div>
-          <div class="review-text">We are very happy with the service from the MORENT App. Morent has a low price and also a large variety of cars with good and comfortable facilities. In addition, the service provided by the officers is also very friendly and very polite.</div>
+          <div class="review-text">{{ $review->komentar ?? $review->comment ?? '' }}</div>
         </div>
-        <div class="review-card">
-          <div class="review-header">
-            <img class="review-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" alt="">
-            <div style="flex:1; min-width:0;">
-              <div class="review-name">Skylar Dias</div>
-              <div class="review-subtitle">CEO at Amazon</div>
-            </div>
-              <div style="text-align:right; margin-left: 450px;">
-                <div class="review-date">30 July 2022</div>
-                <span class="rating-stars">★★★★☆</span>
-              </div>
-            <button class="btn-delete-review">
-              <svg width="27" height="28" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M25.1562 4.92188H20.7812V2.1875C20.7812 0.980957 19.8003 0 18.5938 0H7.65625C6.44971 0 5.46875 0.980957 5.46875 2.1875V4.92188H1.09375C0.48877 4.92188 0 5.41064 0 6.01562V7.10938C0 7.25977 0.123047 7.38281 0.273438 7.38281H2.33789L3.18213 25.2588C3.23682 26.4243 4.20068 27.3438 5.36621 27.3438H20.8838C22.0527 27.3438 23.0132 26.4277 23.0679 25.2588L23.9121 7.38281H25.9766C26.127 7.38281 26.25 7.25977 26.25 7.10938V6.01562C26.25 5.41064 25.7612 4.92188 25.1562 4.92188ZM18.3203 4.92188H7.92969V2.46094H18.3203V4.92188Z" fill="#6A87A1"/>
-              </svg>
-            </button>
-          </div>
-          <div class="review-text" >We are greatly helped by the services of the MORENT Application. Morent has low prices and also a wide variety of cars with good and comfortable facilities. The service provided by officers is very friendly and polite.</div>
-        </div>
+        @empty
+        <p style="color:#5a6b78; margin:0;">Belum ada review untuk item ini.</p>
+        @endforelse
       </div>
       </div>
     </section>

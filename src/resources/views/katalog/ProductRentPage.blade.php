@@ -124,6 +124,12 @@
                             <img src="{{ $product->foto_barang ? asset('storage/'.$product->foto_barang) : 'https://placehold.co/600x450?text=No+Image' }}"
                                  alt="Foto 1" />
                         </button>
+                        {{-- Foto produk tambahan (angle 1-4) --}}
+                        @foreach(array_filter([$product->fotoproduk1, $product->fotoproduk2, $product->fotoproduk3, $product->fotoproduk4]) as $i => $fotoTambahan)
+                        <button class="thumb" data-img="{{ asset('storage/'.$fotoTambahan) }}">
+                            <img src="{{ asset('storage/'.$fotoTambahan) }}" alt="Foto {{ $i + 2 }}" />
+                        </button>
+                        @endforeach
                     </div>
 
                     <div class="product-tabs">
