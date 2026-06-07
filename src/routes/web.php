@@ -119,11 +119,9 @@ Route::middleware('auth')->group(function () {
 });
 
 // Edit item routes
-// Edit item route with product ID
-Route::get('/katalog/edit-item/{id}', function ($id) {
-    $product = Barang::findOrFail($id);
-    return view('katalog.EditItemPage', compact('product'));
-})->name('katalog.edit-item');
+Route::get('/katalog/edit-item/{id}', [KatalogUploadController::class, 'edit'])->name('katalog.edit-item');
+Route::post('/katalog/edit-item/{id}', [KatalogUploadController::class, 'update'])->name('katalog.edit-item.post');
+Route::delete('/katalog/delete-item/{id}', [KatalogUploadController::class, 'destroy'])->name('katalog.delete-item');
 
 // ============================================================
 // ADMIN ROUTES – hanya bisa diakses oleh user dengan role admin
