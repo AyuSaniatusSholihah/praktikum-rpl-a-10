@@ -27,7 +27,21 @@ Definisi peran tim:
 - Developer non-PIC pada pertemuan tersebut berperan sebagai pelaksana utama pekerjaan: menyusun artefak, mengerjakan implementasi, melakukan pengujian, serta menyelesaikan tugas teknis/nonteknis yang dibutuhkan.
 - Tidak ada developer yang bekerja sendiri; seluruh target dikerjakan bersama dengan pembagian kerja aktif, sementara PIC/PM memastikan arah, ritme, dan kualitas kerja tim.
 
-### 3.1 PIC (PM) per Pertemuan
+### 3.1 Peran Tetap Anggota
+
+Setiap anggota memiliki peran tetap sepanjang proyek yang mencerminkan fokus dan tanggung jawab utama masing-masing:
+
+| Nama | NIM | Peran Tetap | Tanggung Jawab Utama |
+|------|-----|-------------|----------------------|
+| Ayu Saniatus Sholihah | L0124005 | **Project Manager (PM) & Backend Developer** | Koordinasi dan manajemen proyek secara keseluruhan, pengembangan REST API, logika bisnis server-side, manajemen database, autentikasi, dan pengelolaan repositori (branch, PR, merge). |
+| Aprilia Alfa Gusasti Ciptaningtyas | L0124003 | **UI/UX Designer & Frontend Developer** | Perancangan desain antarmuka (wireframe, mockup, user flow), pengembangan tampilan frontend, serta memastikan konsistensi visual dan pengalaman pengguna di seluruh halaman aplikasi. |
+| Ghazi Fahmi Ramadhan | L0124130 | **Frontend Developer & Backend Developer** | Pengembangan antarmuka pengguna berbasis Blade/web, integrasi API, serta kontribusi pada pengembangan backend dan logika server-side lintas modul. |
+
+Catatan peran tetap:
+- Kolaborasi lintas peran tetap diperbolehkan dan dianjurkan sesuai kebutuhan sprint.
+- PM (Ayu) bertanggung jawab memastikan keseluruhan proyek berjalan sesuai jadwal dan target kualitas.
+
+### 3.2 PIC (PM) per Pertemuan
 
 | Pertemuan | Fokus Kegiatan | PIC Utama (PM Pertemuan) | Peran Developer Lain |
 |---|---|---|---|
