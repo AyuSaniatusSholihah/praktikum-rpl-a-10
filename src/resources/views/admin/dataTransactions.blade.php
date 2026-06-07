@@ -125,30 +125,28 @@
             <th>ID</th><th>User</th><th>Owner</th><th>Item</th><th>Date</th><th>Wallet</th><th>Status</th><th></th>
           </tr></thead>
           <tbody>
-            <tr><td>T0001</td><td>Faris R</td><td>Photography Sewa Tangerang</td><td><div class="item-info"><img class="item-thumb" src="{{ asset('assets/img/sony camera.jpg') }}" alt="">Sony Alpha A7 IV Mirrorless Digital Camera</div></td><td>
-                <div>02 Jan 2026,</div>
-                <div>12.30 AM</div>
-            </td><td>QRIS</td><td><span class="badge badge-completed">Completed Rent</span></td><td><button class="btn-view" onclick="showTxnDetail()">View Details</button></td></tr>
-            <tr><td>T0002</td><td>Aprilia Alfa</td><td>Camping Groups Bandung</td><td><div class="item-info"><img class="item-thumb" src="camp band.jpg" alt="">ALLTREK Tenda Camping 1 Bedroom + 1 Guest Room</div></td><td>
-                <div>12 Maret 2026,</div>
-                <div>09.45 AM</div>
-            </td><td>Transfer Bank BCA</td><td><span class="badge badge-active">Active Rent</span></td><td><button class="btn-view" onclick="showTxnDetail()">View Details</button></td></tr>
-            <tr><td>T0003</td><td>Ayu Saniatus</td><td>Rent Car Baliness</td><td><div class="item-info"><img class="item-thumb" src="fortuner mobil.jpg" alt="">Mobil Fortuner Hitam</div></td><td>
-                <div>10 Feburari 2026,</div>
-                <div>11.15 AM</div>
-            </td><td>ShopeePay</td><td><span class="badge badge-cancelled">Cancelled Rent</span></td><td><button class="btn-view" onclick="showTxnDetail()">View Details</button></td></tr>
-            <tr><td>T0004</td><td>Laila Khoirunisa</td><td>Sewa SoundSystem Full Surakarta</td><td><div class="item-info"><img class="item-thumb" src="sound system.jpg" alt="">Yamaha Pro Audio Paket 12P Paket Sound System</div></td><td>
-                <div>3 April 2026,</div>
-                <div>06.00 AM</div>
-                </td><td>Transfer Bank BRI</td><td><span class="badge badge-completed">Completed Rent</span></td><td><button class="btn-view" onclick="showTxnDetail()">View Details</button></td></tr>
-            <tr><td>T0005</td><td>Ghazi Fahmi</td><td>AppleSewa Jogjaa</td><td><div class="item-info"><img class="item-thumb" src="ip 18b air.webp" alt="">Iphone 17 Air (Hijau)</div></td><td>
-                <div>18 Feburari 2026,</div>
-                <div>07.15 AM</div>
-            </td><td>QRIS</td><td><span class="badge badge-processing">UpComing Rent</span></td><td><button class="btn-view" onclick="showTxnDetail()">View Details</button></td></tr>
-            <tr><td>T0006</td><td>Muhammad Sholeh</td><td>Albeka Collection</td><td><div class="item-info"><img class="item-thumb" src="kebaya cream.jpg" alt="">Kebaya Cream (1 Set)</div></td><td>
-                <div>20 Maret 2026,</div>
-                <div>11.30 PM</div>
-            </td><td>GoPay</td><td><span class="badge badge-return">Return Rent</span></td><td><button class="btn-view" onclick="showTxnDetail()">View Details</button></td></tr>
+            @forelse($transaksis as $trans)
+            <tr>
+              <td>#{{ $trans->id }}</td>
+              <td>{{ $trans->user->name ?? '-' }}</td>
+              <td>{{ $trans->barang->user->name ?? '-' }}</td>
+              <td>
+                <div class="item-info">
+                  <img class="item-thumb" src="{{ optional($trans->barang)->foto_barang ? asset('storage/' . $trans->barang->foto_barang) : 'https://placehold.co/60x60?text=No+Image' }}" alt="" onerror="this.src='https://placehold.co/60x60?text=No+Image'">
+                  {{ $trans->barang->nama_barang ?? '-' }}
+                </div>
+              </td>
+              <td>
+                <div>{{ optional($trans->created_at)->translatedFormat('d M Y') }},</div>
+                <div>{{ optional($trans->created_at)->format('H.i') }}</div>
+              </td>
+              <td>{{ $trans->pembayaran ? ucwords($trans->pembayaran->metode) . ($trans->pembayaran->detail_metode ? ' ' . $trans->pembayaran->detail_metode : '') : '-' }}</td>
+              <td><span class="badge {{ $trans->statusBadgeClass() }}">{{ $trans->statusLabel() }}</span></td>
+              <td><button class="btn-view" onclick="location.href='{{ route('admin.transactions.detail', $trans->id) }}'">View Details</button></td>
+            </tr>
+            @empty
+            <tr><td colspan="8" style="text-align:center; color:#727272; padding:24px;">Belum ada transaksi di database.</td></tr>
+            @endforelse
           </tbody>
           </table>
         </table>

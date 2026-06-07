@@ -51,4 +51,32 @@ class TransaksiPenyewaan extends Model
     {
         return $this->hasOne(Review::class, 'transaksi_id');
     }
+
+    /**
+     * Label status untuk ditampilkan (dipakai di halaman admin & profil).
+     */
+    public function statusLabel(): string
+    {
+        return [
+            'upcoming'                        => 'UpComing Rent',
+            'aktif'                           => 'Active Rent',
+            'selesai'                         => 'Completed Rent',
+            'tunggu verifikasi pengembalian'  => 'Return Rent',
+            'dibatalkan'                      => 'Cancelled Rent',
+        ][$this->status] ?? ucfirst((string) $this->status);
+    }
+
+    /**
+     * Class badge CSS yang cocok dengan status.
+     */
+    public function statusBadgeClass(): string
+    {
+        return [
+            'upcoming'                        => 'badge-processing',
+            'aktif'                           => 'badge-active',
+            'selesai'                         => 'badge-completed',
+            'tunggu verifikasi pengembalian'  => 'badge-return',
+            'dibatalkan'                      => 'badge-cancelled',
+        ][$this->status] ?? 'badge-processing';
+    }
 }

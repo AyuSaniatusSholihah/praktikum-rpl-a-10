@@ -120,83 +120,23 @@
     <section class="page-section" id="page-users">
       <div class="page-title">Data User</div>
       <div class="users-grid">
-        <div class="user-card" onclick="showUserDetail('camping')">
-          <img src="camp band.jpg" alt="Camping Groups Bandung">
+        @forelse($users as $u)
+        <div class="user-card" onclick="showUserDetail({{ $u->id }})">
+          <img src="{{ $u->foto_profil ? asset('storage/' . $u->foto_profil) : asset('assets/img/default-avatar.svg') }}" alt="{{ $u->name }}" onerror="this.src='{{ asset('assets/img/default-avatar.svg') }}'">
           <div class="user-card-info">
-            <span class="owner-badge">OWNER</span>
-            <h4>Camping Groups Bandung</h4>
-            <p>campinggroups.bandung1@gmail.com</p>
+            @if($u->role === 'admin')
+              <span class="owner-badge" style="background:#2485A8;">ADMIN</span>
+            @elseif($u->barangs_count > 0)
+              <span class="owner-badge">OWNER</span>
+            @endif
+            <h4>{{ $u->name }}</h4>
+            <p>{{ $u->email }}</p>
             <button class="btn-view-more">View More</button>
           </div>
         </div>
-        <div class="user-card" onclick="showUserDetail('rentalcar')">
-          <img src="rent car surakarta.webp" alt="Rental Car Surakarta">
-          <div class="user-card-info">
-            <span class="owner-badge">OWNER</span>
-            <h4>Rental Car Surakarta</h4>
-            <p>rencar.surakarta@gmail.com</p>
-            <button class="btn-view-more">View More</button>
-          </div>
-        </div>
-        <div class="user-card" onclick="showUserDetail('ayu')">
-          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Ayu Sanitus Sholihah">
-          <div class="user-card-info">
-            <h4>Ayu Sanitus Sholihah</h4>
-            <p>ayu.sanitus@gmail.com</p>
-            <button class="btn-view-more">View More</button>
-          </div>
-        </div>
-        <div class="user-card" onclick="showUserDetail('apple')">
-          <img src="applesewa jogja.jpeg" alt="AppleSewa Jogjaa">
-          <div class="user-card-info">
-            <span class="owner-badge">OWNER</span>
-            <h4>AppleSewa Jogjaa</h4>
-            <p>applesewa_jogjaa@gmail.com</p>
-            <button class="btn-view-more">View More</button>
-          </div>
-        </div>
-        <div class="user-card" onclick="showUserDetail('ghazi')">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Ghazi Fahmi R.">
-          <div class="user-card-info">
-            <h4>Ghazi Fahmi R.</h4>
-            <p>gf_fahmi8@gmail.com</p>
-            <button class="btn-view-more">View More</button>
-          </div>
-        </div>
-        <div class="user-card" onclick="showUserDetail('laila')">
-          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" alt="Laila Khoirunisa">
-          <div class="user-card-info">
-            <h4>Laila Khoirunisa</h4>
-            <p>lailakhirunisa@gmail.com</p>
-            <button class="btn-view-more">View More</button>
-          </div>
-        </div>
-        <div class="user-card" onclick="showUserDetail('aprilia')">
-          <img src="https://images.unsplash.com/photo-1522556189639-b150ed9c4330?w=400&q=80" alt="Aprilia Alfa G.C.">
-          <div class="user-card-info">
-            <h4>Aprilia Alfa G. C.</h4>
-            <p>aprillia@gmail.com</p>
-            <button class="btn-view-more">View More</button>
-          </div>
-        </div>
-        <div class="user-card" onclick="showUserDetail('albeka')">
-          <img src="albeka collection.jpeg" alt="Albeka Collection">
-          <div class="user-card-info">
-            <span class="owner-badge">OWNER</span>
-            <h4>Albeka Collection</h4>
-            <p>albeka.collection@gmail.com</p>
-            <button class="btn-view-more">View More</button>
-          </div>
-        </div>
-        <div class="user-card" onclick="showUserDetail('photo')">
-          <img src="rental photographer.jpg" alt="Photography Sewa Tangerang">
-          <div class="user-card-info">
-            <span class="owner-badge">OWNER</span>
-            <h4>Photography Sewa Tangerang</h4>
-            <p>sewaphotography_tangerang@gmail.com</p>
-            <button class="btn-view-more">View More</button>
-          </div>
-        </div>
+        @empty
+          <p style="grid-column:1/-1; color:#727272; padding:24px;">Belum ada user terdaftar.</p>
+        @endforelse
       </div>
     </section>
 </main>
