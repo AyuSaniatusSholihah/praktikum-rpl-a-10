@@ -97,6 +97,10 @@ class KatalogUploadController extends Controller
             'tanggal_item_mulai' => 'required|date',
             'tanggal_item_tidak_tersedia' => 'required|date|after_or_equal:tanggal_item_mulai',
             'foto_barang' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'fotoproduk1' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'fotoproduk2' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'fotoproduk3' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'fotoproduk4' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $product = Barang::findOrFail($id);
@@ -116,6 +120,18 @@ class KatalogUploadController extends Controller
 
         if ($request->hasFile('foto_barang')) {
             $data['foto_barang'] = $request->file('foto_barang')->store('katalog_images', 'public');
+        }
+        if ($request->hasFile('fotoproduk1')) {
+            $data['fotoproduk1'] = $request->file('fotoproduk1')->store('katalog_images', 'public');
+        }
+        if ($request->hasFile('fotoproduk2')) {
+            $data['fotoproduk2'] = $request->file('fotoproduk2')->store('katalog_images', 'public');
+        }
+        if ($request->hasFile('fotoproduk3')) {
+            $data['fotoproduk3'] = $request->file('fotoproduk3')->store('katalog_images', 'public');
+        }
+        if ($request->hasFile('fotoproduk4')) {
+            $data['fotoproduk4'] = $request->file('fotoproduk4')->store('katalog_images', 'public');
         }
 
         $product->update($data);
