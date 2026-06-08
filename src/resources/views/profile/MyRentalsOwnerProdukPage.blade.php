@@ -90,15 +90,19 @@
                     </div>
                 </div>
                 <div>
-                    <div class="return-box-field-label">Review</div>
-                    <div class="return-box-stars">
-                        <span class="star-on">★★★</span><span class="star-off">★★</span>
-                    </div>
-                    <textarea class="return-box-textarea" placeholder="Tulis review kamu di sini..."></textarea>
+                    <div class="return-box-field-label">Review dari Penyewa</div>
+                    @if($trx->review)
+                        <div class="return-box-stars">
+                            <span class="star-on">{{ str_repeat('★', (int) $trx->review->rating) }}</span><span class="star-off">{{ str_repeat('★', max(0, 5 - (int) $trx->review->rating)) }}</span>
+                        </div>
+                        <div class="return-box-textarea" style="white-space:pre-wrap;">{{ $trx->review->komentar ?: 'Tidak ada ulasan tertulis.' }}</div>
+                    @else
+                        <div style="color:#8da4be; font-size:13px; padding:8px 0;">Penyewa belum memberi ulasan.</div>
+                    @endif
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('profile.rentals.confirmation', $trx->id) }}" id="acceptReturnForm">
+            <form method="POST" action="{{ route('profile.owner.accept', $trx->id) }}" id="acceptReturnForm">
                 @csrf
                 <button type="submit" class="btn-ajukan-return btn-kirim-return" id="btnAcceptReturn">
                     ACCEPT<br>PENGEMBALIAN

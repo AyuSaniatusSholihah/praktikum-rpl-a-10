@@ -101,6 +101,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/rentals/{id}/confirmation', [\App\Http\Controllers\ProfileController::class, 'confirmation'])->name('profile.rentals.confirmation');
     Route::get('/profile/owner', [\App\Http\Controllers\ProfileController::class, 'owner'])->name('profile.owner');
     Route::get('/profile/owner/{id}', [\App\Http\Controllers\ProfileController::class, 'ownerDetail'])->name('profile.owner.produk');
+    Route::post('/profile/owner/{id}/accept', [\App\Http\Controllers\ProfileController::class, 'acceptPengembalian'])->name('profile.owner.accept');
     Route::get('/profile/wallet', [\App\Http\Controllers\ProfileController::class, 'wallet'])->name('profile.wallet');
 
     // Cart

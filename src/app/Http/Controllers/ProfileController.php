@@ -178,10 +178,35 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $trx = TransaksiPenyewaan::whereHas('barang', fn ($q) => $q->where('user_id', $user->id))
-            ->with(['barang.user', 'user', 'pembayaran'])
+            ->with(['barang.user', 'user', 'pembayaran', 'review.user'])
             ->findOrFail($id);
 
         return view('profile.MyRentalsOwnerProdukPage', compact('user', 'trx'));
+    }
+
+    // ===== OWNER MENYETUJUI PENGEMBALIAN (Return Rent -> Completed Rent) =====
+    public function acceptPengembalian(Request $request, $id)
+    {
+        $user = Auth::user();
+        $trx = TransaksiPenyewaan::whereHas('barang', fn ($q) => $q->where('user_id', $user->id))
+            ->with('barang')
+            ->findOrFail($id);
+
+        // Setujui pengembalian -> transaksi selesai
+        $trx->update([
+            'status'                         => 'selesai',
+            'tanggal_verifikasipengembalian' => now(),
+            'tanggal_kembali_aktual'         => $trx->tanggal_kembali_aktual ?? now(),
+        ]);
+
+        // Barang kembali tersedia
+        if ($trx->barang) {
+            $trx->barang->update(['status' => 'tersedia']);
+        }
+
+        return redirect()
+            ->route('profile.owner.produk', $trx->id)
+            ->with('success', 'Pengembalian disetujui. Transaksi selesai & barang kembali tersedia.');
     }
 
     // ===== MY WALLET =====
