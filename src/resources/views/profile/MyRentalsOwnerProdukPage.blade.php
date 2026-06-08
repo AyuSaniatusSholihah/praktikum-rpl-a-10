@@ -109,12 +109,51 @@
                 </button>
             </form>
         </div>
+        @elseif($status === 'selesai')
+            <div class="confirmed-box" style="margin-top:24px;">
+                <div class="check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <h3>PENGEMBALIAN SELESAI!</h3>
+                <p>Barang telah dikembalikan & diverifikasi.<br>
+                    <strong>Status: PENGEMBALIAN DISETUJUI ✓ (Completed Rent)</strong>
+                </p>
+            </div>
+
+            {{-- Receipt ringkas untuk owner (pendapatan dari transaksi ini) --}}
+            @php
+                $durasi = ($trx->tanggal_sewa && $trx->tanggal_kembali_rencana)
+                    ? ($trx->tanggal_sewa->diffInDays($trx->tanggal_kembali_rencana) ?: 1) : 1;
+                $hargaPerHari = $trx->barang->harga_sewa ?? 0;
+            @endphp
+            <div id="reviews-section" style="margin-top:16px;">
+                <div class="reviews-header"><h3>Receipt</h3></div>
+                <div class="receipt-item">
+                    <div class="receipt-product">
+                        <div class="receipt-product-header">
+                            <div class="item-badge">1</div>
+                            <div class="rec-img"><img src="{{ $foto }}" onerror="this.style.display='none'"></div>
+                            <div class="rec-info">
+                                <div class="rec-product-name">{{ $trx->barang->nama_barang ?? 'Barang dihapus' }}</div>
+                                <div class="rec-price">Rp {{ number_format($hargaPerHari, 0, ',', '.') }}/hari</div>
+                            </div>
+                            <span class="paid-badge">PAID</span>
+                        </div>
+                        <div class="rec-rows">
+                            <div class="rec-row"><span class="lbl">Penyewa</span><span class="val">{{ $penyewaName }}</span></div>
+                            <div class="rec-row"><span class="lbl">Durasi Sewa</span><span class="val">{{ $durasi }} Hari</span></div>
+                            <div class="rec-row"><span class="lbl">Tanggal Sewa</span><span class="val">{{ optional($trx->tanggal_sewa)->format('d M Y') ?? '-' }} – {{ optional($trx->tanggal_kembali_rencana)->format('d M Y') ?? '-' }}</span></div>
+                            <div class="rec-row total-row"><span class="lbl">Total Pendapatan</span><span class="val">Rp {{ number_format($trx->total_harga ?? 0, 0, ',', '.') }}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @else
             <div style="margin-top: 24px; padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; color: #8da4be; font-size: 13px;">
                 Status: <strong style="color:#fff;">{{ $badgeLabel }}</strong>
-                @if($status === 'selesai')
-                    — Transaksi ini telah selesai.
-                @elseif($status === 'dibatalkan')
+                @if($status === 'dibatalkan')
                     — Transaksi ini telah dibatalkan.
                 @else
                     — Menunggu penyewa mengajukan pengembalian.
