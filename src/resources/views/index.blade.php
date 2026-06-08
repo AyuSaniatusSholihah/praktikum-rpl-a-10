@@ -281,7 +281,24 @@
 </script>
 <script>
  /* ============ TESTIMONIALS CAROUSEL ============ */
-const testimonials = [
+// Ulasan asli dari database (review tentang website SEWAIN)
+@php
+    $dbTestimonialsData = ($webReviews ?? collect())->map(function ($r) {
+        return [
+            'name'  => $r->user->name ?? 'Pengguna',
+            'role'  => 'Pengguna SEWAIN',
+            'stars' => (int) $r->rating,
+            'img'   => ($r->user && $r->user->foto_profil)
+                        ? asset('storage/' . $r->user->foto_profil)
+                        : ('https://ui-avatars.com/api/?name=' . urlencode($r->user->name ?? 'U') . '&background=2BA24A&color=fff'),
+            'text'  => $r->ulasan,
+        ];
+    })->values();
+@endphp
+const dbTestimonials = @json($dbTestimonialsData);
+
+// Data contoh (dipakai hanya jika belum ada ulasan asli di database)
+const sampleTestimonials = [
   { name: 'Karen W.',  role: 'Fotografer',      stars: 5,
     img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=160&h=160&fit=crop',
     text: 'Saya selalu kesini buat sewa kamera. Thanks ya for making it easier untuk dapat barang dengan kualitas top.' },
@@ -306,6 +323,9 @@ const testimonials = [
     img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop',
     text: 'Penyewaan tenda untuk camping akhir pekan kemarin lancar jaya. Harga juga lebih bersahabat dari toko sebelah.' },
 ];
+
+// Pakai ulasan asli kalau ada; kalau belum ada, tampilkan data contoh
+const testimonials = (Array.isArray(dbTestimonials) && dbTestimonials.length) ? dbTestimonials : sampleTestimonials;
 
  let testiIndex = 0;
  const track = document.getElementById('testiTrack');
