@@ -17,7 +17,8 @@ use App\Models\Barang;
 // Home page
 Route::get('/', function () {
     $barangs = Barang::where('status', 'tersedia')->get();
-    return view('index', compact('barangs'));
+    $webReviews = \App\Models\WebReview::with('user')->latest()->take(12)->get();
+    return view('index', compact('barangs', 'webReviews'));
 })->name('home');
 
 // Rentals page
@@ -103,6 +104,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/owner/{id}', [\App\Http\Controllers\ProfileController::class, 'ownerDetail'])->name('profile.owner.produk');
     Route::post('/profile/owner/{id}/accept', [\App\Http\Controllers\ProfileController::class, 'acceptPengembalian'])->name('profile.owner.accept');
     Route::get('/profile/wallet', [\App\Http\Controllers\ProfileController::class, 'wallet'])->name('profile.wallet');
+
+    // Ulasan tentang website SEWAIN
+    Route::get('/review-web', [\App\Http\Controllers\WebReviewController::class, 'create'])->name('review-web');
+    Route::post('/review-web', [\App\Http\Controllers\WebReviewController::class, 'store'])->name('review-web.store');
 
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
