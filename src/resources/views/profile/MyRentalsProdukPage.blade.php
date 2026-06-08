@@ -122,6 +122,15 @@
                             AJUKAN PENGEMBALIAN
                         </a>
                     </div>
+                    @elseif($status === 'upcoming')
+                    <div style="margin-top: 20px; text-align: right;">
+                        <form action="{{ route('profile.rentals.cancel', $trx->id) }}" method="POST" onsubmit="return confirm('Apakah kamu yakin ingin membatalkan penyewaan ini? Saldo kamu akan dikembalikan.')">
+                            @csrf
+                            <button type="submit" class="btn-ajukan-return" style="background-color: #f83220; color: white; border: none; cursor: pointer;">
+                                BATALKAN PENYEWAAN
+                            </button>
+                        </form>
+                    </div>
                     @endif
                 </div>
             </div>

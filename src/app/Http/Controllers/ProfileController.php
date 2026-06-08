@@ -146,6 +146,48 @@ class ProfileController extends Controller
             ->with('success', 'Pengembalian & ulasan berhasil dikirim!');
     }
 
+    public function cancelRental(Request $request, $id)
+    {
+        $user = Auth::user();
+        $trx = $user->transaksiPenyewaan()->with('barang.user')->findOrFail($id);
+
+        if ($trx->status !== 'upcoming') {
+            return back()->with('error', 'Hanya penyewaan dengan status upcoming yang dapat dibatalkan.');
+        }
+
+        $days = \Carbon\Carbon::parse($trx->tanggal_sewa)->diffInDays(\Carbon\Carbon::parse($trx->tanggal_kembali_rencana));
+        if ($days == 0) $days = 1;
+
+        $harga_kali_jumlah = $trx->total_harga / $days;
+        $jaminan = (int) round($harga_kali_jumlah / 2);
+        $shipping = 20000;
+
+        $refund_user = $trx->total_harga + $jaminan + $shipping;
+
+        // Refund ke user
+        $user->saldo += $refund_user;
+        $user->save();
+
+        // Kurangi dari owner
+        $owner = $trx->barang->user;
+        if ($owner) {
+            $owner->saldo -= $trx->total_harga;
+            $owner->save();
+        }
+
+        // Update status transaksi
+        $trx->update(['status' => 'dibatalkan']);
+
+        // Kembalikan stok/status barang
+        if ($trx->barang) {
+            $trx->barang->stok += $trx->jumlah;
+            $trx->barang->status = 'tersedia';
+            $trx->barang->save();
+        }
+
+        return back()->with('success', 'Penyewaan berhasil dibatalkan. Saldo telah dikembalikan.');
+    }
+
     public function confirmation($id)
     {
         $user = Auth::user();
