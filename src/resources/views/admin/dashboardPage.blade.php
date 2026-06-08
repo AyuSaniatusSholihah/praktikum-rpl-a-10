@@ -16,27 +16,39 @@
 <body>
 
 <!-- NAVBAR -->
+<!-- NAVBAR -->
 <nav>
   <button class="mobile-menu-btn" id="mobileMenuBtn">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
   </button>
-  <a href="#" class="nav-logo">SEWA<span>IN</span></a>
+  <a href="{{ route('home') }}" class="nav-logo">SEWA<span>IN</span></a>
   <ul class="nav-links">
     <li><a href="{{ route('home') }}">Home</a></li>
     <li><a href="{{ route('admin.dashboard') }}" class="active">Admin</a></li>
   </ul>
-  <div class="nav-search">
+  <form action="{{ request()->routeIs('admin.users') ? route('admin.users') : (request()->routeIs('admin.transactions') ? route('admin.transactions') : route('admin.items')) }}" method="GET" class="nav-search">
      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-     <input type="search" placeholder="Search something here" aria-label="Search"/>
-  </div>
+     <input type="search" name="search" value="{{ request('search') }}" placeholder="Search here..." aria-label="Search"/>
+  </form>
   <div class="nav-right">
-    <a href="#" aria-label="Account">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg>
-    </a>
-    <a href="#" aria-label="Notifications">
+    <div class="profile-dropdown" style="position: relative; display: inline-block;">
+      <a href="#" aria-label="Account" style="display: flex; align-items: center; color: currentColor;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg>
+      </a>
+      <div class="dropdown-menu" style="display: none; position: absolute; right: 0; top: 100%; background: #ffffff; min-width: 140px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); border-radius: 8px; z-index: 1000; padding: 6px 0; border: 1px solid #f0f0f0;">
+        <form action="{{ route('logout') }}" method="POST" style="margin: 0; padding: 0;">
+          @csrf
+          <button type="submit" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; font-family: 'Poppins', sans-serif; font-size: 13px; color: #dc2626; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 16px; height: 16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Log Out
+          </button>
+        </form>
+      </div>
+    </div>
+    <a href="#" aria-label="Notifications" style="pointer-events: none; opacity: 0.5;">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
     </a>
-    <a href="#" aria-label="Cart">
+    <a href="#" aria-label="Cart" style="pointer-events: none; opacity: 0.5;">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
     </a>
   </div>
@@ -279,11 +291,6 @@
       <div class="user-card">
         <img src="{{ $u->foto_profil ? asset('storage/' . $u->foto_profil) : asset('assets/img/default-avatar.svg') }}" alt="{{ $u->name }}" onerror="this.src='{{ asset('assets/img/default-avatar.svg') }}'">
         <div class="user-card-info">
-          @if($u->role === 'admin')
-            <span class="owner-badge" style="background:#2485A8;">ADMIN</span>
-          @elseif($u->barangs_count > 0)
-            <span class="owner-badge">OWNER</span>
-          @endif
           <h4>{{ $u->name }}</h4>
           <p>{{ $u->email }}</p>
           <button class="btn-view-more" onclick="location.href='{{ route('admin.users.detail', $u->id) }}'">View More</button>
@@ -307,7 +314,7 @@
           <tbody>
             @forelse($itemsPreview as $item)
             <tr>
-              <td>#{{ $item->id }}</td>
+              <td>{{ $item->formattedId() }}</td>
               <td><div class="item-info"><img class="item-thumb" src="{{ $item->foto_barang ? asset('storage/' . $item->foto_barang) : 'https://placehold.co/60x60?text=No+Image' }}" alt="" onerror="this.src='https://placehold.co/60x60?text=No+Image'">{{ $item->nama_barang }}</div></td>
               <td>{{ $item->user->name ?? '-' }}</td>
               <td>Rp {{ number_format($item->harga_sewa, 0, ',', '.') }}/hari</td>
@@ -335,7 +342,7 @@
         <tbody>
           @forelse($transaksiPreview as $trans)
           <tr>
-            <td>#{{ $trans->id }}</td><td>{{ $trans->user->name ?? '-' }}</td><td>{{ $trans->barang->user->name ?? '-' }}</td>
+            <td>{{ $trans->formattedId() }}</td><td>{{ $trans->user->name ?? '-' }}</td><td>{{ $trans->barang->user->name ?? '-' }}</td>
             <td><div class="item-info"><img class="item-thumb" src="{{ optional($trans->barang)->foto_barang ? asset('storage/' . $trans->barang->foto_barang) : 'https://placehold.co/60x60?text=No+Image' }}" alt="" onerror="this.src='https://placehold.co/60x60?text=No+Image'">{{ $trans->barang->nama_barang ?? '-' }}</div></td>
             <td>{{ optional($trans->created_at)->translatedFormat('d M Y, H.i') }}</td><td>{{ $trans->pembayaran ? ucwords($trans->pembayaran->metode) : '-' }}</td>
             <td><span class="badge {{ $trans->statusBadgeClass() }}">{{ $trans->statusLabel() }}</span></td>

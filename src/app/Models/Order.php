@@ -16,5 +16,8 @@ class Order extends Model
         'email',
         'phone',
         'shipping_method',
+        'address',
+        'city',
+        'kode_pos',
     ];
 }

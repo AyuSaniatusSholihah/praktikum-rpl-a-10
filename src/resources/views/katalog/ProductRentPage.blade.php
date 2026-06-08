@@ -174,8 +174,9 @@
                             <div class="date-label">Tanggal Mulai Penyewaan</div>
                             <div class="date-value">
                                 <div class="date-icon-wrap">
-                                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
-                                        <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665C6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
+                                    <svg width="19" height="19" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                                        style="flex-shrink:0;">
+                                    <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM6.66667 14.1665C6.50185 14.1665 6.34073 14.1176 6.20369 14.0261C6.06665 13.9345 5.95984 13.8043 5.89677 13.6521C5.83369 13.4998 5.81719 13.3322 5.84935 13.1706C5.8815 13.0089 5.96087 12.8605 6.07741 12.7439C6.19395 12.6274 6.34244 12.548 6.50409 12.5159C6.66574 12.4837 6.8333 12.5002 6.98557 12.5633C7.13784 12.6263 7.26799 12.7332 7.35956 12.8702C7.45113 13.0072 7.5 13.1684 7.5 13.3332C7.5 13.5542 7.4122 13.7661 7.25592 13.9224C7.09964 14.0787 6.88768 14.1665 6.66667 14.1665ZM13.3333 14.1665H10C9.77899 14.1665 9.56702 14.0787 9.41074 13.9224C9.25446 13.7661 9.16667 13.5542 9.16667 13.3332C9.16667 13.1122 9.25446 12.9002 9.41074 12.7439C9.56702 12.5876 9.77899 12.4998 10 12.4998H13.3333C13.5543 12.4998 13.7663 12.5876 13.9226 12.7439C14.0789 12.9002 14.1667 13.1122 14.1667 13.3332C14.1667 13.5542 14.0789 13.7661 13.9226 13.9224C13.7663 14.0787 13.5543 14.1665 13.3333 14.1665ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
                                     </svg>
                                     <input type="date" class="date-hidden" id="dateStart"
                                            min="{{ $product->tanggal_item_mulai?->format('Y-m-d') }}"
@@ -193,8 +194,9 @@
                             <div class="date-label">Tanggal Selesai Penyewaan</div>
                             <div class="date-value">
                                 <div class="date-icon-wrap">
-                                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
-                                        <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
+                                    <svg width="19" height="19" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                                        style="flex-shrink:0;">
+                                    <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM6.66667 14.1665C6.50185 14.1665 6.34073 14.1176 6.20369 14.0261C6.06665 13.9345 5.95984 13.8043 5.89677 13.6521C5.83369 13.4998 5.81719 13.3322 5.84935 13.1706C5.8815 13.0089 5.96087 12.8605 6.07741 12.7439C6.19395 12.6274 6.34244 12.548 6.50409 12.5159C6.66574 12.4837 6.8333 12.5002 6.98557 12.5633C7.13784 12.6263 7.26799 12.7332 7.35956 12.8702C7.45113 13.0072 7.5 13.1684 7.5 13.3332C7.5 13.5542 7.4122 13.7661 7.25592 13.9224C7.09964 14.0787 6.88768 14.1665 6.66667 14.1665ZM13.3333 14.1665H10C9.77899 14.1665 9.56702 14.0787 9.41074 13.9224C9.25446 13.7661 9.16667 13.5542 9.16667 13.3332C9.16667 13.1122 9.25446 12.9002 9.41074 12.7439C9.56702 12.5876 9.77899 12.4998 10 12.4998H13.3333C13.5543 12.4998 13.7663 12.5876 13.9226 12.7439C14.0789 12.9002 14.1667 13.1122 14.1667 13.3332C14.1667 13.5542 14.0789 13.7661 13.9226 13.9224C13.7663 14.0787 13.5543 14.1665 13.3333 14.1665ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
                                     </svg>
                                     <input type="date" class="date-hidden" id="dateEnd"
                                            min="{{ $product->tanggal_item_mulai?->format('Y-m-d') }}"
@@ -216,24 +218,32 @@
                     </div>
 
                     {{-- QUANTITY + TOMBOL --}}
-                    <div class="qty-section">
-                        <div class="qty-label">Quantity</div>
-                        <div class="qty-controls">
-                            <div class="qty-input">
-                                <button class="qty-btn" id="qtyMinus">−</button>
-                                <span class="qty-num" id="qtyNum">1</span>
-                                <button class="qty-btn" id="qtyPlus">+</button>
+                    <div class="qty-section" style="{{ (auth()->check() && (auth()->id() === $product->user_id || auth()->user()->role === 'admin')) ? 'justify-content: center;' : '' }}">
+                        @if(auth()->check() && auth()->id() === $product->user_id)
+                            <a href="{{ route('katalog.edit-item', $product->id) }}" class="btn-rent-now" style="width: 100%; text-align: center; background: #6A87A1; margin: 0 auto; max-width: 400px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: 700;">Edit Katalog</a>
+                        @elseif(auth()->check() && auth()->user()->role === 'admin')
+                            <div style="color: #727272; font-family: 'Poppins', sans-serif; font-size: 14px; text-align: center; width: 100%; padding: 12px; background: #f5f5f5; border-radius: 8px; font-weight: 500; border: 1px dashed #ccc;">
+                                Anda masuk sebagai Admin. Mode tampilan saja, tidak dapat menyewa barang.
                             </div>
+                        @else
+                            <div class="qty-label">Quantity</div>
+                            <div class="qty-controls">
+                                <div class="qty-input">
+                                    <button class="qty-btn" id="qtyMinus">−</button>
+                                    <span class="qty-num" id="qtyNum">1</span>
+                                    <button class="qty-btn" id="qtyPlus">+</button>
+                                </div>
 
-                            {{-- ADD TO CART: kirim AJAX ke controller, lalu buka minicart --}}
-                            <button type="button" class="btn-add-cart" id="btnAddToCart">Add to cart</button>
+                                {{-- ADD TO CART: kirim AJAX ke controller, lalu buka minicart --}}
+                                <button type="button" class="btn-add-cart" id="btnAddToCart">Add to cart</button>
 
-                            {{-- RENT NOW: langsung ke checkout dengan id barang --}}
-                            <a class="btn-rent-now" id="btnRentNow"
-                               href="{{ route('checkout', $product->id) }}">
-                               Rent Now!
-                            </a>
-                        </div>
+                                {{-- RENT NOW: langsung ke checkout dengan id barang --}}
+                                <a class="btn-rent-now" id="btnRentNow"
+                                   href="{{ route('checkout', $product->id) }}">
+                                   Rent Now!
+                                </a>
+                            </div>
+                        @endif
                     </div>
 
                     {{-- Flash error dari controller (misal owner coba add barang sendiri) --}}
@@ -244,7 +254,6 @@
                     @endif
 
                     <div class="action-links">
-                        <a href="{{ route('rentals') }}" class="btn-back">Back to Rentals</a>
                         <a href="#" aria-label="Compare">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
                             Compare
@@ -278,24 +287,31 @@
                         </div>
                         <div class="info-item">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                            <span><strong>Denda:</strong> Rp {{ number_format($product->harga_denda_perjam, 0, ',', '.') }}/jam</span>
+                            <span><strong>Late Fee Applied for Delays:</strong> Rp {{ number_format($product->harga_denda_perjam, 0, ',', '.') }}/jam</span>
                         </div>
                     </div>
 
-                    <div class="payment-box">
-                        <div class="payment-icons">
-                            <div class="pay-wrap"><img src="https://img.icons8.com/color/48/visa.png" style="height:24px;width:auto;object-fit:contain;" alt="Visa"/></div>
-                            <div class="pay-wrap"><img src="https://img.icons8.com/color/48/mastercard.png" style="height:28px;width:auto;object-fit:contain;" alt="Mastercard"/></div>
-                            <div class="pay-wrap"><img src="https://img.icons8.com/color/48/paypal.png" style="height:28px;width:auto;object-fit:contain;" alt="PayPal"/></div>
-                            <div class="pay-wrap"><img src="{{ asset('assets/img/gopay.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="GoPay"/></div>
-                            <div class="pay-wrap"><img src="{{ asset('assets/img/ovo.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="OVO"/></div>
-                            <div class="pay-wrap"><img src="{{ asset('assets/img/dana.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="DANA"/></div>
-                            <div class="pay-wrap"><img src="{{ asset('assets/img/bca.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="BCA"/></div>
-                            <div class="pay-wrap"><img src="{{ asset('assets/img/bni.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="BNI"/></div>
-                            <div class="pay-wrap"><img src="{{ asset('assets/img/mandiri.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="Mandiri"/></div>
-                        </div>
-                        <div class="guarantee-text">Guarantee safe &amp; secure checkout</div>
+                <div class="payment-box">
+                    <div class="payment-icons">
+                        <div class="pay-wrap"><img src="https://img.icons8.com/color/48/visa.png" style="height:24px;width:auto;object-fit:contain;" alt="Visa"/></div>
+                        <div class="pay-wrap"><img src="https://img.icons8.com/color/48/mastercard.png" style="height:28px;width:auto;object-fit:contain;" alt="Mastercard"/></div>
+                        <div class="pay-wrap"><img src="https://img.icons8.com/color/48/amex.png" style="height:28px;width:auto;object-fit:contain;" alt="Amex"/></div>
+                        <div class="pay-wrap"><img src="https://img.icons8.com/color/48/jcb.png" style="height:28px;width:auto;object-fit:contain;" alt="JCB"/></div>
+                        <div class="pay-wrap"><img src="https://img.icons8.com/color/48/discover.png" style="height:28px;width:auto;object-fit:contain;" alt="Discover"/></div>
+                        <div class="pay-wrap"><img src="https://img.icons8.com/color/48/paypal.png" style="height:28px;width:auto;object-fit:contain;" alt="PayPal"/></div>
+                        <div class="pay-wrap"><img src="https://img.icons8.com/color/48/bank-card-front-side.png" style="height:28px;width:auto;object-fit:contain;" alt="Card"/></div>
+                        <div class="pay-wrap"><img src="{{ asset('assets/img/bca.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="BCA"/></div>
+                        <div class="pay-wrap"><img src="{{ asset('assets/img/bni.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="BNI"/></div>
+                        <div class="pay-wrap"><img src="{{ asset('assets/img/mandiri.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="Mandiri"/></div>
+                        <div class="pay-wrap"><img src="{{ asset('assets/img/bri.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="BRI"/></div>
+                        <div class="pay-wrap"><img src="{{ asset('assets/img/bsi.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="BSI"/></div>
+                        <div class="pay-wrap"><img src="{{ asset('assets/img/gopay.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="GoPay"/></div>
+                        <div class="pay-wrap"><img src="{{ asset('assets/img/ovo.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="OVO"/></div>
+                        <div class="pay-wrap"><img src="{{ asset('assets/img/dana.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="DANA"/></div>
+                        <div class="pay-wrap"><img src="{{ asset('assets/img/spay.png') }}" style="height:28px;width:auto;object-fit:contain;" alt="ShopeePay"/></div>
                     </div>
+                    <div class="guarantee-text">Guarantee safe &amp; secure checkout</div>
+                </div>
                 </div>
 
             </div>
@@ -525,10 +541,10 @@
          * ADD TO CART – AJAX + ANIMASI TERBANG + BUKA SIDEBAR
          * ============================================================ */
         let qty = 1;
-        document.getElementById('qtyMinus').addEventListener('click', () => { if (qty > 1) { qty--; document.getElementById('qtyNum').textContent = qty; } });
-        document.getElementById('qtyPlus').addEventListener('click',  () => { if (qty < PRODUCT.stok) { qty++; document.getElementById('qtyNum').textContent = qty; } });
+        document.getElementById('qtyMinus')?.addEventListener('click', () => { if (qty > 1) { qty--; document.getElementById('qtyNum').textContent = qty; } });
+        document.getElementById('qtyPlus')?.addEventListener('click',  () => { if (qty < PRODUCT.stok) { qty++; document.getElementById('qtyNum').textContent = qty; } });
 
-        document.getElementById('btnAddToCart').addEventListener('click', function () {
+        document.getElementById('btnAddToCart')?.addEventListener('click', function () {
             // Kasus 1: Belum login
             if (!IS_LOGGED_IN) {
                 showRentToast({
@@ -661,23 +677,23 @@
         /* ============================================================
          * RENT NOW – langsung ke checkout
          * ============================================================ */
-        document.getElementById('btnRentNow').addEventListener('click', function (e) {
+        document.getElementById('btnRentNow')?.addEventListener('click', function (e) {
             e.preventDefault();
 
-            // Kasus 1: Belum login
+            // Kasus: Belum login
             if (!IS_LOGGED_IN) {
                 showRentToast({
                     iconClass   : 'info',
                     iconEmoji   : '🔐',
                     title       : 'Login Diperlukan',
-                    msg         : 'Kamu perlu login terlebih dahulu sebelum melanjutkan ke checkout.',
+                    msg         : 'Kamu perlu login terlebih dahulu sebelum melakukan penyewaan.',
                     actionLabel : 'Login Sekarang',
-                    actionHref  : LOGIN_URL + '?redirect=' + encodeURIComponent(CHECKOUT_URL),
+                    actionHref  : LOGIN_URL + '?redirect=' + encodeURIComponent(window.location.href),
                 });
                 return;
             }
 
-            // Kasus 2: Produk milik sendiri
+            // Kasus: Produk milik sendiri (hanya bisa terjadi kalau sudah login)
             if (IS_OWN_PRODUCT) {
                 showRentToast({
                     iconClass   : 'warning',
@@ -693,7 +709,7 @@
             const startDate = document.getElementById('dateStart').value || @json($product->tanggal_item_mulai?->format('Y-m-d'));
             const endDate   = document.getElementById('dateEnd').value   || @json($product->tanggal_item_tidak_tersedia?->format('Y-m-d'));
 
-            // Tambah ke cart dulu, lalu redirect ke checkout
+            // Kalau sudah login: tambah ke cart dulu, lalu redirect ke checkout
             fetch(ADD_CART_URL, {
                 method : 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
@@ -716,6 +732,7 @@
                     msg: err.error || 'Terjadi kesalahan saat melanjutkan ke penyewaan.',
                 });
             });
+
         });
 
         /* ============================================================
@@ -738,12 +755,20 @@
          * ============================================================ */
         const tabs = {
             desc : @json($product->deskripsi),
-            info : `<div style="background:#f5f5f5;border-radius:8px;padding:18px 20px;font-family:'Poppins',sans-serif;font-size:13px;display:flex;flex-direction:column;gap:10px;">
-                        <div><strong>Pemilik:</strong> {{ $product->user->name ?? '-' }}</div>
-                        <div><strong>WhatsApp:</strong> {{ $product->user->phone_number ?? '-' }}</div>
-                        <div><strong>Jaminan:</strong> Rp {{ number_format($product->harga_jaminan, 0, ',', '.') }}</div>
-                        <div><strong>Denda:</strong> Rp {{ number_format($product->harga_denda_perjam, 0, ',', '.') }}/jam</div>
-                        <div><strong>Lokasi:</strong> {{ $product->lokasi }}</div>
+            info : `<div style="font-family:'Poppins',sans-serif;font-size:13px;display:flex;flex-direction:column;gap:12px;">
+                        @if($product->additional_information)
+                        <div style="background:#f5f5f5;border-radius:8px;padding:18px 20px;white-space:pre-wrap;line-height:1.7;">{{ $product->additional_information }}</div>
+                        @else
+                        <div style="color:#aaa;padding:8px 0;font-size:13px;">Belum ada informasi tambahan.</div>
+                        @endif
+                        <div style="background:#f5f5f5;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;">
+                            <div style="font-weight:700;margin-bottom:4px;color:#333;">Informasi Pemilik</div>
+                            <div><strong>Pemilik:</strong> {{ $product->user->name ?? '-' }}</div>
+                            <div><strong>WhatsApp:</strong> {{ $product->user->phone_number ?? '-' }}</div>
+                            <div><strong>Jaminan:</strong> Rp {{ number_format($product->harga_jaminan, 0, ',', '.') }}</div>
+                            <div><strong>Denda:</strong> Rp {{ number_format($product->harga_denda_perjam, 0, ',', '.') }}/jam</div>
+                            <div><strong>Lokasi:</strong> {{ $product->lokasi }}</div>
+                        </div>
                     </div>`,
             rev  : `<div>@forelse($product->reviews as $r)
                         <div style="display:flex;gap:12px;padding:16px 0;{{ !$loop->last ? 'border-bottom:1px solid #f0f0f0' : '' }}">

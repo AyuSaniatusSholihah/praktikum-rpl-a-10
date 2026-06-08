@@ -148,6 +148,8 @@
     function deleteRow(btn) {
     const row = btn.closest('tr');
     const itemId = row.dataset.id; // perlu tambah data-id di <tr>
+    const qtyInput = row.querySelector('.qty-box input');
+    const itemQty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
    
     fetch(`/cart/${itemId}`, {
         method: 'DELETE',
@@ -157,6 +159,14 @@
     }).then(() => {
         row.remove();
         updateSubtotal();
+        
+        const cartBadge = document.getElementById('cartBadge');
+        if (cartBadge) {
+            let count = parseInt(cartBadge.textContent) || 0;
+            let newCount = count - itemQty;
+            cartBadge.textContent = newCount > 0 ? newCount : 0;
+        }
+
         if (document.querySelectorAll('tbody tr').length === 0) {
         document.querySelector('.table-wrapper').style.display = 'none';
         document.querySelector('.checkout-container')?.style &&
@@ -197,6 +207,14 @@
             const subtotalCell = row.querySelector('.subtotal-cell');
             subtotalCell.textContent = 'Rp ' + data.subtotal.toLocaleString('id-ID');
             updateSubtotal();
+            
+            // update header badge
+            const cartBadge = document.getElementById('cartBadge');
+            if (cartBadge) {
+                let count = parseInt(cartBadge.textContent) || 0;
+                let newCount = count + change;
+                cartBadge.textContent = newCount > 0 ? newCount : 0;
+            }
         })
         .catch(err => {
             alert(err.error || 'Terjadi kesalahan saat memperbarui kuantitas.');

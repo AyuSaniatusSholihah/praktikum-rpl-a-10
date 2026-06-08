@@ -20,7 +20,7 @@
   <div class="hero-col">
     <div class="hero-img-wrap hero-top-wrap">
       <div class="hero-img hero-mid-top">
-        <img src="{{ asset('assets/img/Kamera.jpg') }}" alt="Tent" />
+        <img src="{{ asset('assets/img/camping.png') }}" alt="Tent" />
       </div>
     </div>
     <div class="hero-center-text">
@@ -107,11 +107,11 @@
 
 <section class="brand-strip">
  <div class="container brand-strip-inner">
-  <img src="{{ asset('assets/img/Merk 1.png') }}" alt="Brand 1" class="brand-logo" />
-    <img src="{{ asset('assets/img/Merk 2.png') }}" alt="Brand 2" class="brand-logo" />
-    <img src="{{ asset('assets/img/Merk 3.png') }}" alt="Brand 3" class="brand-logo" />
-    <img src="{{ asset('assets/img/Merk 4.png') }}" alt="Brand 4" class="brand-logo" />
-    <img src="{{ asset('assets/img/Merk 5.png') }}" alt="Brand 5" class="brand-logo" />
+  <img src="{{ asset('assets/img/Merk 1.png') }}" alt="Brand 1" class="brand-logo" style="height: 25px;"/>
+    <img src="{{ asset('assets/img/Merk 2.png') }}" alt="Brand 2" class="brand-logo" style="height: 150px;"/>
+    <img src="{{ asset('assets/img/Merk 3.png') }}" alt="Brand 3" class="brand-logo" style="height: 140px;"/>
+    <img src="{{ asset('assets/img/Merk 4.png') }}" alt="Brand 4" class="brand-logo" style="height: 100px;"/>
+    <img src="{{ asset('assets/img/Merk 5.png') }}" alt="Brand 5" class="brand-logo" style="height: 100px;"/>
  </div>
 </section>
 
@@ -124,7 +124,7 @@
    <p class="about-text">
      Dengan berbagai pilihan kategori seperti elektronik, kamera, perlengkapan outdoor, hingga kebutuhan event, SEWAIN menjadi solusi bagi siapa saja yang membutuhkan barang untuk penggunaan sementara.
    </p>
-   <p class="about-text">SEWAIN — Sewa Mudah, Hidup Lebih Praktis.</p>
+   <p class="about-text" style="font-style: italic;">SEWAIN — Sewa Mudah, Hidup Lebih Praktis.</p>
 
    <div class="feature-grid">
      <div class="feature-item">
@@ -237,15 +237,24 @@
      @foreach($barangs->take(6) as $barang)
      <article class="product-card" onclick="location.href='{{ route('product', $barang->id) }}'">
        <div class="product-img"><img src="{{ $barang->foto_barang ? asset('storage/' . $barang->foto_barang) : 'https://placehold.co/400x300?text=No+Image' }}" alt="{{ $barang->nama_barang }}" /></div>
+       @php
+           $reviewCount = $barang->reviews()->count();
+           $avgRating = $reviewCount > 0 ? round($barang->reviews()->avg('rating'), 1) : 0;
+           $stars = '';
+           for($i=1; $i<=5; $i++) {
+               $stars .= ($i <= round($avgRating)) ? '★' : '☆';
+           }
+           if ($reviewCount == 0) $stars = '★★★★★';
+       @endphp
        <div class="head-row">
          <h4>{{ $barang->nama_barang }}</h4>
-         <span class="rating">★★★★★</span>
+         <span class="rating">{{ $stars }}</span>
        </div>
        <div class="loc">
          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-right:4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
          {{ $barang->lokasi }}
        </div>
-       <div class="reviews">(0) Customer Reviews</div>
+       <div class="reviews">({{ $reviewCount }}) Customer Reviews</div>
        <div class="price">Rp {{ number_format($barang->harga_sewa, 0, ',', '.') }}/hari</div>
      </article>
      @endforeach
@@ -342,18 +351,17 @@ const testimonials = [
 const catCards = Array.from(document.querySelectorAll('.category-card'));
 let catMiddle = 1;
 
-function updateCatDisplay() {
+function updateCatDisplay(dir) {
   const total = catCards.length;
   const leftIdx  = (catMiddle - 1 + total) % total;
   const midIdx   = catMiddle;
   const rightIdx = (catMiddle + 1) % total;
 
-  // sembunyikan semua
   catCards.forEach(card => {
     card.style.display = 'none';
     card.style.transform = '';
     card.style.order = '';
-    card.style.animation = '';
+    card.style.animation = 'none';
     card.classList.remove('cat-active');
     const desc = card.querySelector('p');
     const btn  = card.querySelector('.btn-explore');
@@ -361,52 +369,50 @@ function updateCatDisplay() {
     if (btn)  btn.style.display  = 'none';
   });
 
-  // kiri — order 1
+  // Reflow biar animation reset beneran
+  void catCards[leftIdx].offsetWidth;
+  void catCards[midIdx].offsetWidth;
+  void catCards[rightIdx].offsetWidth;
+
+  // KIRI
   catCards[leftIdx].style.display = 'flex';
   catCards[leftIdx].style.order = '1';
   catCards[leftIdx].style.transform = 'translateY(-60px)';
+  catCards[leftIdx].style.animation = dir === 'prev'
+    ? 'catFadeInLeft 0.35s ease forwards'
+    : 'none';
 
-  // tengah — order 2
+  // TENGAH — animasi turun tiap kali ganti
   catCards[midIdx].style.display = 'flex';
   catCards[midIdx].style.order = '2';
-  catCards[midIdx].style.transform = 'translateY(0px)';
   catCards[midIdx].classList.add('cat-active');
   const desc = catCards[midIdx].querySelector('p');
   const btn  = catCards[midIdx].querySelector('.btn-explore');
   if (desc) desc.style.display = 'block';
   if (btn)  btn.style.display  = 'inline-flex';
+  catCards[midIdx].style.animation = dir
+    ? 'catDropIn 0.35s ease forwards'
+    : 'none';
 
-  // kanan — order 3
+  // KANAN
   catCards[rightIdx].style.display = 'flex';
   catCards[rightIdx].style.order = '3';
   catCards[rightIdx].style.transform = 'translateY(-60px)';
-  
-  // Berikan animasi fade in khusus untuk kartu yang baru muncul
-  catCards[leftIdx].style.animation = 'none';
-  catCards[rightIdx].style.animation = 'none';
-  // Reflow
-  void catCards[leftIdx].offsetWidth;
-  void catCards[rightIdx].offsetWidth;
-  
-  if (window.catDir === 'next') {
-     catCards[rightIdx].style.animation = 'catFadeInRight 0.3s ease forwards';
-  } else if (window.catDir === 'prev') {
-     catCards[leftIdx].style.animation = 'catFadeInLeft 0.3s ease forwards';
-  }
+  catCards[rightIdx].style.animation = dir === 'next'
+    ? 'catFadeInRight 0.35s ease forwards'
+    : 'none';
 }
 
 document.getElementById('catPrev').addEventListener('click', () => {
-  window.catDir = 'prev';
   catMiddle = (catMiddle - 1 + catCards.length) % catCards.length;
-  updateCatDisplay();
+  updateCatDisplay('prev');
 });
 document.getElementById('catNext').addEventListener('click', () => {
-  window.catDir = 'next';
   catMiddle = (catMiddle + 1) % catCards.length;
-  updateCatDisplay();
+  updateCatDisplay('next');
 });
 
-updateCatDisplay();
+updateCatDisplay(null); // init tanpa animasi
 </script>
 
 </x-slot:scripts>

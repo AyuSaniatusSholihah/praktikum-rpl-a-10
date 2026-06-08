@@ -14,6 +14,7 @@ class Barang extends Model
         'kategori_id',
         'nama_barang',
         'deskripsi',
+        'additional_information',
         'harga_sewa',
         'harga_jaminan',
         'harga_denda_perjam',
@@ -67,11 +68,40 @@ class Barang extends Model
 
     public function statusLabel(): string
     {
-        return $this->status === 'tersedia' ? 'Tersedia' : 'Tidak Tersedia';
+        return $this->status === 'tersedia' ? 'AVAILABLE' : 'ACTIVE RENTAL';
     }
 
-    public function statusBadgeClass(): string
+    public function statusBadgeClass(): string {
+        return match($this->status) {
+            'tersedia'    => 'badge badge-available',
+            default       => 'badge badge-active-rental',
+        };
+    }
+
+    /**
+     * Formatted display ID: I + huruf pertama kategori + 3-digit ID
+     * Contoh: IT001 (Tools), IV001 (Vehicles), IP001 (Photography)
+     */
+    public function formattedId(): string
     {
-        return $this->status === 'tersedia' ? 'badge-active' : 'badge-cancelled';
+        $catLetter = $this->kategori ? strtoupper(substr($this->kategori->nama_kategori, 0, 1)) : 'X';
+        return 'I' . $catLetter . str_pad($this->id, 3, '0', STR_PAD_LEFT);
+    }
+
+    public function getShortLocationAttribute(): string
+    {
+        if (!$this->lokasi) {
+            return '';
+        }
+        // Split by commas and get the last segment (typically city/kabupaten)
+        $parts = explode(',', $this->lokasi);
+        $cityPart = trim(end($parts));
+        // Remove common prefixes like 'kab', 'kota', case-insensitive
+        $cityPart = preg_replace('/^(kab|kota)\s+/i', '', $cityPart);
+        // Also remove any leading words like 'kelurahan', 'kecamatan' if present
+        $cityPart = preg_replace('/^(kelurahan|kecamatan)\s+/i', '', $cityPart);
+        // Trim again and return capitalized (first letter upper)
+        $cityPart = trim($cityPart);
+        return ucfirst(strtolower($cityPart));
     }
 }
