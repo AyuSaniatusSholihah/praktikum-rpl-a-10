@@ -13,6 +13,23 @@
             <span class="current">Checkout Payment</span>
         </div>
     </div>
+
+    @if(session('error'))
+        <div style="max-width:1280px; margin:0 auto 20px auto; padding:15px; background-color:#ffebee; color:#c62828; border-radius:8px;">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div style="max-width:1280px; margin:0 auto 20px auto; padding:15px; background-color:#ffebee; color:#c62828; border-radius:8px;">
+            <ul style="margin:0; padding-left:20px;">
+                @foreach($errors->all() as $err)
+                    <li>{{ $err }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form id="checkoutForm" action="{{ route('checkout.post') }}" method="POST">
         @csrf
         <input type="hidden" name="shipping_method" id="shipping_method" value="cod" />
@@ -45,7 +62,7 @@
                     <div class="form-field">
                         <input type="tel" name="phone" placeholder="Phone Number"
                             value="{{ auth()->user()->phone_number ?? '' }}"
-                            {{ auth()->check() ? 'readonly style=opacity:0.7' : 'required' }} />
+                            {{ auth()->check() && auth()->user()->phone_number ? 'readonly style=opacity:0.7' : 'required' }} />
                     </div>
                 </div>
 

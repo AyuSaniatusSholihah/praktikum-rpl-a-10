@@ -47,6 +47,7 @@ class SocialiteController extends Controller
                     'name' => $socialUser->name,
                     'email' => $socialUser->email,
                     'password' => Hash::make(Str::random(24)),
+                    'saldo' => 1000000,
                     'google_id' => $socialUser->id,
                     'google_token' => $socialUser->token,
                     'google_refresh_token' => $socialUser->refreshToken,
