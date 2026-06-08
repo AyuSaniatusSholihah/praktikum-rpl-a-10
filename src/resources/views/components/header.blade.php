@@ -11,6 +11,11 @@
    <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
    <li><a href="{{ route('rentals') ?? '#' }}" class="{{ request()->routeIs('rentals') ? 'active' : '' }}">Rentals</a></li>
    <li><a href="{{ route('katalog') ?? '#' }}" class="{{ request()->routeIs('katalog') ? 'active' : '' }}">My Katalog</a></li>
+   @auth
+     @if(auth()->user()->role === 'admin')
+       <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.*') ? 'active' : '' }}">Admin</a></li>
+     @endif
+   @endauth
  </ul>
  <div class="site-nav-right">
    @auth

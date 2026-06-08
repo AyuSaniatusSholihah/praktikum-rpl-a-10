@@ -13,7 +13,7 @@
    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Amethysta&family=Abhaya+Libre:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/home.css" />
   <link rel="stylesheet" href="assets/css/profiledashboard.css" />
-  <link rel="stylesheet" href="/sewain/assets/css/profile.css" />
+  <link rel="stylesheet" href="/assets/css/profile.css" />
 </head>
 <body>
 
