@@ -51,7 +51,7 @@
         </div>
 
         <div class="rd-form-grid" style="margin-bottom:24px;">
-            <div class="rd-field"><label>ID Transaksi</label><div class="rd-value">TRX-{{ str_pad($trx->id, 4, '0', STR_PAD_LEFT) }}</div></div>
+            <div class="rd-field"><label>ID Transaksi</label><div class="rd-value">{{ $trx->formattedId() }}</div></div>
             <div class="rd-field"><label>Tanggal Sewa</label><div class="rd-value">{{ optional($trx->tanggal_sewa)->format('d F Y') ?? '-' }}</div></div>
             <div class="rd-field"><label>Rencana Kembali</label><div class="rd-value">{{ optional($trx->tanggal_kembali_rencana)->format('d F Y') ?? '-' }}</div></div>
             <div class="rd-field"><label>Total Bayar</label><div class="rd-value">Rp {{ number_format($trx->total_harga ?? 0, 0, ',', '.') }}</div></div>
@@ -85,18 +85,39 @@
                     </div>
                 </div>
                 <div>
-                    <div class="return-box-field-label">Catatan Pengembalian</div>
-                    <form method="POST" action="#" id="returnForm">
+                    <div class="return-box-field-label">Reviews</div>
+                    <form method="POST" action="{{ route('profile.rentals.pengembalian.store', $trx->id) }}" id="returnForm">
                         @csrf
-                        <textarea class="return-box-textarea" name="catatan" placeholder="Tulis catatan pengembalian kamu di sini..."></textarea>
+                        <div class="return-box-stars" id="ratingStars" style="font-size:24px; color:#FACA43; cursor:pointer; margin-bottom:8px; user-select:none; letter-spacing:2px;">
+                            <span data-val="1">☆</span><span data-val="2">☆</span><span data-val="3">☆</span><span data-val="4">☆</span><span data-val="5">☆</span>
+                        </div>
+                        <input type="hidden" name="rating" id="ratingInput" value="0">
+                        <textarea class="return-box-textarea" name="ulasan" placeholder="Tulis ulasan kamu di sini..."></textarea>
                     </form>
                 </div>
             </div>
 
-            <button class="btn-ajukan-return" id="btnAjukanReturn" onclick="document.getElementById('returnForm').submit();">
-                AJUKAN PENGEMBALIAN
-            </button>
+            <div style="display:flex; justify-content:center; margin-top:8px;">
+                <button type="submit" form="returnForm" class="btn-ajukan-return" style="text-align:center; cursor:pointer; border:none;">
+                    KIRIM PENGEMBALIAN
+                </button>
+            </div>
         </div>
     </div>
+
+    <script>
+        (function () {
+            const wrap  = document.getElementById('ratingStars');
+            const input = document.getElementById('ratingInput');
+            if (!wrap || !input) return;
+            const stars = wrap.querySelectorAll('span');
+            const paint = (val) => stars.forEach(s => s.textContent = (Number(s.dataset.val) <= val) ? '★' : '☆');
+            stars.forEach(s => {
+                s.addEventListener('click', () => { input.value = s.dataset.val; paint(Number(s.dataset.val)); });
+                s.addEventListener('mouseenter', () => paint(Number(s.dataset.val)));
+            });
+            wrap.addEventListener('mouseleave', () => paint(Number(input.value)));
+        })();
+    </script>
 
 </x-profile-layout>
