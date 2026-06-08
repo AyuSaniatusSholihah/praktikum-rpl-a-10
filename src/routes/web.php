@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Kategori;
 
 use App\Http\Controllers\KatalogUploadController;
 use App\Http\Controllers\CartController;
@@ -21,20 +22,23 @@ Route::get('/', function () {
 
 // Rentals page
 Route::get('/rentals', function () {
-    $barangs   = Barang::with('kategori')->where('status', 'tersedia')->get();
-    $locations = $barangs->pluck('lokasi')->unique()->filter()->values()->toArray();
-    $categories = $barangs->map(fn($b) => $b->kategori->nama_kategori ?? null)
-                          ->unique()->filter()->values()->toArray();
+    $query = Barang::with('kategori')->where('status', 'tersedia');
+    if (Auth::check()) {
+        $query->where('user_id', '!=', Auth::id());
+    }
+    $barangs = $query->get();
+    $locations  = $barangs->map(function($b){ return $b->short_location; })->unique()->filter()->values()->toArray();
+    $categories = Kategori::orderBy('nama_kategori')->pluck('nama_kategori')->toArray();
     return view('katalog.RentalsPage', compact('barangs', 'locations', 'categories'));
 })->name('rentals');
 
-// My Katalog – tampilkan barang milik user yang login (atau semua jika guest)
+// My Katalog – tampilkan barang milik user yang login (kosong jika guest)
 Route::get('/katalog', function () {
-    $query = Barang::with(['kategori', 'user']);
-    if (Auth::check()) {
-        $query->where('user_id', Auth::id());
+    if (!Auth::check()) {
+        $barangs = collect();
+    } else {
+        $barangs = Barang::with(['kategori', 'user'])->where('user_id', Auth::id())->get();
     }
-    $barangs = $query->get();
     return view('katalog.MyKatalog', compact('barangs'));
 })->name('katalog');
 Route::get('/dashboard', function () {
@@ -104,19 +108,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/{id}', [CartController::class, 'destroy']);
     Route::patch('/cart/{id}/quantity', [CartController::class, 'updateQuantity']);
 
-    // Checkout
-    // PENTING: Route spesifik harus SEBELUM route dengan parameter wildcard
-    Route::get('/checkout/confirmation', [OrderController::class, 'confirmation'])->name('checkout.confirmation');
-    Route::get('/checkout/{id?}', [CheckoutController::class, 'index'])->name('checkout');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.post');
-
     // Add item routes (owner upload)
     Route::get('/katalog/add-item', [KatalogUploadController::class, 'create'])->name('katalog.add-item');
     Route::post('/katalog/add-item', [KatalogUploadController::class, 'store'])->name('katalog.add-item.post');
 
-    // Order confirmation
+    // Checkout & Order — auth protected
+    Route::get('/checkout/confirmation', [OrderController::class, 'confirmation'])->name('checkout.confirmation');
+    Route::get('/checkout/{id?}', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.post');
     Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
 });
+
 
 // Edit item routes
 Route::get('/katalog/edit-item/{id}', [KatalogUploadController::class, 'edit'])->name('katalog.edit-item');
@@ -132,6 +134,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/financial-wallet', [\App\Http\Controllers\AdminController::class, 'financialWallet'])->name('financial-wallet');
     Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('users');
     Route::get('/users/{id}', [\App\Http\Controllers\AdminController::class, 'userDetail'])->name('users.detail');
+    Route::post('/users/{id}/ban', [\App\Http\Controllers\AdminController::class, 'toggleBan'])->name('users.ban');
     Route::get('/items', [\App\Http\Controllers\AdminController::class, 'items'])->name('items');
     Route::get('/items/{id}', [\App\Http\Controllers\AdminController::class, 'itemDetail'])->name('items.detail');
     Route::get('/transactions', [\App\Http\Controllers\AdminController::class, 'transactions'])->name('transactions');

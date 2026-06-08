@@ -152,10 +152,12 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        $transaksi = $user->transaksiPenyewaan()
-            ->with(['barang', 'pembayaran'])
-            ->latest()
-            ->get();
+        $transaksi = TransaksiPenyewaan::where(function($q) use ($user) {
+            $q->where('user_id', $user->id)
+              ->orWhereHas('barang', function($qb) use ($user) {
+                  $qb->where('user_id', $user->id);
+              });
+        })->with(['barang.user', 'pembayaran'])->latest()->get();
 
         return view('profile.MyWalletPage', compact('user', 'transaksi'));
     }

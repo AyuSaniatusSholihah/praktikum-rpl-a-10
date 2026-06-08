@@ -219,7 +219,7 @@
         }
 
         function updatePagination(total) {
-            if (total <= 1) { pagNav.innerHTML = ''; return; }
+            if (total < 1) { pagNav.innerHTML = ''; return; }
             let html = '';
             for (let i = 1; i <= total; i++) {
                 html += `<button class="${i === currentPage ? 'active' : ''}">${i}</button>`;

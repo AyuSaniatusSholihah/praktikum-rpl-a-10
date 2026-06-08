@@ -29,12 +29,24 @@
                             <a href="{{ route('register') }}">Create Account</a>
                         </div>
                     </div>
-                    <div class="form-row form-field" id="nameFields">
-                        <input type="text" name="first_name" placeholder="First Name" required />
-                        <input type="text" name="last_name" placeholder="Last Name" required />
+                    <div class="form-row form-field" id="nameFields" 
+                        style="{{ auth()->check() ? 'display:none;' : '' }}">
+                        <input type="text" name="first_name" placeholder="First Name" 
+                            {{ auth()->check() ? '' : 'required' }}
+                            value="{{ auth()->check() ? auth()->user()->name : '' }}" />
+                        <input type="text" name="last_name" placeholder="Last Name" 
+                            {{ auth()->check() ? '' : 'required' }} />
                     </div>
-                    <div class="form-field"><input type="email" name="email" placeholder="Email Address" required /></div>
-                    <div class="form-field"><input type="tel" name="phone" placeholder="Phone Number" required /></div>
+                    <div class="form-field">
+                        <input type="email" name="email" placeholder="Email Address" 
+                            value="{{ auth()->user()->email ?? '' }}"
+                            {{ auth()->check() ? 'readonly style=opacity:0.7' : 'required' }} />
+                    </div>
+                    <div class="form-field">
+                        <input type="tel" name="phone" placeholder="Phone Number"
+                            value="{{ auth()->user()->phone_number ?? '' }}"
+                            {{ auth()->check() ? 'readonly style=opacity:0.7' : 'required' }} />
+                    </div>
                 </div>
 
                 <div class="form-section">
@@ -78,17 +90,19 @@
                     <div class="payment-methods-grid">
                         <div class="payment-method-card selected" id="selectedCard">
                             <div class="pm-left">
-                                <input type="radio" class="pm-radio" name="payment_method" value="Credit Card" checked />
+                                <input type="radio" class="pm-radio" name="payment_method" id="mainPaymentMethod" value="Credit Card" checked />
                                 <div>
                                     <div class="pm-label" id="selectedLabel">Credit Card</div>
                                     <div class="pm-sub" id="selectedSub">Visa, Mastercard, dll</div>
                                 </div>
                             </div>
                             <div style="display:flex;align-items:center;gap:12px;">
-                                <svg id="selectedLogo" width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;">
-                                    <rect width="50" height="25" rx="3" fill="#1A1F71" />
-                                    <text x="8" y="17" font-family="Poppins" font-size="10" fill="white" font-weight="bold">VISA</text>
-                                </svg>
+                                <div id="selectedLogoContainer">
+                                    <svg width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;">
+                                        <rect width="50" height="25" rx="3" fill="#1A1F71" />
+                                        <text x="8" y="17" font-family="Poppins" font-size="10" fill="white" font-weight="bold">VISA</text>
+                                    </svg>
+                                </div>
                                 <span id="pmChevron" onclick="event.stopPropagation(); toggleDropdown()" style="cursor:pointer;transition:transform 0.2s;display:inline-flex;align-items:center;">
                                     <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M5.53366 7.78781L0.193175 1.92106C-0.0643917 1.63811 -0.0643917 1.17938 0.193175 0.896463L0.816057 0.212204C1.07318 -0.0702607 1.48991 -0.0708043 1.74765 0.210996L6.00001 4.8605L10.2524 0.210996C10.5101 -0.0708043 10.9268 -0.0702607 11.1839 0.212204L11.8068 0.896463C12.0644 1.17941 12.0644 1.63814 11.8068 1.92106L6.46637 7.78781C6.2088 8.07073 5.79122 8.07073 5.53366 7.78781Z" fill="#484848" />
@@ -97,8 +111,8 @@
                             </div>
                         </div>
                         <div id="pmDropdown" style="display:none;flex-direction:column;gap:6px;margin-top:4px;">
-                            <div class="payment-method-card" onclick="selectPayment('credit','', 'Credit Card','Visa, Mastercard, dll','visa')">
-                                <div class="pm-left"><input type="radio" class="pm-radio" name="payment_method" value="credit" />
+                            <div class="payment-method-card" onclick="selectPayment('credit', 'Credit Card', 'Visa, Mastercard, dll', 'credit')">
+                                <div class="pm-left"><input type="radio" class="pm-radio" name="dummy_pm" value="credit" />
                                     <div><div class="pm-label">Credit Card</div><div class="pm-sub">Visa, Mastercard, dll</div></div>
                                 </div>
                                 <svg width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;">
@@ -106,24 +120,24 @@
                                     <text x="8" y="17" font-family="Poppins" font-size="10" fill="white" font-weight="bold">VISA</text>
                                 </svg>
                             </div>
-                            <div class="payment-method-card" onclick="selectPayment('qris','', 'QRIS','Scan QR untuk bayar','qris')">
-                                <div class="pm-left"><input type="radio" class="pm-radio" name="payment_method" value="qris" />
+                            <div class="payment-method-card" onclick="selectPayment('qris', 'QRIS', 'Scan QR untuk bayar', 'qris')">
+                                <div class="pm-left"><input type="radio" class="pm-radio" name="dummy_pm" value="qris" />
                                     <div><div class="pm-label">QRIS</div><div class="pm-sub">Scan QR untuk bayar</div></div>
                                 </div>
                                 <svg width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;">
                                     <image href="{{ asset('assets/img/logo qris.png') }}" width="50" height="25" />
                                 </svg>
                             </div>
-                            <div class="payment-method-card" onclick="selectPayment('transfer','', 'Transfer Bank','BCA, Mandiri, BRI, BNI','bank')">
-                                <div class="pm-left"><input type="radio" class="pm-radio" name="payment_method" value="transfer" />
+                            <div class="payment-method-card" onclick="selectPayment('transfer', 'Transfer Bank', 'BCA, Mandiri, BRI, BNI', 'transfer')">
+                                <div class="pm-left"><input type="radio" class="pm-radio" name="dummy_pm" value="transfer" />
                                     <div><div class="pm-label">Transfer Bank</div><div class="pm-sub">BCA, Mandiri, BRI, BNI</div></div>
                                 </div>
                                 <svg width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;">
                                     <image href="{{ asset('assets/img/logo bank tf.png') }}" width="50" height="25" />
                                 </svg>
                             </div>
-                            <div class="payment-method-card" onclick="selectPayment('ewallet','', 'E‑Wallet','GoPay, OVO, ShopeePay, Dana','epay')">
-                                <div class="pm-left"><input type="radio" class="pm-radio" name="payment_method" value="ewallet" />
+                            <div class="payment-method-card" onclick="selectPayment('ewallet', 'E-Wallet', 'GoPay, OVO, ShopeePay, Dana', 'ewallet')">
+                                <div class="pm-left"><input type="radio" class="pm-radio" name="dummy_pm" value="ewallet" />
                                     <div><div class="pm-label">E‑Wallet</div><div class="pm-sub">GoPay, OVO, ShopeePay, Dana</div></div>
                                 </div>
                                 <svg width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;">
@@ -296,10 +310,10 @@
 
             // ==================== UI Helpers ====================
             const pmLogos = {
-                credit: `<image href="{{ asset('assets/img/logo visa.png') }}" width="50" height="25"/>`,
-                qris:   `<image href="{{ asset('assets/img/logo qris.png') }}" width="50" height="25"/>`,
-                transfer: `<image href="{{ asset('assets/img/logo bank tf.png') }}" width="50" height="25"/>`,
-                ewallet: `<image href="{{ asset('assets/img/logo e-wallet.png') }}" width="50" height="25"/>`
+                credit: `<svg width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;"><rect width="50" height="25" rx="3" fill="#1A1F71" /><text x="8" y="17" font-family="Poppins" font-size="10" fill="white" font-weight="bold">VISA</text></svg>`,
+                qris:   `<svg width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;"><image href="{{ asset('assets/img/logo qris.png') }}" width="50" height="25"/></svg>`,
+                transfer: `<svg width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;"><image href="{{ asset('assets/img/logo bank tf.png') }}" width="50" height="25"/></svg>`,
+                ewallet: `<svg width="50" height="25" viewBox="0 0 50 25" style="border:1px solid #e0e0e0;border-radius:4px;"><image href="{{ asset('assets/img/logo e-wallet.png') }}" width="50" height="25"/></svg>`
             };
             function toggleDropdown() {
                 const dd = document.getElementById('pmDropdown');
@@ -308,16 +322,17 @@
                 dd.style.display = isOpen ? 'none' : 'flex';
                 chev.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
             }
-             function selectPayment(type, label, sub, logoKey) {
+    function selectPayment(type, label, sub, logoKey) {
     // 1. Ubah teks display pada komponen utama kartu
     document.getElementById('selectedLabel').textContent = label;
     document.getElementById('selectedSub').textContent = sub;
-    document.getElementById('selectedLogo').innerHTML = pmLogos[logoKey] || '';
+    document.getElementById('selectedLogoContainer').innerHTML = pmLogos[logoKey] || pmLogos[type] || '';
     
     // 2. SINKRONISASI KRUSIAL: Update nilai value pada input radio utama agar terbaca oleh Controller
     const mainRadio = document.getElementById('mainPaymentMethod');
     if (mainRadio) {
         mainRadio.value = type; 
+        mainRadio.checked = true;
     }
 
     // 3. Tampilkan panel detail pembayaran yang sesuai

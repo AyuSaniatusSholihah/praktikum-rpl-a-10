@@ -79,6 +79,9 @@ nav {
     align-items: center;
     margin: 0;
     margin-left: auto;
+    /* search tetap dorong ke kanan */
+    margin-right: 16px;
+    /* kasih jarak ke icon kanan */
     max-width: 220px;
     height: 36px;
     background: #E0E0E0;
@@ -87,7 +90,7 @@ nav {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
     padding: 0 20px;
     gap: 10px;
-    max-width: 400px;
+    max-width: 280px;
 }
 
 .nav-search input {
@@ -117,7 +120,8 @@ nav {
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-left: 20px;
+    margin-left: 0;
+    flex-shrink: 0;
 }
 
 .nav-right a {
@@ -468,14 +472,25 @@ table.data-table tr:last-child td {
     color: #C62828;
 }
 
-.badge-processing {
-    background: #F9FBCC;
-    color: #6B7000;
+.badge-upcoming {
+    background: #FFF9C4;
+    color: #F57F17;
 }
 
 .badge-return {
     background: #FEF0DC;
     color: #A0590A;
+}
+
+.badge-available {
+    background: #E3F5E9;
+    color: #2E7D32;
+}
+
+.badge-active-rental {
+    background: #E3F0FF;
+    /* biru seperti badge-active */
+    color: #1565C0;
 }
 
 /* ── WALLET CARDS ── */
@@ -802,11 +817,27 @@ table.data-table tr:last-child td {
     color: #fff;
     border: none;
     border-radius: 8px;
-    font-size: 15x;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
     margin-left: auto;
+    transition: background 0.2s ease, transform 0.1s ease;
+    letter-spacing: 0.5px;
+}
+
+.btn-ban:hover {
+    background: #C62828;
+    transform: scale(1.03);
+}
+
+.btn-ban.btn-unban {
+    background: #2E7D32;
+}
+
+.btn-ban.btn-unban:hover {
+    background: #1B5E20;
+    transform: scale(1.03);
 }
 
 /* ── ITEM DETAIL ── */
@@ -1797,4 +1828,18 @@ footer {
     border-top: 1px solid #ccc;
     font-size: 11px;
     color: #888;
+}
+
+/* PROFILE DROPDOWN FOR ADMIN */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-dropdown:hover .dropdown-menu {
+    display: block !important;
+}
+
+.profile-dropdown .dropdown-menu button:hover {
+    background: #fef2f2 !important;
 }

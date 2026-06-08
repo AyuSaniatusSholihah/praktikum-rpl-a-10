@@ -7,6 +7,7 @@ use App\Models\Pembayaran;
 use App\Models\TransaksiPenyewaan;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -57,14 +58,14 @@ class AdminController extends Controller
         $ownerIds = $this->ownerIds();
 
         $stats = [
-            'total_user'  => User::count(),
+            'total_user'  => User::where('role', 'user')->count(),
             'total_owner' => $ownerIds->count(),
             'total_rent'  => TransaksiPenyewaan::count(),
         ];
 
         $walletByMethod = $this->totalPerMetode();
 
-        $usersPreview = User::withCount('barangs')->latest()->take(3)->get();
+        $usersPreview = User::where('role', 'user')->withCount('barangs')->latest()->take(3)->get();
         $itemsPreview = Barang::with(['user', 'kategori'])->latest()->take(5)->get();
         $transaksiPreview = TransaksiPenyewaan::with(['user', 'barang.user', 'pembayaran'])
             ->latest()->take(5)->get();
@@ -80,24 +81,38 @@ class AdminController extends Controller
 
         $ownerIds = $this->ownerIds();
 
-        $totalSaldoUser  = (float) User::whereNotIn('id', $ownerIds)->sum('saldo');
-        $totalSaldoOwner = (float) User::whereIn('id', $ownerIds)->sum('saldo');
+        // Total Saldo User = total semua transaksi penyewaan (pengeluaran penyewa)
+        $totalSaldoUser  = (float) TransaksiPenyewaan::sum('total_harga');
+        // Total Saldo Owner = total pemasukan owner (transaksi barang-barang milik owner)
+        $totalSaldoOwner = (float) TransaksiPenyewaan::join('barangs', 'transaksi_penyewaans.barang_id', '=', 'barangs.id')
+            ->whereIn('barangs.user_id', $ownerIds)
+            ->sum('transaksi_penyewaans.total_harga');
 
         $walletByMethod = $this->totalPerMetode();
 
         $transaksiTerbaru = TransaksiPenyewaan::with(['user', 'barang.user', 'pembayaran'])
-            ->latest()->take(10)->get();
+            ->latest()->take(5)->get();
 
         return view('admin.financialWalletPage', compact(
             'totalSaldoUser', 'totalSaldoOwner', 'walletByMethod', 'transaksiTerbaru'
         ));
     }
 
-    public function users()
+    public function users(Request $request)
     {
         $this->ensureAdmin();
 
-        $users = User::withCount('barangs')->latest()->get();
+        $query = User::where('role', 'user')->withCount('barangs')->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->get();
 
         return view('admin.dataUserPage', compact('users'));
     }
@@ -115,14 +130,38 @@ class AdminController extends Controller
             ])
             ->findOrFail($id);
 
-        return view('admin.userDetailPage', compact('user'));
+        $walletTransactions = TransaksiPenyewaan::where(function($q) use ($id) {
+            $q->where('user_id', $id)
+              ->orWhereHas('barang', function($qb) use ($id) {
+                  $qb->where('user_id', $id);
+              });
+        })->with(['barang.user', 'pembayaran'])->latest()->get();
+
+        return view('admin.userDetailPage', compact('user', 'walletTransactions'));
     }
 
-    public function items()
+    public function items(Request $request)
     {
         $this->ensureAdmin();
 
-        $items = Barang::with(['user', 'kategori'])->latest()->get();
+        $query = Barang::with(['user', 'kategori'])->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('nama_barang', 'like', "%{$search}%")
+                  ->orWhere('lokasi', 'like', "%{$search}%")
+                  ->orWhere('id', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($qu) use ($search) {
+                      $qu->where('name', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('kategori', function($qu) use ($search) {
+                      $qu->where('nama_kategori', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $items = $query->get();
 
         return view('admin.dataItemPage', compact('items'));
     }
@@ -136,12 +175,33 @@ class AdminController extends Controller
         return view('admin.itemDetailPage', compact('item'));
     }
 
-    public function transactions()
+    public function transactions(Request $request)
     {
         $this->ensureAdmin();
 
-        $transaksis = TransaksiPenyewaan::with(['user', 'barang.user', 'pembayaran'])
-            ->latest()->get();
+        $query = TransaksiPenyewaan::with(['user', 'barang.user', 'pembayaran'])->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('id', 'like', "%{$search}%")
+                  ->orWhere('status', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($qu) use ($search) {
+                      $qu->where('name', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('barang', function($qu) use ($search) {
+                      $qu->where('nama_barang', 'like', "%{$search}%")
+                        ->orWhereHas('user', function($qou) use ($search) {
+                            $qou->where('name', 'like', "%{$search}%");
+                        });
+                  })
+                  ->orWhereHas('pembayaran', function($qu) use ($search) {
+                      $qu->where('metode', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $transaksis = $query->get();
 
         return view('admin.dataTransactions', compact('transaksis'));
     }
@@ -154,5 +214,38 @@ class AdminController extends Controller
             ->findOrFail($id);
 
         return view('admin.transactionDetailPage', compact('transaksi'));
+    }
+
+    /**
+     * Toggle BAN / UNBAN untuk user.
+     * User yang di-ban: sesi aktifnya tidak bisa melakukan transaksi,
+     * dan pada login berikutnya akan ditolak oleh LoginController.
+     */
+    public function toggleBan($id)
+    {
+        $this->ensureAdmin();
+
+        $user = User::findOrFail($id);
+
+        if ($user->role === 'admin') {
+            return redirect()->back()->with('error', 'Tidak dapat mem-ban admin.');
+        }
+
+        $user->is_banned = !$user->is_banned;
+        $user->save();
+
+        // Batalkan semua session user yang di-ban
+        if ($user->is_banned) {
+            // Invalidate semua session milik user ini
+            \Illuminate\Support\Facades\DB::table('sessions')
+                ->where('user_id', $user->id)
+                ->delete();
+        }
+
+        $msg = $user->is_banned
+            ? "User {$user->name} berhasil di-BAN."
+            : "User {$user->name} berhasil di-UNBAN.";
+
+        return redirect()->route('admin.users.detail', $id)->with('success', $msg);
     }
 }

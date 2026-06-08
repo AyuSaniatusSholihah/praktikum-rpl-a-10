@@ -67,16 +67,28 @@ class TransaksiPenyewaan extends Model
     }
 
     /**
+     * Formatted display ID: T + huruf pertama kategori barang + 4-digit ID
+     * Contoh: TT0001 (Tools), TV0001 (Vehicles)
+     */
+    public function formattedId(): string
+    {
+        $catLetter = ($this->barang && $this->barang->kategori)
+            ? strtoupper(substr($this->barang->kategori->nama_kategori, 0, 1))
+            : 'X';
+        return 'T' . $catLetter . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Class badge CSS yang cocok dengan status.
      */
     public function statusBadgeClass(): string
     {
         return [
-            'upcoming'                        => 'badge-processing',
+            'upcoming'                        => 'badge-upcoming',
             'aktif'                           => 'badge-active',
             'selesai'                         => 'badge-completed',
             'tunggu verifikasi pengembalian'  => 'badge-return',
             'dibatalkan'                      => 'badge-cancelled',
-        ][$this->status] ?? 'badge-processing';
+        ][$this->status] ?? 'badge-upcoming';
     }
 }

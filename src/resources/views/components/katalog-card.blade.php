@@ -5,15 +5,16 @@
         ? asset('storage/' . $barang->foto_barang)
         : 'https://placehold.co/400x300?text=No+Image';
 
-    $isActive = strtolower($barang->status ?? '') === 'disewa';
-    $badgeLabel = $isActive ? 'ACTIVE RENTAL' : 'AVAILABLE';
-    $badgeClass = $isActive ? 'katalog-badge active' : 'katalog-badge';
+    $isActiveRental = strtolower($barang->status ?? '') === 'tidak_tersedia';
+    $badgeLabel = $isActiveRental ? 'ACTIVE RENTAL' : 'AVAILABLE';
+    $badgeClass = $isActiveRental ? 'katalog-badge active' : 'katalog-badge';
     $stok = (int) $barang->stok;
 @endphp
 
+
 <article class="katalog-card"
          style="cursor: pointer;"
-         onclick="prepareEdit({{ $barang->id }})"
+         onclick="window.location.href='{{ route('product', $barang->id) }}'"
          data-id="{{ $barang->id }}"
          data-title="{{ $barang->nama_barang }}"
          data-loc="{{ $barang->lokasi }}"
