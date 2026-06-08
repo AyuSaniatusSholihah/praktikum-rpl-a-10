@@ -48,6 +48,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'phone_number' => $request->phone,
             'password' => Hash::make($request->password),
+            'saldo' => 1000000,
             'otp_code' => $otp,
             'otp_expires_at' => Carbon::now()->addMinutes(10),
         ]);

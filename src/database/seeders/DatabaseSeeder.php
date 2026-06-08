@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
                 'username' => 'admin_utama',
                 'password' => \Illuminate\Support\Facades\Hash::make('password123'),
                 'phone_number' => '080000000000',
+                'saldo' => 1000000,
                 'role' => 'admin',
                 'email_verified_at' => now(),
             ]
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
                 'username' => 'owner123',
                 'password' => \Illuminate\Support\Facades\Hash::make('password123'),
                 'phone_number' => '081234567890',
+                'saldo' => 1000000,
                 'role' => 'user',
                 'email_verified_at' => now(),
             ]

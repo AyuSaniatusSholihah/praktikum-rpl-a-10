@@ -51,6 +51,7 @@ class ApiAuthController extends Controller
             'email' => $request->email,
             'phone_number' => $request->phone,
             'password' => Hash::make($request->password),
+            'saldo' => 1000000,
             'otp_code' => $otp,
             'otp_expires_at' => Carbon::now()->addMinutes(10),
         ]);
@@ -207,6 +208,7 @@ class ApiAuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'google_id' => $request->google_id, // Simpan ID google
+                'saldo' => 1000000,
                 'password' => Hash::make(uniqid()), // Berikan password acak
                 'email_verified_at' => Carbon::now(), // Langsung terverifikasi
             ]);
