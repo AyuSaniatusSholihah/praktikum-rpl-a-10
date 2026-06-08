@@ -76,7 +76,7 @@ Route::get('/auth/google/callback', [SocialiteController::class, 'callback'])->n
 
 // Product detail page
 Route::get('/product/{id}', function ($id) {
-    $product = Barang::with(['kategori', 'user'])->findOrFail($id);
+    $product = Barang::with(['kategori', 'user', 'reviews.user'])->findOrFail($id);
     return view('katalog.ProductRentPage', compact('product'));
 })->name('product');
 
