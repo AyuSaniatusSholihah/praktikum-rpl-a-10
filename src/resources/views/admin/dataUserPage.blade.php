@@ -1,9 +1,7 @@
-<x-admin-layout title="Data Users - SEWAIN Admin">
+<x-admin-layout title="Data Users - SEWAIN Admin" headerTitle="Data User">
 <!-- ═══════════════════════════════════════════ -->
     <!-- USERS LIST PAGE -->
     <!-- ═══════════════════════════════════════════ -->
-    <section class="page-section" id="page-users">
-      <div class="page-title">Data User</div>
       <div class="users-grid">
         @forelse($users as $u)
         <div class="user-card" onclick="location.href='{{ route('admin.users.detail', $u->id) }}'">
@@ -18,6 +16,4 @@
           <p style="grid-column:1/-1; color:#727272; padding:24px;">Belum ada user terdaftar.</p>
         @endforelse
       </div>
-    </section>
-
 </x-admin-layout>

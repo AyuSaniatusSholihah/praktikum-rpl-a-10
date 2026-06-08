@@ -1,9 +1,7 @@
-<x-admin-layout title="Data Items - SEWAIN Admin">
+<x-admin-layout title="Data Items - SEWAIN Admin" headerTitle="Data Items">
 <!-- ═══════════════════════════════════════════ -->
     <!-- ITEMS LIST PAGE -->
     <!-- ═══════════════════════════════════════════ -->
-    <section class="page-section" id="page-items">
-      <div class="page-title">Data Items</div>
       <div class="table-card">
         <table class="data-table">
           <thead><tr>
@@ -40,7 +38,7 @@
           </tbody>
         </table>
       </div>
-    </section>
+
 
 <x-slot:scripts>
 <script>

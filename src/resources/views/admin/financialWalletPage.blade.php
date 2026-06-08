@@ -1,9 +1,7 @@
-<x-admin-layout title="Financial Wallet - SEWAIN Admin">
+<x-admin-layout title="Financial Wallet - SEWAIN Admin" headerTitle="Financial Wallet">
 <!-- ═══════════════════════════════════════════ -->
     <!-- FINANCIAL WALLET PAGE -->
     <!-- ═══════════════════════════════════════════ -->
-    <section class="page-section active" id="page-wallet">
-      <div class="page-title">Financial Wallet</div>
         <div class="wallet-stats">
           <x-admin-stat-card cardClass="wallet-stat-card" valueClass="amount" label="Total Saldo User" value="Rp {{ number_format($totalSaldoUser, 0, ',', '.') }}" iconClass="icon-green">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
@@ -136,6 +134,5 @@
           </tbody>
         </table>
       </div>
-    </section>
 
 </x-admin-layout>

@@ -147,12 +147,14 @@ nav {
     margin: 36px auto;
     overflow: hidden;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+    background: #ffffff;
+    border-radius: 16px;
 }
 
 /* ubah layout jadi di dalam panel */
 .admin-panel .admin-layout {
     display: flex;
-    min-height: 640px;
+    height: 850px;
 }
 
 .admin-panel .sidebar {
@@ -169,7 +171,7 @@ nav {
     padding: 24px 0;
     position: sticky;
     top: 56px;
-    height: calc(100vh - 56px);
+    height: 100%;
     overflow-y: auto;
     flex-shrink: 0;
 }
@@ -216,7 +218,8 @@ nav {
 .main-content {
     flex: 1;
     padding: 28px 32px;
-    overflow: hidden;
+    height: 100%;
+    overflow-y: auto;
 }
 
 /* ── STAT CARDS ── */
@@ -235,6 +238,7 @@ nav {
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    height: 116px;
 }
 
 .stat-card .info .label {
@@ -328,7 +332,6 @@ nav {
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     margin-bottom: 24px;
-    overflow-x: auto;
 }
 
 table.data-table {
@@ -603,6 +606,7 @@ table.data-table tr:last-child td {
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    height: 116px;
 }
 
 .wallet-stat-card .info .label {
