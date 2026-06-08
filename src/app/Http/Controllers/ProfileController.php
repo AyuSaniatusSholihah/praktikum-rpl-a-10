@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use App\Models\TransaksiPenyewaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -107,6 +108,42 @@ class ProfileController extends Controller
         $trx = $user->transaksiPenyewaan()->with('barang')->findOrFail($id);
 
         return view('profile.MyRentalsPengembalianPage', compact('user', 'trx'));
+    }
+
+    // ===== SIMPAN PENGEMBALIAN + REVIEW (rating & ulasan) KE DATABASE =====
+    public function storePengembalian(Request $request, $id)
+    {
+        $user = Auth::user();
+        $trx = $user->transaksiPenyewaan()->with('barang')->findOrFail($id);
+
+        $validated = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'ulasan' => 'nullable|string|max:1000',
+        ], [
+            'rating.required' => 'Silakan beri rating bintang terlebih dahulu.',
+            'rating.min'      => 'Silakan beri rating bintang terlebih dahulu.',
+        ]);
+
+        // Simpan / perbarui review untuk transaksi ini (1 review per transaksi)
+        Review::updateOrCreate(
+            ['transaksi_id' => $trx->id],
+            [
+                'user_id'   => $user->id,
+                'barang_id' => $trx->barang_id,
+                'rating'    => $validated['rating'],
+                'komentar'  => $validated['ulasan'] ?? null,
+            ]
+        );
+
+        // Tandai pengembalian sedang menunggu verifikasi owner
+        $trx->update([
+            'status'                 => 'tunggu verifikasi pengembalian',
+            'tanggal_kembali_aktual' => $trx->tanggal_kembali_aktual ?? now(),
+        ]);
+
+        return redirect()
+            ->route('profile.rentals.confirmation', $trx->id)
+            ->with('success', 'Pengembalian & ulasan berhasil dikirim!');
     }
 
     public function confirmation($id)
