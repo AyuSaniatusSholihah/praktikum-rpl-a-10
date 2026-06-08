@@ -126,6 +126,20 @@
                 </div>
             </div>
         </div>
+
+        @if(in_array($status, ['tunggu verifikasi pengembalian', 'selesai']))
+            <div class="confirmed-box" style="margin-top:24px;">
+                <div class="check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <h3>{{ $status === 'selesai' ? 'PENGEMBALIAN SELESAI!' : 'PENGEMBALIAN DIAJUKAN!' }}</h3>
+                <p>Status pengembalian kamu saat ini:<br>
+                    <strong>{{ $status === 'selesai' ? 'PENGEMBALIAN DISETUJUI ✓ (Completed Rent)' : 'MENUNGGU VERIFIKASI OWNER' }}</strong>
+                </p>
+            </div>
+        @endif
     </div>
 
 </x-profile-layout>
