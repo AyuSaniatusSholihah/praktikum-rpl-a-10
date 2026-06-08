@@ -53,7 +53,7 @@
         </div>
 
         <div class="rd-form-grid">
-            <div class="rd-field"><label>ID Transaksi</label><div class="rd-value">TRX-{{ str_pad($trx->id, 4, '0', STR_PAD_LEFT) }}</div></div>
+            <div class="rd-field"><label>ID Transaksi</label><div class="rd-value">{{ $trx->formattedId() }}</div></div>
             <div class="rd-field"><label>Owner</label><div class="rd-value">{{ $ownerName }}</div></div>
             <div class="rd-field"><label>User</label><div class="rd-value">{{ $penyewaName }}</div></div>
             <div class="rd-field"><label>Informasi Denda</label><div class="rd-value">Rp 10.000/jam</div></div>

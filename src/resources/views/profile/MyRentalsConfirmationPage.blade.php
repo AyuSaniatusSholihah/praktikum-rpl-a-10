@@ -58,7 +58,7 @@
         </div>
 
         <div class="rd-form-grid">
-            <div class="rd-field"><label>ID Transaksi</label><div class="rd-value">TRX-{{ str_pad($trx->id, 4, '0', STR_PAD_LEFT) }}</div></div>
+            <div class="rd-field"><label>ID Transaksi</label><div class="rd-value">{{ $trx->formattedId() }}</div></div>
             <div class="rd-field"><label>Owner</label><div class="rd-value">{{ $ownerName }}</div></div>
             <div class="rd-field"><label>Tanggal Mulai</label><div class="rd-value">{{ optional($trx->tanggal_sewa)->format('d M Y, H.i') ?? '-' }} WIB</div></div>
             <div class="rd-field"><label>Tanggal Selesai</label><div class="rd-value">{{ optional($trx->tanggal_kembali_rencana)->format('d M Y, H.i') ?? '-' }} WIB</div></div>
