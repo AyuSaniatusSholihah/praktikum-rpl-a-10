@@ -64,7 +64,7 @@
             <div class="rd-field"><label>Owner</label><div class="rd-value">{{ $ownerName }}</div></div>
             <div class="rd-field"><label>User</label><div class="rd-value">{{ $user->name }}</div></div>
             <div class="rd-field"><label>Denda</label><div class="rd-value">-</div></div>
-            <div class="rd-field"><label>Date</label><div class="rd-value">{{ optional($trx->tanggal_sewa)->format('d F Y, H.i') ?? '-' }}</div></div>
+            <div class="rd-field"><label>Date</label><div class="rd-value">{{ optional($trx->tanggal_sewa)->format('d F Y') ?? '-' }}</div></div>
             <div class="rd-field"><label>Status</label><div class="rd-value">{{ $badgeLabel }}</div></div>
         </div>
 

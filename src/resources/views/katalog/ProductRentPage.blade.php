@@ -150,7 +150,7 @@
 
                     <div class="product-rating">
                         <span class="stars">
-                            @php $fullStars = (int) round($product->reviews->avg('bintang') ?? 0); @endphp
+                            @php $fullStars = (int) round($product->reviews->avg('rating') ?? 0); @endphp
                             @for ($i = 1; $i <= 5; $i++){{ $i <= $fullStars ? '★' : '☆' }}@endfor
                         </span>
                         <span class="review-count">({{ $product->reviews->count() }})</span>
@@ -778,8 +778,8 @@
                             <div style="flex:1">
                                 <div style="font-weight:600">{{ $r->user->name ?? 'Anonim' }}</div>
                                 <div style="font-size:12px;color:#888">{{ $r->created_at->translatedFormat('j F Y') }}</div>
-                                <div style="color:#f5b800">{{ str_repeat('★', $r->bintang) . str_repeat('☆', 5-$r->bintang) }}</div>
-                                <div style="font-size:13px;margin-top:4px">{{ $r->isi }}</div>
+                                <div style="color:#f5b800">{{ str_repeat('★', (int) $r->rating) . str_repeat('☆', max(0, 5 - (int) $r->rating)) }}</div>
+                                <div style="font-size:13px;margin-top:4px">{{ $r->komentar }}</div>
                             </div>
                         </div>
                     @empty<p style="color:#888;font-size:13px;padding:16px 0">Belum ada ulasan.</p>@endforelse</div>`

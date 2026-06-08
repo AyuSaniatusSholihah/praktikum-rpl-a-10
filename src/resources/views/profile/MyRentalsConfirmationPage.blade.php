@@ -60,8 +60,8 @@
         <div class="rd-form-grid">
             <div class="rd-field"><label>ID Transaksi</label><div class="rd-value">{{ $trx->formattedId() }}</div></div>
             <div class="rd-field"><label>Owner</label><div class="rd-value">{{ $ownerName }}</div></div>
-            <div class="rd-field"><label>Tanggal Mulai</label><div class="rd-value">{{ optional($trx->tanggal_sewa)->format('d M Y, H.i') ?? '-' }} WIB</div></div>
-            <div class="rd-field"><label>Tanggal Selesai</label><div class="rd-value">{{ optional($trx->tanggal_kembali_rencana)->format('d M Y, H.i') ?? '-' }} WIB</div></div>
+            <div class="rd-field"><label>Tanggal Mulai</label><div class="rd-value">{{ optional($trx->tanggal_sewa)->format('d M Y') ?? '-' }}</div></div>
+            <div class="rd-field"><label>Tanggal Selesai</label><div class="rd-value">{{ optional($trx->tanggal_kembali_rencana)->format('d M Y') ?? '-' }}</div></div>
             <div class="rd-field"><label>Metode Pembayaran</label><div class="rd-value">Saldo SEWAIN Wallet</div></div>
             <div class="rd-field"><label>Lokasi Pengambilan</label><div class="rd-value">{{ $trx->barang->alamat ?? '-' }}</div></div>
         </div>

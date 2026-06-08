@@ -32,25 +32,25 @@
      <div class="site-footer-col">
        <h4>Information</h4>
        <ul>
-         <li><a href="#">About</a></li>
-         <li><a href="#">Product</a></li>
-         <li><a href="#">Blog</a></li>
+         <li><a style="pointer-events:none; cursor:default;">About</a></li>
+         <li><a style="pointer-events:none; cursor:default;">Product</a></li>
+         <li><a style="pointer-events:none; cursor:default;">Blog</a></li>
        </ul>
      </div>
      <div class="site-footer-col">
        <h4>Company</h4>
        <ul>
-         <li><a href="#">Community</a></li>
-         <li><a href="#">Career</a></li>
-         <li><a href="#">Our Story</a></li>
+         <li><a style="pointer-events:none; cursor:default;">Community</a></li>
+         <li><a style="pointer-events:none; cursor:default;">Career</a></li>
+         <li><a style="pointer-events:none; cursor:default;">Our Story</a></li>
        </ul>
      </div>
      <div class="site-footer-col">
        <h4>Contact</h4>
        <ul>
-         <li><a href="#">Getting Started</a></li>
-         <li><a href="#">Pricing</a></li>
-         <li><a href="#">Resources</a></li>
+         <li><a style="pointer-events:none; cursor:default;">Getting Started</a></li>
+         <li><a style="pointer-events:none; cursor:default;">Pricing</a></li>
+         <li><a style="pointer-events:none; cursor:default;">Resources</a></li>
        </ul>
      </div>
    </div>
