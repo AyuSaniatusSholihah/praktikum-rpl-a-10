@@ -27,6 +27,8 @@ classDiagram
         +keranjang() HasMany~Keranjang~
         +transaksiPenyewaan() HasMany~TransaksiPenyewaan~
         +reviews() HasMany~Review~
+        +orders() HasMany~Order~
+        +webReviews() HasMany~WebReview~
     }
 
     class Kategori {
@@ -44,6 +46,7 @@ classDiagram
         -int kategori_id
         -string nama_barang
         -text deskripsi
+        -text additional_information
         -decimal harga_sewa
         -decimal harga_jaminan
         -decimal harga_denda_perjam
@@ -141,6 +144,33 @@ classDiagram
         +user() BelongsTo~User~
     }
 
+    class Order {
+        -int id
+        -int user_id
+        -string first_name
+        -string last_name
+        -string email
+        -string phone
+        -string shipping_method
+        -text cart_json
+        -text address
+        -string city
+        -string kode_pos
+        -timestamp created_at
+        -timestamp updated_at
+        +user() BelongsTo~User~
+    }
+
+    class WebReview {
+        -int id
+        -int user_id
+        -tinyint rating
+        -text ulasan
+        -timestamp created_at
+        -timestamp updated_at
+        +user() BelongsTo~User~
+    }
+
     %% ─── Controller Classes ───
 
     class RegisterController {
@@ -231,17 +261,26 @@ classDiagram
         +index() JsonResponse
         +show(id) JsonResponse
         +checkout(Request) JsonResponse
-        +bayar(Request id) JsonResponse
+        +bayarMassal(Request) JsonResponse
         +kembalikanBarang(Request id) JsonResponse
+        +ownerDashboard() JsonResponse
+        +ownerTransaksiDetail(id) JsonResponse
+        +listPengembalian() JsonResponse
         +verifikasiPengembalian(id) JsonResponse
         +batalkanTransaksi(id) JsonResponse
     }
 
     class ApiAdminController {
         +dashboard() JsonResponse
-        +users() JsonResponse
-        +showUser(id) JsonResponse
-        +toggleBan(id) JsonResponse
+        +listUsers() JsonResponse
+        +userDetail(id) JsonResponse
+        +toggleBanUser(id) JsonResponse
+        +listItems() JsonResponse
+        +itemDetail(id) JsonResponse
+        +listTransactions() JsonResponse
+        +transactionDetail(id) JsonResponse
+        +listPayments() JsonResponse
+        +paymentDetail(id) JsonResponse
     }
 
     class ApiProfileController {
@@ -255,6 +294,8 @@ classDiagram
     User "1" --> "*" TransaksiPenyewaan : melakukan
     User "1" --> "*" Review : menulis
     User "1" --> "*" ActivityLog : mencatat
+    User "1" --> "*" Order : membuat
+    User "1" --> "*" WebReview : memberikan
     Kategori "1" --> "*" Barang : mengkategorikan
     Barang "1" --> "*" Keranjang : ditambahkan ke
     Barang "1" --> "*" TransaksiPenyewaan : disewa dalam

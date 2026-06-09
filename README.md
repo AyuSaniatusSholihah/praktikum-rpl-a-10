@@ -55,9 +55,13 @@ praktikum-rpl-a-10/
 |   |-- wireframe.md
 |   `-- uml/
 |-- src/
-|   `-- regist.js
+|   |-- app/           (Laravel Backend & Controllers)
+|   |-- database/      (Migrations & Seeders)
+|   |-- public/        (Assets: CSS, Images, JS)
+|   |-- resources/     (Blade Views & UI Components)
+|   |-- routes/        (Web & API Routes)
+|   `-- package.json & composer.json
 `-- tests/
-		`-- halo.php
 ```
 
 ## Dokumentasi
@@ -75,7 +79,7 @@ Dokumen utama proyek berada di folder `docs`:
 
 ## Status Proyek
 
-Proyek berada pada tahap desain lanjut dan implementasi awal.
+Proyek saat ini sudah memasuki tahap **Implementasi Backend & Frontend**.
 
 **Progress yang sudah selesai:**
 - Dokumen analisis kebutuhan (problem statement, user stories, backlog)
@@ -83,25 +87,44 @@ Proyek berada pada tahap desain lanjut dan implementasi awal.
 - Data dictionary dan wireframe desain UI
 - Diagram UML sistem
 - Kontrak kerja tim
-- Implementasi awal fitur registrasi (`src/regist.js`)
+- **Implementasi Fitur Utama (Laravel):**
+  - Autentikasi Pengguna (Login, Register dengan OTP, Google Login)
+  - Dashboard Admin (Data User, Manajemen Transaksi, Manajemen Barang)
+  - Profil Pengguna & Dompet / Saldo (My Wallet)
+  - Penambahan & Manajemen Katalog Barang Sewa
+  - Proses Checkout Sewa Barang (Keranjang, Data Pengiriman, Pembayaran)
+  - Database Migration & Seeding (Akun Dummy, Kategori)
 
 **Progress yang sedang dikerjakan:**
-- Implementasi fitur-fitur utama (login, pencarian, sewa, pembayaran, dll)
-- Pengembangan backend sistem
+- Penyempurnaan UI/UX agar responsif dan konsisten.
+- Integrasi lanjutan untuk notifikasi transaksi & review barang.
 
 **Progress yang akan dikerjakan:**
-- Pengujian (unit test, integration test)
-- Integrasi front-end dan backend
-- Deployment dan dokumentasi teknis
+- Pengujian menyeluruh (Unit test & Integration test)
+- Persiapan Deployment (Hosting)
 
 ## Cara Menjalankan
 
-Panduan lengkap akan ditambahkan seiring kelengkapan implementasi.
+Aplikasi ini dibangun menggunakan kerangka kerja **Laravel** dan **Vanilla CSS/JS**.
 
-**Saat ini:**
-1. Baca dokumen kebutuhan dan desain di folder `docs`.
-2. Ikuti perkembangan implementasi fitur di folder `src`.
-3. Periksa test cases yang ada di folder `tests` untuk referensi pengujian.
+**Prasyarat:**
+- PHP >= 8.2
+- Composer
+- Node.js & npm
+- MySQL / MariaDB
+
+**Langkah Instalasi:**
+1. Clone repositori ini.
+2. Masuk ke direktori utama aplikasi: `cd src`
+3. Install dependensi PHP: `composer install`
+4. Install dependensi Node.js: `npm install`
+5. Salin file environment: `cp .env.example .env`
+6. Atur konfigurasi database di dalam file `.env`.
+7. Buat *application key*: `php artisan key:generate`
+8. Jalankan migrasi dan seeder database: `php artisan migrate:fresh --seed`
+9. Jalankan server backend: `php artisan serve`
+10. Jalankan asset bundler (di terminal terpisah): `npm run dev`
+11. Akses aplikasi melalui browser di: `http://127.0.0.1:8000`
 
 ## Kontribusi
 

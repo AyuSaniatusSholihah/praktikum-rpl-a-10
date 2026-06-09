@@ -10,7 +10,7 @@ erDiagram
         VARCHAR email "UNIQUE, NOT NULL"
         VARCHAR phone_number "nullable"
         VARCHAR alamat "nullable"
-        DECIMAL saldo "DEFAULT 0"
+        DECIMAL saldo "DEFAULT 1000000"
         VARCHAR foto_profil "nullable"
         BOOLEAN is_banned "DEFAULT false"
         ENUM role "user | admin"
@@ -37,6 +37,7 @@ erDiagram
         BIGINT kategori_id FK "→ kategoris.id"
         VARCHAR nama_barang "NOT NULL, max 100"
         TEXT deskripsi "nullable"
+        TEXT additional_information "nullable"
         DECIMAL harga_sewa "15,2"
         DECIMAL harga_jaminan "15,2"
         DECIMAL harga_denda_perjam "15,2"
@@ -77,7 +78,7 @@ erDiagram
 
     transaksi_penyewaans {
         BIGINT id PK
-        BIGINT user_id FK "→ users.id"
+        BIGINT user_id FK "→ users.id, nullable"
         BIGINT barang_id FK "→ barangs.id"
         BIGINT pembayaran_id FK "→ pembayarans.id, nullable"
         INT jumlah "NOT NULL"
@@ -115,12 +116,39 @@ erDiagram
         TIMESTAMP updated_at
     }
 
+    orders {
+        BIGINT id PK
+        BIGINT user_id FK "→ users.id, nullable"
+        VARCHAR first_name "NOT NULL"
+        VARCHAR last_name "NOT NULL"
+        VARCHAR email "NOT NULL"
+        VARCHAR phone "NOT NULL"
+        VARCHAR shipping_method "nullable"
+        TEXT cart_json "nullable"
+        TEXT address "nullable"
+        VARCHAR city "nullable"
+        VARCHAR kode_pos "nullable"
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    web_reviews {
+        BIGINT id PK
+        BIGINT user_id FK "→ users.id"
+        TINYINT rating "NOT NULL"
+        TEXT ulasan "nullable"
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
     %% Relasi
     users ||--o{ barangs : "memiliki"
     users ||--o{ keranjangs : "memiliki"
     users ||--o{ transaksi_penyewaans : "melakukan"
     users ||--o{ reviews : "menulis"
     users ||--o{ activity_logs : "mencatat"
+    users ||--o{ orders : "membuat"
+    users ||--o{ web_reviews : "memberikan"
     kategoris ||--o{ barangs : "mengkategorikan"
     barangs ||--o{ keranjangs : "ditambahkan ke"
     barangs ||--o{ transaksi_penyewaans : "disewa dalam"
@@ -138,6 +166,8 @@ erDiagram
 | users → transaksi_penyewaans | 1 : N | Satu user melakukan banyak transaksi sewa |
 | users → reviews | 1 : N | Satu user menulis banyak review |
 | users → activity_logs | 1 : N | Satu user memiliki banyak catatan aktivitas |
+| users → orders | 1 : N | Satu user dapat membuat banyak order |
+| users → web_reviews | 1 : N | Satu user memberikan banyak ulasan web |
 | kategoris → barangs | 1 : N | Satu kategori memiliki banyak barang |
 | barangs → keranjangs | 1 : N | Satu barang bisa di banyak keranjang |
 | barangs → transaksi_penyewaans | 1 : N | Satu barang bisa disewa banyak kali |
