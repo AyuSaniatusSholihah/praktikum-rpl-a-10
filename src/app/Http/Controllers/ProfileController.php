@@ -87,7 +87,7 @@ class ProfileController extends Controller
 
         $history = $user->transaksiPenyewaan()
             ->with('barang')
-            ->where('status', 'selesai')
+            ->whereIn('status', ['selesai', 'dibatalkan'])
             ->latest()
             ->get();
 
@@ -119,10 +119,18 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'ulasan' => 'nullable|string|max:1000',
+            'foto_buktipengembalian' => 'required|image|max:2048',
         ], [
             'rating.required' => 'Silakan beri rating bintang terlebih dahulu.',
             'rating.min'      => 'Silakan beri rating bintang terlebih dahulu.',
+            'foto_buktipengembalian.required' => 'Foto bukti pengembalian wajib diunggah.',
+            'foto_buktipengembalian.image'    => 'File harus berupa gambar.',
         ]);
+
+        $fotoPath = null;
+        if ($request->hasFile('foto_buktipengembalian')) {
+            $fotoPath = $request->file('foto_buktipengembalian')->store('pengembalian', 'public');
+        }
 
         // Simpan / perbarui review untuk transaksi ini (1 review per transaksi)
         Review::updateOrCreate(
@@ -139,6 +147,7 @@ class ProfileController extends Controller
         $trx->update([
             'status'                 => 'tunggu verifikasi pengembalian',
             'tanggal_kembali_aktual' => $trx->tanggal_kembali_aktual ?? now(),
+            'foto_buktipengembalian' => $fotoPath,
         ]);
 
         return redirect()
@@ -209,7 +218,7 @@ class ProfileController extends Controller
 
         $history = TransaksiPenyewaan::whereHas('barang', fn ($q) => $q->where('user_id', $user->id))
             ->with(['barang', 'user'])
-            ->where('status', 'selesai')
+            ->whereIn('status', ['selesai', 'dibatalkan'])
             ->latest()
             ->get();
 

@@ -121,37 +121,8 @@
                     <strong>Status: PENGEMBALIAN DISETUJUI ✓ (Completed Rent)</strong>
                 </p>
             </div>
-
-            {{-- Receipt ringkas untuk owner (pendapatan dari transaksi ini) --}}
-            @php
-                $durasi = ($trx->tanggal_sewa && $trx->tanggal_kembali_rencana)
-                    ? ($trx->tanggal_sewa->diffInDays($trx->tanggal_kembali_rencana) ?: 1) : 1;
-                $hargaPerHari = $trx->barang->harga_sewa ?? 0;
-            @endphp
-            <div id="reviews-section" style="margin-top:16px;">
-                <div class="reviews-header"><h3>Receipt</h3></div>
-                <div class="receipt-item">
-                    <div class="receipt-product">
-                        <div class="receipt-product-header">
-                            <div class="item-badge">1</div>
-                            <div class="rec-img"><img src="{{ $foto }}" onerror="this.style.display='none'"></div>
-                            <div class="rec-info">
-                                <div class="rec-product-name">{{ $trx->barang->nama_barang ?? 'Barang dihapus' }}</div>
-                                <div class="rec-price">Rp {{ number_format($hargaPerHari, 0, ',', '.') }}/hari</div>
-                            </div>
-                            <span class="paid-badge">PAID</span>
-                        </div>
-                        <div class="rec-rows">
-                            <div class="rec-row"><span class="lbl">Penyewa</span><span class="val">{{ $penyewaName }}</span></div>
-                            <div class="rec-row"><span class="lbl">Durasi Sewa</span><span class="val">{{ $durasi }} Hari</span></div>
-                            <div class="rec-row"><span class="lbl">Tanggal Sewa</span><span class="val">{{ optional($trx->tanggal_sewa)->format('d M Y') ?? '-' }} – {{ optional($trx->tanggal_kembali_rencana)->format('d M Y') ?? '-' }}</span></div>
-                            <div class="rec-row total-row"><span class="lbl">Total Pendapatan</span><span class="val">Rp {{ number_format($trx->total_harga ?? 0, 0, ',', '.') }}</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         @else
-            <div style="margin-top: 24px; padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; color: #8da4be; font-size: 13px;">
+            <div style="margin-top: 24px; padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; color: #8da4be; font-size: 13px; margin-left: calc(70px + 18px);">
                 Status: <strong style="color:#fff;">{{ $badgeLabel }}</strong>
                 @if($status === 'dibatalkan')
                     — Transaksi ini telah dibatalkan.
@@ -160,6 +131,66 @@
                 @endif
             </div>
         @endif
+
+        {{-- Receipt ringkas untuk owner (pendapatan dari transaksi ini) --}}
+        @php
+            $durasi = 0;
+            if ($trx->tanggal_sewa && $trx->tanggal_kembali_rencana) {
+                $durasi = $trx->tanggal_sewa->diffInDays($trx->tanggal_kembali_rencana) ?: 1;
+            }
+            $hargaPerHari = $trx->barang->harga_sewa ?? 0;
+            $subtotal     = $hargaPerHari * $trx->jumlah * $durasi;
+        @endphp
+        <div id="reviews-section" style="margin-top:24px;">
+            <div class="reviews-header">
+                <h3>Receipt</h3>
+            </div>
+
+            <div class="receipt-item">
+                <div class="receipt-product">
+                    <div class="receipt-product-header">
+                        <div class="item-badge">{{ $trx->jumlah }}</div>
+                        <div class="rec-img">
+                            <img src="{{ $foto }}" onerror="this.style.display='none'">
+                        </div>
+                        <div class="rec-info">
+                            <div class="rec-product-name">{{ $trx->barang->nama_barang ?? 'Barang dihapus' }}</div>
+                            <div class="rec-price">Rp {{ number_format($hargaPerHari, 0, ',', '.') }}/hari</div>
+                        </div>
+                        <span class="paid-badge">PAID</span>
+                    </div>
+
+                    <div class="rec-dates">
+                        <div class="rec-date-item">
+                            <div class="rec-date-label">Tanggal Mulai Penyewaan</div>
+                            <div class="rec-date-val">
+                                <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                                    <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
+                                </svg>
+                                <span class="rec-date-val">{{ optional($trx->tanggal_sewa)->format('d F Y') ?? '-' }}</span>
+                            </div>
+                        </div>
+                        <div class="rec-date-item">
+                            <div class="rec-date-label">Tanggal Selesai Penyewaan</div>
+                            <div class="rec-date-val">
+                                <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                                    <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
+                                </svg>
+                                <span class="rec-date-val">{{ optional($trx->tanggal_kembali_rencana)->format('d F Y') ?? '-' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rec-rows">
+                        <div class="rec-row"><span class="lbl">Penyewa</span><span class="val">{{ $penyewaName }}</span></div>
+                        <div class="rec-row"><span class="lbl">Durasi Sewa</span><span class="val">{{ $durasi }} Hari</span></div>
+                        <div class="rec-row"><span class="lbl">Subtotal</span><span class="val">Rp {{ number_format($subtotal, 0, ',', '.') }}</span></div>
+                        <div class="rec-row total-row"><span class="lbl">Total Pendapatan</span><span class="val">Rp {{ number_format($trx->total_harga ?? $subtotal, 0, ',', '.') }}</span></div>
+                        <div class="rec-row denda"><span class="lbl">#Catatan Denda</span><span class="val">Rp 10.000/jam</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
