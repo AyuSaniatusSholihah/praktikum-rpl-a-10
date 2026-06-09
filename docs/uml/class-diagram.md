@@ -76,7 +76,9 @@ classDiagram
         -int barang_id
         -int jumlah
         -date tanggal_sewa
+        -time waktu_sewa
         -date tanggal_kembali_rencana
+        -time waktu_kembali_rencana
         -timestamp created_at
         -timestamp updated_at
         +user() BelongsTo~User~
@@ -101,7 +103,9 @@ classDiagram
         -int pembayaran_id
         -int jumlah
         -date tanggal_sewa
+        -time waktu_sewa
         -date tanggal_kembali_rencana
+        -time waktu_kembali_rencana
         -date tanggal_kembali_aktual
         -enum status
         -string foto_buktipengembalian

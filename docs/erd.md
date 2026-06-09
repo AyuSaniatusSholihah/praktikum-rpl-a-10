@@ -61,7 +61,9 @@ erDiagram
         BIGINT barang_id FK "→ barangs.id"
         INT jumlah "NOT NULL"
         DATE tanggal_sewa "NOT NULL"
+        TIME waktu_sewa "DEFAULT '08:00:00'"
         DATE tanggal_kembali_rencana "NOT NULL"
+        TIME waktu_kembali_rencana "DEFAULT '08:00:00'"
         TIMESTAMP created_at
         TIMESTAMP updated_at
     }
@@ -83,7 +85,9 @@ erDiagram
         BIGINT pembayaran_id FK "→ pembayarans.id, nullable"
         INT jumlah "NOT NULL"
         DATE tanggal_sewa "NOT NULL"
+        TIME waktu_sewa "DEFAULT '08:00:00'"
         DATE tanggal_kembali_rencana "NOT NULL"
+        TIME waktu_kembali_rencana "DEFAULT '08:00:00'"
         DATE tanggal_kembali_aktual "nullable"
         ENUM status "upcoming | aktif | selesai | tunggu verifikasi pengembalian | dibatalkan"
         VARCHAR foto_buktipengembalian "nullable"
