@@ -77,22 +77,47 @@
                 </div>
             </div>
 
-            <div class="return-box-bottom">
-                <div>
-                    <div class="return-box-field-label">Foto Barang</div>
-                    <div class="return-box-upload">
-                        <img src="{{ $foto }}" alt="{{ $trx->barang->nama_barang ?? '' }}" onerror="this.style.display='none'"/>
+            <div class="return-box-bottom" style="align-items:stretch;">
+                <div style="display:flex; flex-direction:column;">
+                <div class="return-box-field-label">Bukti Foto Pengembalian</div>
+                <label for="foto_buktipengembalian" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; background:#21394F; border:1px dashed #6A87A1; border-radius:12px; padding:28px 16px; cursor:pointer; min-height:250px; flex:1; height:100%; position:relative; overflow:hidden;">
+                    <div id="uploadPlaceholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#6A87A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:36px; height:36px;">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                        <span style="font-family:'Poppins',sans-serif; font-size:13px; color:#8da4be; text-align:center;">Upload Foto Bukti Pengembalian</span>
                     </div>
+                    <img id="imagePreview" src="" alt="Preview" style="display:none; position:absolute; width:100%; height:100%; object-fit:cover; border-radius:12px;" />
+                    <input type="file" id="foto_buktipengembalian" name="foto_buktipengembalian" accept="image/*" form="returnForm" required hidden onchange="previewImage(this)"/>
+                </label>
+                <script>
+                    function previewImage(input) {
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                document.getElementById('imagePreview').src = e.target.result;
+                                document.getElementById('imagePreview').style.display = 'block';
+                                document.getElementById('uploadPlaceholder').style.display = 'none';
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        } else {
+                            document.getElementById('imagePreview').src = "";
+                            document.getElementById('imagePreview').style.display = 'none';
+                            document.getElementById('uploadPlaceholder').style.display = 'flex';
+                        }
+                    }
+                </script>
                 </div>
                 <div>
                     <div class="return-box-field-label">Reviews</div>
-                    <form method="POST" action="{{ route('profile.rentals.pengembalian.store', $trx->id) }}" id="returnForm">
+                    <form method="POST" action="{{ route('profile.rentals.pengembalian.store', $trx->id) }}" id="returnForm" enctype="multipart/form-data">
                         @csrf
                         <div class="return-box-stars" id="ratingStars" style="font-size:24px; color:#FACA43; cursor:pointer; margin-bottom:8px; user-select:none; letter-spacing:2px;">
                             <span data-val="1">☆</span><span data-val="2">☆</span><span data-val="3">☆</span><span data-val="4">☆</span><span data-val="5">☆</span>
                         </div>
                         <input type="hidden" name="rating" id="ratingInput" value="0">
-                        <textarea class="return-box-textarea" name="ulasan" placeholder="Tulis ulasan kamu di sini..."></textarea>
+                        <textarea class="return-box-textarea" name="ulasan" placeholder="Tulis ulasan kamu di sini..." style="flex:1; min-height:250px;"></textarea>
                     </form>
                 </div>
             </div>
