@@ -99,6 +99,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/rentals/{id}', [\App\Http\Controllers\ProfileController::class, 'rentalDetail'])->name('profile.rentals.produk');
     Route::get('/profile/rentals/{id}/pengembalian', [\App\Http\Controllers\ProfileController::class, 'pengembalian'])->name('profile.rentals.pengembalian');
     Route::post('/profile/rentals/{id}/pengembalian', [\App\Http\Controllers\ProfileController::class, 'storePengembalian'])->name('profile.rentals.pengembalian.store');
+    Route::post('/profile/rentals/{id}/cancel', [\App\Http\Controllers\ProfileController::class, 'cancelRental'])->name('profile.rentals.cancel');
     Route::get('/profile/rentals/{id}/confirmation', [\App\Http\Controllers\ProfileController::class, 'confirmation'])->name('profile.rentals.confirmation');
     Route::get('/profile/owner', [\App\Http\Controllers\ProfileController::class, 'owner'])->name('profile.owner');
     Route::get('/profile/owner/{id}', [\App\Http\Controllers\ProfileController::class, 'ownerDetail'])->name('profile.owner.produk');
