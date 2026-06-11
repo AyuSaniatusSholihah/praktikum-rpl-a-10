@@ -235,7 +235,6 @@ class ProfileController extends Controller
         return view('profile.MyRentalsOwnerProdukPage', compact('user', 'trx'));
     }
 
-    // ===== OWNER MENYETUJUI PENGEMBALIAN (Return Rent -> Completed Rent) =====
     public function acceptPengembalian(Request $request, $id)
     {
         $user = Auth::user();
@@ -243,21 +242,63 @@ class ProfileController extends Controller
             ->with('barang')
             ->findOrFail($id);
 
+        // --- Hitung denda (Opsi 3: Full hour penalty) ---
+        // 1. Dapatkan deadline (rencana + waktu_kembali_rencana)
+        $tanggalRencana = $trx->tanggal_kembali_rencana instanceof \Carbon\Carbon 
+            ? $trx->tanggal_kembali_rencana->format('Y-m-d') 
+            : $trx->tanggal_kembali_rencana;
+        $waktuRencana = $trx->waktu_kembali_rencana ?? '08:00:00';
+        $deadline = \Carbon\Carbon::parse($tanggalRencana . ' ' . $waktuRencana);
+
+        // 2. Dapatkan waktu pengembalian aktual
+        $aktual = \Carbon\Carbon::parse($trx->tanggal_kembali_aktual ?? now());
+
+        $jamTerlambat = 0;
+        $totalDenda = 0;
+
+        if ($aktual->greaterThan($deadline)) {
+            // diffInHours mengembalikan pembulatan ke bawah (floor) jam. 
+            // Cth: telat 59 menit = 0 jam. Telat 1 jam 5 menit = 1 jam.
+            $jamTerlambat = $deadline->diffInHours($aktual);
+            if ($jamTerlambat > 0) {
+                $dendaPerJam = $trx->barang->harga_denda_perjam ?? 10000;
+                $totalDenda = $jamTerlambat * $dendaPerJam;
+            }
+        }
+
         // Setujui pengembalian -> transaksi selesai
         $trx->update([
             'status'                         => 'selesai',
             'tanggal_verifikasipengembalian' => now(),
-            'tanggal_kembali_aktual'         => $trx->tanggal_kembali_aktual ?? now(),
+            'tanggal_kembali_aktual'         => $aktual,
+            'jam_terlambat'                  => $jamTerlambat,
+            'total_denda'                    => $totalDenda,
         ]);
+
+        // Potong denda dari saldo penyewa dan tambahkan ke owner
+        if ($totalDenda > 0 && $trx->user_id) {
+            $penyewa = \App\Models\User::find($trx->user_id);
+            if ($penyewa) {
+                $penyewa->saldo -= $totalDenda;
+                $penyewa->save();
+            }
+            $user->saldo += $totalDenda;
+            $user->save();
+        }
 
         // Barang kembali tersedia
         if ($trx->barang) {
             $trx->barang->update(['status' => 'tersedia']);
         }
 
+        $msg = 'Pengembalian disetujui. Transaksi selesai & barang kembali tersedia.';
+        if ($totalDenda > 0) {
+            $msg .= ' Penyewa terlambat ' . $jamTerlambat . ' jam penuh. Denda Rp ' . number_format($totalDenda, 0, ',', '.') . ' otomatis ditambahkan ke saldo Anda.';
+        }
+
         return redirect()
             ->route('profile.owner.produk', $trx->id)
-            ->with('success', 'Pengembalian disetujui. Transaksi selesai & barang kembali tersedia.');
+            ->with('success', $msg);
     }
 
     // ===== MY WALLET =====

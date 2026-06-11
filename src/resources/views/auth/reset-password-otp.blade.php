@@ -29,7 +29,7 @@
             <input type="text" name="otp[]" class="otp-input" maxlength="1" inputmode="numeric" pattern="\d*" required autocomplete="off" />
             <input type="text" name="otp[]" class="otp-input" maxlength="1" inputmode="numeric" pattern="\d*" required autocomplete="off" />
           </div>
-          <button type="submit" class="btn-auth">Verify &amp; Proceed</button>
+          <button type="submit" class="btn-auth">Verify Now</button>
         </form>
 
         <div class="auth-links">Didn't receive a code? <a href="#">Resend Now</a></div>

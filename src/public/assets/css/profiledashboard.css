@@ -572,15 +572,32 @@
     line-height: 1.3;
 }
 
-/* dari admin.css — hanya yang dipakai di receipt */
+/* ============================================================
+   RECEIPT — persis sama dengan ConfirmPage / Print Receipt
+   Harus override dark .dash-content-card theme
+   ============================================================ */
+
+/* Wrapper: sama persis dengan .receipt-card di checkout.css */
 .receipt-item {
-    background: #ebf2f8;
-    border-radius: 10px;
+    background: #F5F5F5 !important;
+    border: 1px solid #e8e8e8 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
     margin-bottom: 12px;
+    color: #484848 !important; /* reset dari dark theme */
+}
+
+/* Reset semua elemen di dalam receipt supaya ga kepengaruh dark theme */
+.receipt-item *,
+.receipt-item *::before,
+.receipt-item *::after {
+    box-sizing: border-box;
 }
 
 .receipt-product {
     padding: 18px;
+    border-bottom: 1px solid #e8e8e8;
+    background: #F5F5F5;
 }
 
 .receipt-product-header {
@@ -589,125 +606,163 @@
     margin-bottom: 14px;
     align-items: flex-start;
     position: relative;
-    flex-wrap: wrap;
-    /* tambah ini */
 }
 
 .rec-img {
-    width: 110px;
+    width: 100px;
     height: 110px;
     border-radius: 4px;
     flex-shrink: 0;
     overflow: hidden;
+    background: #ededed;
 }
 
 .rec-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
 }
 
-.rec-info {
+.rec-info,
+.rec-product-info {
     flex: 1;
+    min-width: 0;
 }
 
 .rec-product-name {
-    font-family: 'Volkhov', serif;
-    font-size: 17px;
-    font-weight: 700;
-    color: #000;
+    font-family: 'Volkhov', serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
     line-height: 1.4;
     margin-bottom: 4px;
 }
 
 .rec-price {
-    font-size: 15px;
-    color: #6A87A1;
-    font-weight: 600;
+    font-size: 11px !important;
+    color: #6A87A1 !important;
+    font-weight: 600 !important;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 .paid-badge {
-    color: #2e7d32;
-    font-size: 17px;
-    font-weight: 900;
-    padding: 8px 15px;
-    letter-spacing: 0.2em;
-    border: 3.5px solid #2e7d32;
-    border-radius: 4px;
-    transform: rotate(-15deg);
-    opacity: 0.75;
-    font-family: 'Volkhov', serif;
-    display: block;
-    margin: 10px auto 14px;
-    width: fit-content;
-    margin-left: auto;
+    color: #2e7d32 !important;
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    padding: 8px 15px !important;
+    letter-spacing: 0.2em !important;
+    white-space: nowrap !important;
+    border: 3.5px solid #2e7d32 !important;
+    border-radius: 4px !important;
+    transform: rotate(-15deg) !important;
+    opacity: 0.75 !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 0 0 2px #2e7d32 !important;
+    background: transparent !important;
+    font-family: 'Volkhov', serif !important;
+    display: block !important;
+    margin: 10px auto 14px !important;
+    width: fit-content !important;
+    flex-shrink: 0 !important;
 }
 
 .rec-dates {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
     gap: 8px;
     max-width: 260px;
     margin: 0 auto 14px;
 }
 
 .rec-date-item {
+    background: transparent;
     border-radius: 4px;
     padding: 8px 10px;
     text-align: center;
 }
 
 .rec-date-label {
-    font-family: 'Lato', sans-serif;
-    font-size: 15.8px;
-    color: #000;
-    font-weight: 900;
-    margin-bottom: 3px;
-    display: flex;
+    font-family: 'Lato', sans-serif !important;
+    font-size: 12px !important;
+    color: #181A18 !important;
+    font-weight: 900 !important;
     justify-content: center;
+    display: flex !important;
     align-items: center;
     gap: 4px;
+    margin-bottom: 3px;
+}
+
+.rec-date-label svg path {
+    fill: #181A18 !important;
 }
 
 .rec-date-val {
-    font-family: 'Lato', sans-serif;
-    font-size: 15px;
-    color: #000;
-    display: flex;
+    font-family: 'Lato', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    color: #181A18 !important;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     gap: 4px;
 }
 
+.rec-date-val span {
+    color: #181A18 !important;
+    font-family: 'Lato', sans-serif !important;
+    font-size: 11px !important;
+}
+
 .rec-rows {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 6px;
+    background: transparent;
 }
 
 .rec-row {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Poppins', sans-serif;
-    font-size: 15px;
-    color: #21394F;
+    display: flex !important;
+    justify-content: space-between !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 11px !important;
+    color: #484848 !important;
+}
+
+.rec-row .lbl {
+    color: #484848 !important;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 .rec-row .val {
-    width: 95px;
+    color: #484848 !important;
+    font-weight: 500 !important;
+    text-align: right;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 .rec-row.total-row {
-    font-size: 15px;
-    font-weight: 700;
     border-top: 1px solid #DFEAF2;
     padding-top: 6px;
     margin-top: 2px;
 }
 
+.rec-row.total-row .lbl,
+.rec-row.total-row .val {
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    color: #181A18 !important;
+}
+
 .rec-row.denda {
     font-style: italic;
-    font-size: 13px;
+}
+
+.rec-row.denda .lbl,
+.rec-row.denda .val {
+    color: #d32f2f !important;
+    font-size: 11px !important;
 }
 
 .reviews-header h3 {

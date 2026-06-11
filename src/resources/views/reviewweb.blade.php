@@ -9,8 +9,8 @@
 
     <section style="max-width:760px; margin:48px auto; padding:0 20px;">
 
-    <h2 class="dash-section-title" style="margin-bottom:4px; color:#fff; font-size:22px; font-weight:700;">Beri Ulasan untuk SEWAIN</h2>
-    <p class="dash-section-sub" style="margin-bottom:16px; color:rgba(255,255,255,0.7); font-size:13px;">Bagikan pengalamanmu memakai website SEWAIN.</p>
+    <h2 class="dash-section-title" style="margin-bottom:4px; color:#21394F;">Beri Ulasan untuk SEWAIN</h2>
+    <p class="dash-section-sub" style="margin-bottom:24px; color:#6b6b6b;">Bagikan pengalamanmu memakai website SEWAIN.</p>
 
         @if (session('success'))
             <div style="background:#d4edda; color:#155724; padding:14px 16px; border-radius:8px; margin-bottom:20px; font-family:'Poppins',sans-serif;">

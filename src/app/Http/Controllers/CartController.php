@@ -32,6 +32,8 @@ class CartController extends Controller
             'qty'        => 'required|integer|min:1',
             'start_date' => 'required|date',
             'end_date'   => 'required|date|after_or_equal:start_date',
+            'start_time' => 'nullable|string',
+            'end_time'   => 'nullable|string',
         ]);
 
         // ---- Prevent owner from adding own product to cart ----
@@ -62,10 +64,15 @@ class CartController extends Controller
             return redirect()->back()->with('error', $msg);
         }
 
+        $waktuSewa = $request->start_time ?? '08:00:00';
+        $waktuKembali = $request->end_time ?? '08:00:00';
+
         if ($item) {
             $item->jumlah = $totalRequested;
             $item->tanggal_sewa = $request->start_date;
             $item->tanggal_kembali_rencana = $request->end_date;
+            $item->waktu_sewa = $waktuSewa;
+            $item->waktu_kembali_rencana = $waktuKembali;
             $item->save();
         } else {
             $item = Keranjang::create([
@@ -74,6 +81,8 @@ class CartController extends Controller
                 'jumlah'                 => $request->qty,
                 'tanggal_sewa'           => $request->start_date,
                 'tanggal_kembali_rencana'=> $request->end_date,
+                'waktu_sewa'             => $waktuSewa,
+                'waktu_kembali_rencana'  => $waktuKembali,
             ]);
         }
 

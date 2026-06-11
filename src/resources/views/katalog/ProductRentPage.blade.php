@@ -169,53 +169,79 @@
                     </div>
 
                     {{-- Tanggal sewa --}}
-                    <div class="date-row">
-                        <div class="date-box">
-                            <div class="date-label">Tanggal Mulai Penyewaan</div>
-                            <div class="date-value">
-                                <div class="date-icon-wrap">
-                                    <svg width="19" height="19" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" 
-                                        style="flex-shrink:0;">
-                                    <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM6.66667 14.1665C6.50185 14.1665 6.34073 14.1176 6.20369 14.0261C6.06665 13.9345 5.95984 13.8043 5.89677 13.6521C5.83369 13.4998 5.81719 13.3322 5.84935 13.1706C5.8815 13.0089 5.96087 12.8605 6.07741 12.7439C6.19395 12.6274 6.34244 12.548 6.50409 12.5159C6.66574 12.4837 6.8333 12.5002 6.98557 12.5633C7.13784 12.6263 7.26799 12.7332 7.35956 12.8702C7.45113 13.0072 7.5 13.1684 7.5 13.3332C7.5 13.5542 7.4122 13.7661 7.25592 13.9224C7.09964 14.0787 6.88768 14.1665 6.66667 14.1665ZM13.3333 14.1665H10C9.77899 14.1665 9.56702 14.0787 9.41074 13.9224C9.25446 13.7661 9.16667 13.5542 9.16667 13.3332C9.16667 13.1122 9.25446 12.9002 9.41074 12.7439C9.56702 12.5876 9.77899 12.4998 10 12.4998H13.3333C13.5543 12.4998 13.7663 12.5876 13.9226 12.7439C14.0789 12.9002 14.1667 13.1122 14.1667 13.3332C14.1667 13.5542 14.0789 13.7661 13.9226 13.9224C13.7663 14.0787 13.5543 14.1665 13.3333 14.1665ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
-                                    </svg>
-                                    <input type="date" class="date-hidden" id="dateStart"
-                                           min="{{ $product->tanggal_item_mulai?->format('Y-m-d') }}"
-                                           max="{{ $product->tanggal_item_tidak_tersedia?->format('Y-m-d') }}"
-                                           value="{{ $product->tanggal_item_mulai?->format('Y-m-d') ?? now()->format('Y-m-d') }}" />
-                                </div>
-                                <span id="displayStart">
-                                    {{ $product->tanggal_item_mulai
-                                        ? \Carbon\Carbon::parse($product->tanggal_item_mulai)->translatedFormat('j F Y')
-                                        : now()->translatedFormat('j F Y') }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="date-box">
-                            <div class="date-label">Tanggal Selesai Penyewaan</div>
-                            <div class="date-value">
-                                <div class="date-icon-wrap">
-                                    <svg width="19" height="19" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" 
-                                        style="flex-shrink:0;">
-                                    <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM6.66667 14.1665C6.50185 14.1665 6.34073 14.1176 6.20369 14.0261C6.06665 13.9345 5.95984 13.8043 5.89677 13.6521C5.83369 13.4998 5.81719 13.3322 5.84935 13.1706C5.8815 13.0089 5.96087 12.8605 6.07741 12.7439C6.19395 12.6274 6.34244 12.548 6.50409 12.5159C6.66574 12.4837 6.8333 12.5002 6.98557 12.5633C7.13784 12.6263 7.26799 12.7332 7.35956 12.8702C7.45113 13.0072 7.5 13.1684 7.5 13.3332C7.5 13.5542 7.4122 13.7661 7.25592 13.9224C7.09964 14.0787 6.88768 14.1665 6.66667 14.1665ZM13.3333 14.1665H10C9.77899 14.1665 9.56702 14.0787 9.41074 13.9224C9.25446 13.7661 9.16667 13.5542 9.16667 13.3332C9.16667 13.1122 9.25446 12.9002 9.41074 12.7439C9.56702 12.5876 9.77899 12.4998 10 12.4998H13.3333C13.5543 12.4998 13.7663 12.5876 13.9226 12.7439C14.0789 12.9002 14.1667 13.1122 14.1667 13.3332C14.1667 13.5542 14.0789 13.7661 13.9226 13.9224C13.7663 14.0787 13.5543 14.1665 13.3333 14.1665ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
-                                    </svg>
-                                    <input type="date" class="date-hidden" id="dateEnd"
-                                           min="{{ $product->tanggal_item_mulai?->format('Y-m-d') }}"
-                                           max="{{ $product->tanggal_item_tidak_tersedia?->format('Y-m-d') }}"
-                                           value="{{ $product->tanggal_item_tidak_tersedia?->format('Y-m-d') ?? now()->addDay()->format('Y-m-d') }}" />
-                                </div>
-                                <span id="displayEnd">
-                                    {{ $product->tanggal_item_tidak_tersedia
-                                        ? \Carbon\Carbon::parse($product->tanggal_item_tidak_tersedia)->translatedFormat('j F Y')
-                                        : now()->addDay()->translatedFormat('j F Y') }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+{{-- Tanggal sewa --}}
+<div class="date-row">
+    <div class="date-box">
+        <div class="date-label">Tanggal Mulai Penyewaan</div>
+        <div class="date-value">
+            <div class="date-icon-wrap">
+                <svg width="19" height="19" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM6.66667 14.1665C6.50185 14.1665 6.34073 14.1176 6.20369 14.0261C6.06665 13.9345 5.95984 13.8043 5.89677 13.6521C5.83369 13.4998 5.81719 13.3322 5.84935 13.1706C5.8815 13.0089 5.96087 12.8605 6.07741 12.7439C6.19395 12.6274 6.34244 12.548 6.50409 12.5159C6.66574 12.4837 6.8333 12.5002 6.98557 12.5633C7.13784 12.6263 7.26799 12.7332 7.35956 12.8702C7.45113 13.0072 7.5 13.1684 7.5 13.3332C7.5 13.5542 7.4122 13.7661 7.25592 13.9224C7.09964 14.0787 6.88768 14.1665 6.66667 14.1665ZM13.3333 14.1665H10C9.77899 14.1665 9.56702 14.0787 9.41074 13.9224C9.25446 13.7661 9.16667 13.5542 9.16667 13.3332C9.16667 13.1122 9.25446 12.9002 9.41074 12.7439C9.56702 12.5876 9.77899 12.4998 10 12.4998H13.3333C13.5543 12.4998 13.7663 12.5876 13.9226 12.7439C14.0789 12.9002 14.1667 13.1122 14.1667 13.3332C14.1667 13.5542 14.0789 13.7661 13.9226 13.9224C13.7663 14.0787 13.5543 14.1665 13.3333 14.1665ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
+                </svg>
+                <input type="date" class="date-hidden" id="dateStart"
+                       min="{{ $product->tanggal_item_mulai?->format('Y-m-d') }}"
+                       max="{{ $product->tanggal_item_tidak_tersedia?->format('Y-m-d') }}"
+                       value="{{ $product->tanggal_item_mulai?->format('Y-m-d') ?? now()->format('Y-m-d') }}" />
+            </div>
+            <span id="displayStart">
+                {{ $product->tanggal_item_mulai
+                    ? \Carbon\Carbon::parse($product->tanggal_item_mulai)->translatedFormat('j F Y')
+                    : now()->translatedFormat('j F Y') }}
+            </span>
+        </div>
+        <div class="time-row" style="position:relative;">
+            <div class="time-icon-wrap" id="timeStartTrigger" style="cursor:pointer;">
+                <svg width="19" height="19" viewBox="0 0 23 23" style="position:relative; left:-8px;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.25 5.25V11.25L15.25 13.25M21.25 11.25C21.25 16.7728 16.7728 21.25 11.25 21.25C5.72715 21.25 1.25 16.7728 1.25 11.25C1.25 5.72715 5.72715 1.25 11.25 1.25C16.7728 1.25 21.25 5.72715 21.25 11.25Z" stroke="#1E1E1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <span class="display-time" id="displayTimeStart">08:00 WIB</span>
+            <div class="time-dropdown" id="dropdownTimeStart">
+                <div class="time-col" id="hoursStart"></div>
+                <div class="time-sep">:</div>
+                <div class="time-col" id="minsStart"></div>
+            </div>
+        </div>
+    </div>
 
-                    <div class="stock-row">
-                        <div class="stock-text">Only <strong>{{ $product->stok }}</strong> item(s) left in stock!</div>
-                        <div class="stock-bar"><div class="stock-bar-fill" style="width:{{ $product->stok > 0 ? min(($product->stok / 10) * 100, 100) : 0 }}%"></div></div>
-                    </div>
+    <div class="date-box">
+        <div class="date-label">Tanggal Selesai Penyewaan</div>
+        <div class="date-value">
+            <div class="date-icon-wrap">
+                <svg width="19" height="19" viewBox="0 0 20 20" style="position:relative; left:-8px;" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM6.66667 14.1665C6.50185 14.1665 6.34073 14.1176 6.20369 14.0261C6.06665 13.9345 5.95984 13.8043 5.89677 13.6521C5.83369 13.4998 5.81719 13.3322 5.84935 13.1706C5.8815 13.0089 5.96087 12.8605 6.07741 12.7439C6.19395 12.6274 6.34244 12.548 6.50409 12.5159C6.66574 12.4837 6.8333 12.5002 6.98557 12.5633C7.13784 12.6263 7.26799 12.7332 7.35956 12.8702C7.45113 13.0072 7.5 13.1684 7.5 13.3332C7.5 13.5542 7.4122 13.7661 7.25592 13.9224C7.09964 14.0787 6.88768 14.1665 6.66667 14.1665ZM13.3333 14.1665H10C9.77899 14.1665 9.56702 14.0787 9.41074 13.9224C9.25446 13.7661 9.16667 13.5542 9.16667 13.3332C9.16667 13.1122 9.25446 12.9002 9.41074 12.7439C9.56702 12.5876 9.77899 12.4998 10 12.4998H13.3333C13.5543 12.4998 13.7663 12.5876 13.9226 12.7439C14.0789 12.9002 14.1667 13.1122 14.1667 13.3332C14.1667 13.5542 14.0789 13.7661 13.9226 13.9224C13.7663 14.0787 13.5543 14.1665 13.3333 14.1665ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
+                </svg>
+                <input type="date" class="date-hidden" id="dateEnd"
+                       min="{{ $product->tanggal_item_mulai?->format('Y-m-d') }}"
+                       max="{{ $product->tanggal_item_tidak_tersedia?->format('Y-m-d') }}"
+                       value="{{ $product->tanggal_item_tidak_tersedia?->format('Y-m-d') ?? now()->addDay()->format('Y-m-d') }}" />
+            </div>
+            <span id="displayEnd">
+                {{ $product->tanggal_item_tidak_tersedia
+                    ? \Carbon\Carbon::parse($product->tanggal_item_tidak_tersedia)->translatedFormat('j F Y')
+                    : now()->addDay()->translatedFormat('j F Y') }}
+            </span>
+        </div>
+        <div class="time-row" style="position:relative;">
+            <div class="time-icon-wrap" id="timeEndTrigger" style="cursor:pointer;">
+                <svg width="19" height="19" viewBox="0 0 23 23" style="position:relative; left:-10px;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.25 5.25V11.25L15.25 13.25M21.25 11.25C21.25 16.7728 16.7728 21.25 11.25 21.25C5.72715 21.25 1.25 16.7728 1.25 11.25C1.25 5.72715 5.72715 1.25 11.25 1.25C16.7728 1.25 21.25 5.72715 21.25 11.25Z" stroke="#1E1E1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <span class="display-time" id="displayTimeEnd">08:00 WIB</span>
+            <div class="time-dropdown" id="dropdownTimeEnd">
+                <div class="time-col" id="hoursEnd"></div>
+                <div class="time-sep">:</div>
+                <div class="time-col" id="minsEnd"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="stock-row">
+    <div class="stock-text">Only <strong>{{ $product->stok }}</strong> item(s) left in stock!</div>
+    <div class="stock-bar"><div class="stock-bar-fill" style="width:{{ $product->stok > 0 ? min(($product->stok / 10) * 100, 100) : 0 }}%"></div></div>
+</div>
 
                     {{-- QUANTITY + TOMBOL --}}
                     <div class="qty-section" style="{{ (auth()->check() && (auth()->id() === $product->user_id || auth()->user()->role === 'admin')) ? 'justify-content: center;' : '' }}">
@@ -573,11 +599,14 @@
             const endDate   = document.getElementById('dateEnd').value   || @json($product->tanggal_item_tidak_tersedia?->format('Y-m-d'));
             const imgEl     = document.getElementById('productMainImage');
 
+            const startTime = (document.getElementById('displayTimeStart').textContent || '08:00').replace(' WIB', '');
+            const endTime   = (document.getElementById('displayTimeEnd').textContent || '08:00').replace(' WIB', '');
+
             // Kirim ke backend via AJAX (simpan di database)
             fetch(ADD_CART_URL, {
                 method : 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
-                body   : JSON.stringify({ barang_id: PRODUCT.id, qty, start_date: startDate, end_date: endDate }),
+                body   : JSON.stringify({ barang_id: PRODUCT.id, qty, start_date: startDate, end_date: endDate, start_time: startTime, end_time: endTime }),
             })
             .then(res => {
                 if (!res.ok) {
@@ -709,11 +738,14 @@
             const startDate = document.getElementById('dateStart').value || @json($product->tanggal_item_mulai?->format('Y-m-d'));
             const endDate   = document.getElementById('dateEnd').value   || @json($product->tanggal_item_tidak_tersedia?->format('Y-m-d'));
 
+            const startTime = (document.getElementById('displayTimeStart').textContent || '08:00').replace(' WIB', '');
+            const endTime   = (document.getElementById('displayTimeEnd').textContent || '08:00').replace(' WIB', '');
+
             // Kalau sudah login: tambah ke cart dulu, lalu redirect ke checkout
             fetch(ADD_CART_URL, {
                 method : 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
-                body   : JSON.stringify({ barang_id: PRODUCT.id, qty: 1, start_date: startDate, end_date: endDate }),
+                body   : JSON.stringify({ barang_id: PRODUCT.id, qty: 1, start_date: startDate, end_date: endDate, start_time: startTime, end_time: endTime }),
             })
             .then(res => {
                 if (!res.ok) {
@@ -745,11 +777,109 @@
         }
         document.getElementById('dateStart').addEventListener('change', function () {
             document.getElementById('displayStart').textContent = formatDate(this.value);
+            syncTimeIfDifferentDate();
         });
         document.getElementById('dateEnd').addEventListener('change', function () {
             document.getElementById('displayEnd').textContent = formatDate(this.value);
+            syncTimeIfDifferentDate();
         });
 
+        function syncTimeIfDifferentDate() {
+            const ds = document.getElementById('dateStart').value;
+            const de = document.getElementById('dateEnd').value;
+            if (ds && de && ds !== de) {
+                document.getElementById('displayTimeEnd').textContent = document.getElementById('displayTimeStart').textContent;
+            }
+        }
+/* ============ CUSTOM TIME PICKER ============ */
+function buildTimePicker(hourColId, minColId, dropdownId, displayId, defaultH, defaultM, onChange) {
+    const hourCol = document.getElementById(hourColId);
+    const minCol  = document.getElementById(minColId);
+    let selH = defaultH, selM = defaultM;
+
+    for (let h = 0; h < 24; h++) {
+        const opt = document.createElement('div');
+        opt.className = 'time-opt' + (h === selH ? ' selected' : '');
+        opt.textContent = String(h).padStart(2, '0');
+        opt.addEventListener('click', () => {
+            selH = h;
+            hourCol.querySelectorAll('.time-opt').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            updateDisplay();
+        });
+        hourCol.appendChild(opt);
+    }
+    for (let m = 0; m < 60; m += 5) {
+        const opt = document.createElement('div');
+        opt.className = 'time-opt' + (m === selM ? ' selected' : '');
+        opt.textContent = String(m).padStart(2, '0');
+        opt.addEventListener('click', () => {
+            selM = m;
+            minCol.querySelectorAll('.time-opt').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            updateDisplay();
+        });
+        minCol.appendChild(opt);
+    }
+
+    function updateDisplay() {
+        document.getElementById(displayId).textContent =
+            String(selH).padStart(2,'0') + ':' + String(selM).padStart(2,'0') + ' WIB';
+        if (onChange) onChange(selH, selM);
+    }
+}
+
+buildTimePicker('hoursStart', 'minsStart', 'dropdownTimeStart', 'displayTimeStart', 8, 0, (h, m) => {
+    // Sinkronkan jam selesai dengan jam mulai JIKA tanggalnya berbeda
+    const ds = document.getElementById('dateStart').value;
+    const de = document.getElementById('dateEnd').value;
+    if (ds !== de) {
+        document.getElementById('displayTimeEnd').textContent = 
+            String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ' WIB';
+    }
+});
+buildTimePicker('hoursEnd',   'minsEnd',   'dropdownTimeEnd',   'displayTimeEnd',   8, 0);
+
+function toggleDropdown(dropId) {
+    document.querySelectorAll('.time-dropdown').forEach(d => {
+        if (d.id !== dropId) d.classList.remove('open');
+    });
+    const drop = document.getElementById(dropId);
+    drop.classList.toggle('open');
+
+    // Scroll ke item selected
+    if (drop.classList.contains('open')) {
+        drop.querySelectorAll('.time-col').forEach(col => {
+            const sel = col.querySelector('.selected');
+            if (sel) sel.scrollIntoView({ block: 'center' });
+        });
+    }
+}
+document.getElementById('timeStartTrigger').addEventListener('click', (e) => {
+    e.stopPropagation(); toggleDropdown('dropdownTimeStart');
+});
+document.getElementById('timeEndTrigger').addEventListener('click', (e) => {
+    e.stopPropagation(); 
+    
+    const ds = document.getElementById('dateStart').value;
+    const de = document.getElementById('dateEnd').value;
+    
+    // Jika tanggal sama, buka dropdown
+    if (ds && de && ds === de) {
+        toggleDropdown('dropdownTimeEnd');
+    } else {
+        // Matikan dropdownTimeEnd dan beri tahu user
+        showRentToast({
+            iconClass: 'info',
+            iconEmoji: 'ℹ️',
+            title: 'Info Jam Pengembalian',
+            msg: 'Jam pengembalian otomatis disamakan dengan jam pengambilan sewa, karena durasi dihitung penuh per hari (24 jam).',
+        });
+    }
+});
+document.addEventListener('click', () => {
+    document.querySelectorAll('.time-dropdown').forEach(d => d.classList.remove('open'));
+});
         /* ============================================================
          * TAB CONTENT
          * ============================================================ */
