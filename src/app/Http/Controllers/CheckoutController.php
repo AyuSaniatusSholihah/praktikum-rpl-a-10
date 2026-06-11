@@ -264,6 +264,8 @@ class CheckoutController extends Controller
                 'jumlah'                 => $item->jumlah,
                 'tanggal_sewa'           => $item->tanggal_sewa,
                 'tanggal_kembali_rencana'=> $item->tanggal_kembali_rencana,
+                'waktu_sewa'             => $item->waktu_sewa ?? '08:00:00',
+                'waktu_kembali_rencana'  => $item->waktu_kembali_rencana ?? '08:00:00',
                 'status'                 => $status,
                 'total_harga'            => $subtotal,
             ]);

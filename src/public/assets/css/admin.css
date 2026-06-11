@@ -147,14 +147,12 @@ nav {
     margin: 36px auto;
     overflow: hidden;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
-    background: #ffffff;
-    border-radius: 16px;
 }
 
 /* ubah layout jadi di dalam panel */
 .admin-panel .admin-layout {
     display: flex;
-    height: 850px;
+    min-height: 640px;
 }
 
 .admin-panel .sidebar {
@@ -171,7 +169,7 @@ nav {
     padding: 24px 0;
     position: sticky;
     top: 56px;
-    height: 100%;
+    height: calc(100vh - 56px);
     overflow-y: auto;
     flex-shrink: 0;
 }
@@ -218,8 +216,7 @@ nav {
 .main-content {
     flex: 1;
     padding: 28px 32px;
-    height: 100%;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 /* ── STAT CARDS ── */
@@ -238,7 +235,6 @@ nav {
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    height: 116px;
 }
 
 .stat-card .info .label {
@@ -332,6 +328,7 @@ nav {
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     margin-bottom: 24px;
+    overflow-x: auto;
 }
 
 table.data-table {
@@ -606,7 +603,6 @@ table.data-table tr:last-child td {
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    height: 116px;
 }
 
 .wallet-stat-card .info .label {
@@ -890,45 +886,58 @@ table.data-table tr:last-child td {
 
 .receipt-product {
     padding: 18px;
+    border-bottom: 1px solid #e8e8e8;
+    background: #F5F5F5;
 }
 
+/* ============================================================
+   RECEIPT — override dark detail-card theme
+   ============================================================ */
 .receipt-item {
-    background: #ebf2f8;
-    border-radius: 10px;
+    background: #F5F5F5 !important;
+    border: 1px solid #e8e8e8 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
     margin-bottom: 12px;
+    color: #484848 !important;
 }
 
 .rec-img {
-    width: 110px;
-    height: 110px;
+    width: 100px !important;
+    height: 110px !important;
     border-radius: 4px;
     flex-shrink: 0;
     overflow: hidden;
+    background: #ededed;
 }
 
 .rec-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
 }
 
-.rec-info {
+.rec-info,
+.rec-product-info {
     flex: 1;
+    min-width: 0;
 }
 
 .rec-product-name {
-    font-family: 'Volkhov', serif;
-    font-size: 17px;
-    font-weight: 700;
-    color: #21394F;
+    font-family: 'Volkhov', serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
     line-height: 1.4;
     margin-bottom: 4px;
 }
 
 .rec-price {
-    font-size: 15px;
-    color: #6A87A1;
-    font-weight: 600;
+    font-size: 11px !important;
+    color: #6A87A1 !important;
+    font-weight: 600 !important;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 /* Item count badge */
@@ -948,35 +957,33 @@ table.data-table tr:last-child td {
     justify-content: center;
 }
 
-/* PAID badge — bigger with shadow */
+/* PAID badge */
 .paid-badge {
-    color: #2e7d32;
-    font-size: 17px;
-    font-weight: 900;
-    padding: 8px 15px;
-    letter-spacing: 0.2em;
-    white-space: nowrap;
-    border: 3.5px solid #2e7d32;
-    border-radius: 4px;
-    transform: rotate(-15deg);
-    opacity: 0.75;
-    text-transform: uppercase;
-    box-shadow: 0 0 0 2px #2e7d32;
-    background: transparent;
-    font-family: 'Volkhov', serif;
-    display: block;
-    margin: 10px auto 14px;
-    /* ← ini bikin tengah */
-    width: fit-content;
+    color: #2e7d32 !important;
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    padding: 8px 15px !important;
+    letter-spacing: 0.2em !important;
+    white-space: nowrap !important;
+    border: 3.5px solid #2e7d32 !important;
+    border-radius: 4px !important;
+    transform: rotate(-15deg) !important;
+    opacity: 0.75 !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 0 0 2px #2e7d32 !important;
+    background: transparent !important;
+    font-family: 'Volkhov', serif !important;
+    display: block !important;
+    margin: 10px auto 14px !important;
+    width: fit-content !important;
+    flex-shrink: 0;
 }
 
 .rec-dates {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
     gap: 8px;
-    margin-bottom: 14px;
     max-width: 260px;
-    /* ← atur angka ini sesuai selera */
     margin: 0 auto 14px;
 }
 
@@ -985,66 +992,83 @@ table.data-table tr:last-child td {
     border-radius: 4px;
     padding: 8px 10px;
     text-align: center;
-    /* ← judul & konten tengah */
 }
 
 .rec-date-label {
-    font-family: 'Lato', sans-serif;
-    font-size: 15.8px;
-    color: #21394F;
-    font-weight: 900;
-    margin-bottom: 3px;
-    display: flex;
-    /* ← tambah */
+    font-family: 'Lato', sans-serif !important;
+    font-size: 12px !important;
+    color: #181A18 !important;
+    font-weight: 900 !important;
     justify-content: center;
-    /* ← tambah */
+    display: flex !important;
     align-items: center;
-    /* ← tambah */
     gap: 4px;
+    margin-bottom: 3px;
+}
+
+.rec-date-label svg path {
+    fill: #181A18 !important;
 }
 
 .rec-date-val {
-    font-family: 'Lato', sans-serif;
-    font-size: 15px;
-    color: #21394F;
-    display: flex;
-    /* ← tambah */
+    font-family: 'Lato', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    color: #181A18 !important;
+    display: flex !important;
     align-items: center;
-    /* ← tambah */
     justify-content: center;
-    /* ← tambah */
     gap: 4px;
 }
 
+.rec-date-val span {
+    color: #181A18 !important;
+    font-family: 'Lato', sans-serif !important;
+    font-size: 11px !important;
+}
+
 .rec-rows {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 6px;
+    background: transparent;
 }
 
 .rec-row {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Poppins', sans-serif;
-    font-size: 15px;
-    color: #21394F;
+    display: flex !important;
+    justify-content: space-between !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 11px !important;
+    color: #484848 !important;
+}
+
+.rec-row .lbl {
+    color: #484848 !important;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 .rec-row .val {
-    width: 95px;
+    color: #484848 !important;
+    font-weight: 500 !important;
+    text-align: right;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 .rec-row.total-row {
-    font-size: 15px;
-    font-weight: 700;
     border-top: 1px solid #DFEAF2;
     padding-top: 6px;
     margin-top: 2px;
 }
 
+.rec-row.total-row .lbl,
+.rec-row.total-row .val {
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    color: #181A18 !important;
+}
+
 .rec-row.denda {
     font-style: italic;
-    font-size: 13px;
 }
 
 .rec-date-label svg {
