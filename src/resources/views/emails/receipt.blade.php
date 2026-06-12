@@ -1,128 +1,183 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; padding: 20px; color: #181A18; }
-        .receipt-card { max-width: 500px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { color: #1A1F71; margin: 0; font-size: 22px; }
-        .order-id { font-weight: bold; color: #333; margin-top: 5px; font-size: 14px; }
-        
-        .receipt-product { border: 1px solid #e0e0e0; border-radius: 10px; padding: 16px; margin-bottom: 20px; }
-        .receipt-product-header { border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 12px; }
-        .item-badge { display: inline-block; background: #1A1F71; color: #fff; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: bold; margin-right: 12px; vertical-align: middle; }
-        .rec-product-info { display: inline-block; vertical-align: middle; }
-        .rec-product-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
-        .rec-price { font-size: 13px; color: #666; }
-        .paid-badge { float: right; background: #E8F5E9; color: #2E7D32; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-top: 5px; }
-        
-        .rec-date-item { margin-bottom: 8px; }
-        .rec-date-label { font-size: 11px; color: #777; text-transform: uppercase; margin-bottom: 2px; }
-        .rec-date-val { font-size: 13px; font-weight: 500; }
-        
-        .rec-rows { background: #F8F9FA; border-radius: 8px; padding: 16px; margin-top: 16px; }
-        .rec-row { margin-bottom: 8px; font-size: 13px; color: #555; overflow: hidden; }
-        .rec-row .lbl { float: left; }
-        .rec-row .val { float: right; }
-        .total-row { font-size: 15px; font-weight: bold; color: #181A18; border-top: 1px dashed #ccc; padding-top: 8px; margin-top: 8px; }
-        .denda { color: #D32F2F; font-size: 12px; margin-top: 8px; font-style: italic; }
-        
-        .customer-info { margin-top: 24px; border-top: 1px solid #eee; padding-top: 20px; }
-        .customer-info h3 { font-size: 16px; margin-bottom: 16px; margin-top: 0; }
-        .customer-row { margin-bottom: 8px; font-size: 13px; overflow: hidden; }
-        .clabel { float: left; color: #666; }
-        .cval { float: right; font-weight: 600; text-align: right; max-width: 60%; }
-        
-        .receipt-logo { text-align: center; margin-top: 30px; font-size: 20px; font-weight: 800; letter-spacing: 2px; color: #333; }
-        .receipt-logo span { color: #1A1F71; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Receipt - SEWAIN</title>
 </head>
-<body>
-    <div class="receipt-card">
-        <div class="header">
-            <h1>PAYMENT CONFIRMED!</h1>
-            <div class="order-id">ORDER #{{ $pembayaran->id }}</div>
-            <p style="font-size: 13px; color: #666;">Thank you for your order. Here is your receipt.</p>
-        </div>
+<body style="margin:0;padding:0;font-family:Arial,sans-serif;background:#f5f5f5;">
 
-        @foreach($transaksis as $trans)
+  <!-- Wrapper -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;padding:32px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border:1px solid #e8e8e8;border-radius:8px;overflow:hidden;">
+
+          <!-- ── HEADER: Logo ── -->
+          <tr>
+            <td align="center" style="padding:24px 0 16px;border-bottom:1px solid #f0f0f0;">
+              <span style="font-size:32px;font-weight:400;color:#484848;letter-spacing:0.04em;">SEWA<span style="color:#6A87A1;">IN</span></span>
+            </td>
+          </tr>
+
+          <!-- ── CHECK CIRCLE + CONFIRMED ── -->
+          <tr>
+            <td align="center" style="padding:36px 24px 20px;">
+              <!-- Circle -->
+              <div style="width:80px;height:80px;border-radius:50%;background:#6A87A1;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;">
+                <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" style="width:80px;height:80px;" arcsize="50%" fillcolor="#6A87A1" strokecolor="#6A87A1"></v:roundrect><![endif]-->
+                <img src="https://img.icons8.com/ios/50/ffffff/checkmark--v1.png" width="40" height="40" alt="✓" style="display:block;">
+              </div>
+              <br>
+              <span style="font-size:26px;font-weight:700;color:#484848;display:block;margin-bottom:6px;">PAYMENT CONFIRMED!</span>
+              <span style="font-size:15px;color:#888888;">ORDER <strong style="color:#6A87A1;">#{{ $pembayaran->id ?? '-' }}</strong></span>
+              <p style="font-size:13px;color:#818181;line-height:1.8;margin:20px auto 0;max-width:420px;">
+                Thank you for buying Goodfeel. The system is grateful to you. Please check your e-mail, there will be a payment link that will be sent to your e-mail address according to your agreement.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ── DIVIDER ── -->
+          <tr><td style="height:1px;background:#e8e8e8;"></td></tr>
+
+          <!-- ── PRODUCT(S) ── -->
+          @foreach($transaksis as $trans)
           @php
-            $days = \Carbon\Carbon::parse($trans->tanggal_sewa)->diffInDays(\Carbon\Carbon::parse($trans->tanggal_kembali_rencana));
+            $days     = $trans->tanggal_sewa->diffInDays($trans->tanggal_kembali_rencana);
             if ($days == 0) $days = 1;
             $subtotal = ($trans->barang->harga_sewa ?? 0) * $trans->jumlah * $days;
             $jaminan  = round(($trans->barang->harga_sewa ?? 0) * $trans->jumlah / 2);
             $rowTotal = $subtotal + $jaminan;
           @endphp
-          <div class="receipt-product">
-            <div class="receipt-product-header">
-              <span class="item-badge">{{ $trans->jumlah }}</span>
-              <div class="rec-product-info">
-                <div class="rec-product-name">{{ $trans->barang->nama_barang }}</div>
-                <div class="rec-price">Rp {{ number_format($trans->barang->harga_sewa, 0, ',', '.') }}/hari</div>
-              </div>
-              <span class="paid-badge">PAID</span>
-              <div style="clear: both;"></div>
-            </div>
-            
-            <div class="rec-dates">
-              <div class="rec-date-item">
-                <div class="rec-date-label">Tanggal Mulai Penyewaan</div>
-                <div class="rec-date-val">
-                  <span>{{ \Carbon\Carbon::parse($trans->tanggal_sewa)->format('d F Y') }}</span>
-                </div>
-              </div>
-              <div class="rec-date-item">
-                <div class="rec-date-label">Tanggal Selesai Penyewaan</div>
-                <div class="rec-date-val">
-                  <span>{{ \Carbon\Carbon::parse($trans->tanggal_kembali_rencana)->format('d F Y') }}</span>
-                </div>
-              </div>
-            </div>
-            
-            <div class="rec-rows">
-              <div class="rec-row"><span class="lbl">Durasi Sewa</span><span class="val">{{ $days }} Hari</span><div style="clear: both;"></div></div>
-              <div class="rec-row"><span class="lbl">Subtotal</span><span class="val">Rp {{ number_format($subtotal, 0, ',', '.') }}</span><div style="clear: both;"></div></div>
-              <div class="rec-row"><span class="lbl">Shipping</span><span class="val">-</span><div style="clear: both;"></div></div>
-              <div class="rec-row"><span class="lbl">Jaminan</span><span class="val">Rp {{ number_format($jaminan, 0, ',', '.') }}</span><div style="clear: both;"></div></div>
-              <div class="rec-row total-row"><span class="lbl">Total</span><span class="val">Rp {{ number_format($rowTotal, 0, ',', '.') }}</span><div style="clear: both;"></div></div>
-              <div class="rec-row denda"><span class="lbl">#Catatan Denda Pengembalian</span><span class="val">Rp 15.000/jam</span><div style="clear: both;"></div></div>
-            </div>
-          </div>
-        @endforeach
 
-        <div class="customer-info">
-          <h3>Informasi Pesanan</h3>
-          <div class="customer-row">
-            <div class="clabel">Nama Customer</div>
-            <div class="cval">{{ $order ? trim($order->first_name . ' ' . $order->last_name) : 'Customer' }}</div>
-            <div style="clear: both;"></div>
-          </div>
-          <div class="customer-row">
-            <div class="clabel">Metode Pengiriman</div>
-            <div class="cval">
-                {{ isset($order) && $order->shipping_method == 'cod' ? 'COD (Ambil Sendiri)' : 'Delivery' }}
-                @if(isset($order) && $order->shipping_method == 'delivery' && $order->address)
-                    <br> - {{ $order->address }}
-                    @if($order->city || $order->kode_pos)
-                        , {{ $order->city }} {{ $order->kode_pos }}
-                    @endif
-                @endif
-            </div>
-            <div style="clear: both;"></div>
-          </div>
-          <div class="customer-row">
-            <div class="clabel">Metode Pembayaran</div>
-            <div class="cval">{{ $pembayaran->detail_metode ?? $pembayaran->metode ?? '-' }}</div>
-            <div style="clear: both;"></div>
-          </div>
-          <div class="customer-row">
-            <div class="clabel">Waktu Pemesanan</div>
-            <div class="cval">{{ $pembayaran->tanggal_bayar ? $pembayaran->tanggal_bayar->format('d F Y, H:i') . ' WIB' : '-' }}</div>
-            <div style="clear: both;"></div>
-          </div>
-        </div>
+          <tr>
+            <td style="padding:20px 24px;background:#f9f9f9;border-bottom:1px solid #e8e8e8;">
 
-        <div class="receipt-logo">SEWA<span>IN</span></div>
-    </div>
+              <!-- Product header row -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <!-- Badge + Image -->
+                  <td width="110" valign="top" style="position:relative;">
+                    <div style="position:relative;display:inline-block;">
+                      <span style="position:absolute;top:-6px;left:-6px;background:#6A87A1;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;z-index:1;">{{ $trans->jumlah }}</span>
+                      <img src="{{ $trans->barang->foto_barang ? url('storage/'.$trans->barang->foto_barang) : 'https://placehold.co/90x100?text=Foto' }}"
+                           alt="{{ $trans->barang->nama_barang }}"
+                           width="90" height="100"
+                           style="display:block;object-fit:cover;border-radius:4px;border:1px solid #e0e0e0;">
+                    </div>
+                  </td>
+                  <!-- Name + Price -->
+                  <td valign="top" style="padding-left:14px;">
+                    <p style="font-size:13px;font-weight:700;color:#000;margin:0 0 4px;">{{ $trans->barang->nama_barang }}</p>
+                    <p style="font-size:11px;color:#6A87A1;font-weight:600;margin:0 0 10px;">Rp {{ number_format($trans->barang->harga_sewa, 0, ',', '.') }}/hari</p>
+                    <!-- PAID badge -->
+                    <span style="display:inline-block;color:#2e7d32;font-size:13px;font-weight:900;padding:5px 12px;border:3px solid #2e7d32;border-radius:4px;letter-spacing:0.15em;opacity:0.75;transform:rotate(-12deg);font-family:Georgia,serif;">PAID</span>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Dates -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:16px 0 12px;">
+                <tr>
+                  <td width="50%" align="center" style="padding:8px;">
+                    <p style="font-size:11px;font-weight:900;color:#181A18;margin:0 0 4px;">📅 Tanggal Mulai Penyewaan</p>
+                    <p style="font-size:11px;color:#181A18;margin:0;">{{ $trans->tanggal_sewa->format('d F Y') }}</p>
+                  </td>
+                  <td width="50%" align="center" style="padding:8px;">
+                    <p style="font-size:11px;font-weight:900;color:#181A18;margin:0 0 4px;">📅 Tanggal Selesai Penyewaan</p>
+                    <p style="font-size:11px;color:#181A18;margin:0;">{{ $trans->tanggal_kembali_rencana->format('d F Y') }}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Rows -->
+              <table width="100%" cellpadding="4" cellspacing="0" border="0" style="font-size:11px;color:#484848;">
+                <tr>
+                  <td>Durasi Sewa</td>
+                  <td align="right" style="font-weight:500;">{{ $days }} Hari</td>
+                </tr>
+                <tr>
+                  <td>Subtotal</td>
+                  <td align="right" style="font-weight:500;">Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                  <td>Shipping</td>
+                  <td align="right" style="font-weight:500;">-</td>
+                </tr>
+                <tr>
+                  <td>Jaminan</td>
+                  <td align="right" style="font-weight:500;">Rp {{ number_format($jaminan, 0, ',', '.') }}</td>
+                </tr>
+                <tr style="border-top:1px solid #e0e0e0;">
+                  <td style="padding-top:8px;font-weight:700;font-size:12px;">Total</td>
+                  <td align="right" style="padding-top:8px;font-weight:700;font-size:12px;">Rp {{ number_format($rowTotal, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                  <td style="font-style:italic;color:#484848;">#Catatan Denda Pengembalian</td>
+                  <td align="right" style="font-style:italic;color:#484848;">Rp 15.000/jam</td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+          @endforeach
+
+          <!-- ── INFORMASI PESANAN ── -->
+          <tr>
+            <td style="padding:20px 24px;background:#ffffff;border-top:1px solid #e8e8e8;">
+              <p style="font-size:17px;font-weight:700;color:#000;text-align:center;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid #e8e8e8;">Informasi Pesanan</p>
+              <table width="100%" cellpadding="6" cellspacing="0" border="0">
+                <tr>
+                  <td width="50%" valign="top">
+                    <p style="font-size:11px;color:#484848;margin:0 0 2px;">Nama Customer</p>
+                    <p style="font-size:12px;font-weight:600;color:#484848;margin:0;">{{ $order ? trim($order->first_name . ' ' . $order->last_name) : (auth()->user()->name ?? '-') }}</p>
+                  </td>
+                  <td width="50%" valign="top">
+                    <p style="font-size:11px;color:#484848;margin:0 0 2px;">Metode Pengiriman</p>
+                    <p style="font-size:12px;font-weight:600;color:#484848;margin:0;">
+                      {{ isset($order) && $order->shipping_method == 'cod' ? 'COD (Ambil Sendiri)' : 'Delivery' }}
+                      @if(isset($order) && $order->shipping_method == 'delivery' && $order->address)
+                        — {{ $order->address }}{{ ($order->city || $order->kode_pos) ? ', '.$order->city.' '.$order->kode_pos : '' }}
+                      @endif
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%" valign="top">
+                    <p style="font-size:11px;color:#484848;margin:0 0 2px;">Metode Pembayaran</p>
+                    <p style="font-size:12px;font-weight:600;color:#484848;margin:0;">{{ $pembayaran->detail_metode ?? $pembayaran->metode ?? '-' }}</p>
+                  </td>
+                  <td width="50%" valign="top">
+                    <p style="font-size:11px;color:#484848;margin:0 0 2px;">Waktu Pemesanan</p>
+                    <p style="font-size:12px;font-weight:600;color:#484848;margin:0;">{{ $pembayaran->tanggal_bayar ? $pembayaran->tanggal_bayar->format('d F Y, H:i').' WIB' : '-' }}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ── CTA BUTTON ── -->
+          <tr>
+            <td align="center" style="padding:24px;">
+              <a href="{{ url('/') }}"
+                 style="display:inline-block;padding:13px 40px;background:#6A87A1;color:#ffffff;text-decoration:none;border-radius:8px;font-size:14px;font-weight:500;letter-spacing:0.02em;box-shadow:0 6px 20px rgba(106,135,161,0.30);">
+                Back to SEWAIN Home
+              </a>
+            </td>
+          </tr>
+
+          <!-- ── FOOTER ── -->
+          <tr>
+            <td align="center" style="padding:16px;border-top:1px solid #f0f0f0;background:#f9f9f9;">
+              <span style="font-size:28px;font-weight:400;color:#484848;letter-spacing:0.04em;">SEWA<span style="color:#6A87A1;">IN</span></span>
+              <p style="font-size:11px;color:#aaaaaa;margin:8px 0 0;">© {{ date('Y') }} SEWAIN. All rights reserved.</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
 </body>
 </html>
