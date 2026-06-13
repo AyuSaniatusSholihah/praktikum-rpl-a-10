@@ -44,6 +44,11 @@ class OrderReceiptMail extends Mailable
     {
         return new Content(
             view: 'emails.receipt',
+            with: [
+                'order'      => $this->order,
+                'pembayaran' => $this->pembayaran,
+                'transaksis' => $this->transaksis,
+            ],
         );
     }
 

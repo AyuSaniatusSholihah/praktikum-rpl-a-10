@@ -283,8 +283,10 @@ class CheckoutController extends Controller
 
         // ---- Kirim Email Receipt ----
         try {
-            $transaksis = TransaksiPenyewaan::whereIn('id', $transaksiIds)->with('barang')->get();
-            Mail::to($request->email)->queue(new OrderReceiptMail($order, $pembayaran, $transaksis));
+            $transaksis = TransaksiPenyewaan::whereIn('id', $transaksiIds)
+                ->with(['barang.user'])
+                ->get();
+            Mail::to($request->email)->send(new OrderReceiptMail($order, $pembayaran, $transaksis));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("Failed to send receipt email: " . $e->getMessage());
         }
