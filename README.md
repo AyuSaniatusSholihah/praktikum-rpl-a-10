@@ -1,7 +1,5 @@
 # 🏪 SEWAIN — Platform Penyewaan Barang Digital
 
-![MVP Status](https://img.shields.io/badge/Status-MVP-brightgreen)
-
 Repositori ini digunakan untuk pengembangan proyek mata kuliah **Rekayasa Perangkat Lunak (RPL)** kelompok A-10.
 
 ## 👥 Anggota Kelompok
@@ -262,7 +260,7 @@ praktikum-rpl-a-10/
 
 ```bash
 # 1. Clone repositori
-git clone <url-repo>
+git clone <https://github.com/AyuSaniatusSholihah/praktikum-rpl-a-10.git>
 
 # 2. Masuk ke direktori aplikasi
 cd src
