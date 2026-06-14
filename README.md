@@ -1,111 +1,120 @@
-# Praktikum RPL A-10
+# 🏪 SEWAIN — Platform Penyewaan Barang Digital
 
-Repositori ini digunakan untuk pengembangan proyek mata kuliah Rekayasa Perangkat Lunak (RPL) kelompok A-10.
+Repositori ini digunakan untuk pengembangan proyek mata kuliah **Rekayasa Perangkat Lunak (RPL)** kelompok A-10.
 
-## Anggota Kelompok
+## 👥 Anggota Kelompok
 
-| No | Nama                               | NIM      |
-|----|------------------------------------|----------|
-| 1  | APRILIA ALFA GUSASTI CIPTANINGTYAS | L0124003 |
-| 2  | AYU SANIATUS SHOLIHAH              | L0124005 |
-| 3  | GHAZI FAHMI RAMADHAN               | L0124130 |
+| No | Nama                               | NIM       |
+|----|------------------------------------|-----------|
+| 1  | APRILIA ALFA GUSASTI CIPTANINGTYAS | L0124003  |
+| 2  | AYU SANIATUS SHOLIHAH              | L0124005  |
+| 3  | GHAZI FAHMI RAMADHAN               | L0124130  |
 
-## Latar Belakang
+---
 
-Proyek ini berfokus pada solusi digital untuk proses penyewaan barang. Permasalahan utama yang diangkat adalah proses sewa yang masih manual, kurang transparan, dan rentan miskomunikasi.
+## 📌 Latar Belakang
+
+**SEWAIN** adalah platform digital yang menghubungkan penyewa dan pemilik barang dalam satu ekosistem yang terstruktur dan transparan. Permasalahan utama yang diangkat adalah proses sewa yang masih manual, kurang transparan, dan rentan miskomunikasi.
 
 Sistem yang dirancang bertujuan untuk:
-
 - Mempertemukan penyewa dan pemilik barang dalam satu platform.
-- Menyediakan informasi barang, harga, dan ketersediaan secara jelas.
-- Mendukung proses transaksi penyewaan yang lebih terstruktur.
-- Meningkatkan kepercayaan pengguna melalui riwayat transaksi dan moderasi.
+- Menyediakan informasi barang, harga, dan ketersediaan secara jelas dan real-time.
+- Mendukung proses transaksi penyewaan yang terstruktur (checkout, pembayaran, pengembalian).
+- Meningkatkan kepercayaan pengguna melalui sistem review dan moderasi admin.
 
-## Ruang Lingkup Fitur
+---
 
-Berikut ringkasan fitur berdasarkan user stories:
+## ✅ Status Implementasi Fitur (Sesuai Product Backlog)
 
-- Penyewa:
-	- Registrasi akun.
-	- Login dan lupa password (OTP).
-	- Pencarian dan filter barang.
-	- Proses sewa, pembayaran, pengembalian, dan riwayat sewa.
-	- Review barang.
-- Owner:
-	- Kelola katalog barang (tambah, ubah, hapus).
-	- Persetujuan atau penolakan permintaan sewa.
-	- Melihat transaksi dan saldo.
-- Admin:
-	- Monitoring aktivitas platform.
-	- Melihat detail pengguna.
-	- Freeze/ban akun bermasalah.
+Seluruh fitur inti dari product backlog telah diimplementasikan. Berikut adalah status fitur berdasarkan prioritasnya di *Product Backlog*:
 
-## Struktur Proyek
+### 🟢 Must Have
+
+| Fitur | Keterangan | Status |
+|-------|------------|--------|
+| **Registrasi & Login** | Pembuatan akun dan masuk ke sistem | ✅ Selesai |
+| **Penyewaan Barang** | Menyewa barang dengan memilih tanggal dan jumlah | ✅ Selesai |
+| **Katalog Barang (Owner)** | Menambahkan dan mengelola barang sewaan | ✅ Selesai |
+| **Profil User** | Menampilkan dan mengelola informasi pengguna | ✅ Selesai |
+| **Pembayaran & Denda** | Mendukung pembayaran simulasi dan denda otomatis | ✅ Selesai |
+| **Pengembalian Barang** | Mengembalikan barang & verifikasi status | ✅ Selesai |
+| **Dashboard Admin** | Monitor pengguna, barang aktif, transaksi | ✅ Selesai |
+| **Filter Pencarian** | Filter barang berdasarkan harga dan lokasi | ✅ Selesai |
+
+### 🔵 Should Have
+
+| Fitur | Keterangan | Status |
+|-------|------------|--------|
+| **Review & Rating** | Memberikan ulasan setelah menyewa barang | ✅ Selesai |
+| **Lupa Password (OTP)** | Mereset password menggunakan OTP | ✅ Selesai |
+| **Approval Sewa (Owner)** | Owner menyetujui permintaan sewa | ✅ Selesai (Automated) |
+| **Konfirmasi Pengembalian**| Owner memverifikasi pengembalian dan denda | ✅ Selesai |
+| **Approval Barang (Admin)**| Admin moderasi barang sebelum tampil di katalog | ✅ Selesai (Moderasi via Ban/Delete) |
+| **Keranjang Sewa (Cart)** | Memilih dan mengumpulkan barang sebelum checkout | ✅ Selesai |
+
+### 🟣 Could Have
+
+| Fitur | Keterangan | Status |
+|-------|------------|--------|
+| **AI Chatbot** | Chatbot untuk membantu pengguna | ❌ Belum Diimplementasikan |
+| **History Sewa** | Menampilkan riwayat penyewaan pengguna | ✅ Selesai |
+| **Review Website SEWAIN** | Testimonial platform untuk ditampilkan di halaman utama | ✅ Selesai |
+| **Aktivitas Log** | Sistem mencatat aktivitas krusial pengguna | ✅ Selesai |
+| **Login Google (OAuth)** | Login mudah menggunakan akun Google | ✅ Selesai |
+
+### ⚪ Won't Have
+
+| Fitur | Keterangan | Status |
+|-------|------------|--------|
+| **Notifikasi Push/SMS** | Memberikan notifikasi realtime status transaksi | ❌ Sesuai Backlog |
+| **Pembayaran QRIS/E-Wallet Real** | Integrasi gateway pembayaran asli | ❌ Hanya Simulasi |
+| **Lokasi Spesifik (GPS)** | Filter radius lokasi menggunakan koordinat GPS asli | ❌ Hanya Wilayah Umum |
+
+---
+
+## 🏗️ Arsitektur & Teknologi
+
+| Layer | Teknologi |
+|-------|-----------|
+| **Backend** | Laravel 12 (PHP 8.2+) |
+| **Frontend** | Blade Templating, Vanilla CSS, Vanilla JS |
+| **Database** | MySQL/MariaDB dengan Eloquent ORM |
+| **Auth** | Laravel Session Auth + Laravel Socialite (Google OAuth) |
+| **Storage** | Laravel Storage (lokal, symlink ke `/public/storage`) |
+| **Email** | Laravel Mail (SMTP) untuk OTP registrasi & reset password |
+
+---
+
+## 📁 Struktur Proyek
 
 ```text
 praktikum-rpl-a-10/
-|-- README.md
-|-- docs/
-|   |-- backlog.md
-|   |-- data-dictionary.md
-|   |-- problem-statement.md
-|   |-- srs.md
-|   |-- team-contract.md
-|   |-- user-stories.md
-|   |-- wireframe.md
-|   `-- uml/
-|-- src/
-|   |-- app/           (Laravel Backend & Controllers)
-|   |-- database/      (Migrations & Seeders)
-|   |-- public/        (Assets: CSS, Images, JS)
-|   |-- resources/     (Blade Views & UI Components)
-|   |-- routes/        (Web & API Routes)
-|   `-- package.json & composer.json
-`-- tests/
+├── README.md
+├── docs/
+│   ├── backlog.md                    ← Product Backlog
+│   ├── data-dictionary.md            ← Kamus Data & Struktur DB
+│   ├── erd.md                        ← Entity Relationship Diagram
+│   ├── problem-statement.md          ← Rumusan Masalah
+│   ├── srs.md                        ← Software Requirements Specification
+│   ├── team-contract.md              ← Aturan Tim
+│   ├── user-stories.md               ← User Stories Detail
+│   ├── wireframe.md                  ← Desain Antarmuka
+│   └── uml/
+│       ├── class-diagram.md          ← Class Diagram MVC
+│       ├── use-case-diagram.png      
+│       └── activity-diagram.png      
+├── src/                              ← Root Aplikasi Laravel
+│   ├── app/                          ← Model & Controller
+│   ├── database/                     ← Migrasi & Seeder
+│   ├── public/                       ← Assets, CSS, JS
+│   ├── resources/views/              ← Blade UI
+│   └── routes/                       ← Routing Web & API
+└── tests/
 ```
 
-## Dokumentasi
+---
 
-Dokumen utama proyek berada di folder `docs`:
-
-- `docs/problem-statement.md`: masalah yang ingin diselesaikan.
-- `docs/user-stories.md`: kebutuhan pengguna dalam bentuk user story.
-- `docs/backlog.md`: daftar pekerjaan pengembangan.
-- `docs/srs.md`: spesifikasi kebutuhan perangkat lunak.
-- `docs/team-contract.md`: aturan kerja tim.
-- `docs/data-dictionary.md`: kamus data dan definisi atribut.
-- `docs/wireframe.md`: desain antarmuka pengguna.
-- `docs/uml/`: diagram UML sistem (use case, class diagram, sequence diagram, dll).
-
-## Status Proyek
-
-Proyek saat ini sudah memasuki tahap **Implementasi Backend & Frontend**.
-
-**Progress yang sudah selesai:**
-- Dokumen analisis kebutuhan (problem statement, user stories, backlog)
-- Spesifikasi perangkat lunak (SRS)
-- Data dictionary dan wireframe desain UI
-- Diagram UML sistem
-- Kontrak kerja tim
-- **Implementasi Fitur Utama (Laravel):**
-  - Autentikasi Pengguna (Login, Register dengan OTP, Google Login)
-  - Dashboard Admin (Data User, Manajemen Transaksi, Manajemen Barang)
-  - Profil Pengguna & Dompet / Saldo (My Wallet)
-  - Penambahan & Manajemen Katalog Barang Sewa
-  - Proses Checkout Sewa Barang (Keranjang, Data Pengiriman, Pembayaran)
-  - Database Migration & Seeding (Akun Dummy, Kategori)
-
-**Progress yang sedang dikerjakan:**
-- Penyempurnaan UI/UX agar responsif dan konsisten.
-- Integrasi lanjutan untuk notifikasi transaksi & review barang.
-
-**Progress yang akan dikerjakan:**
-- Pengujian menyeluruh (Unit test & Integration test)
-- Persiapan Deployment (Hosting)
-
-## Cara Menjalankan
-
-Aplikasi ini dibangun menggunakan kerangka kerja **Laravel** dan **Vanilla CSS/JS**.
+## 🚀 Cara Menjalankan
 
 **Prasyarat:**
 - PHP >= 8.2
@@ -114,29 +123,48 @@ Aplikasi ini dibangun menggunakan kerangka kerja **Laravel** dan **Vanilla CSS/J
 - MySQL / MariaDB
 
 **Langkah Instalasi:**
-1. Clone repositori ini.
-2. Masuk ke direktori utama aplikasi: `cd src`
-3. Install dependensi PHP: `composer install`
-4. Install dependensi Node.js: `npm install`
-5. Salin file environment: `cp .env.example .env`
-6. Atur konfigurasi database di dalam file `.env`.
-7. Buat *application key*: `php artisan key:generate`
-8. Jalankan migrasi dan seeder database: `php artisan migrate:fresh --seed`
-9. Jalankan server backend: `php artisan serve`
-10. Jalankan asset bundler (di terminal terpisah): `npm run dev`
-11. Akses aplikasi melalui browser di: `http://127.0.0.1:8000`
 
-## Kontribusi
+```bash
+# 1. Clone repositori
+git clone <url-repo>
 
-Untuk kontribusi dari anggota tim:
+# 2. Masuk ke direktori aplikasi
+cd src
 
-1. Buat branch fitur dari branch pengembangan.
+# 3. Install dependensi PHP
+composer install
+
+# 4. Install dependensi Node.js
+npm install
+
+# 5. Salin file environment
+cp .env.example .env
+
+# 6. Konfigurasi database & mail di dalam file .env 
+# (Isi DB_DATABASE, DB_USERNAME, MAIL_*, GOOGLE_CLIENT_*)
+
+# 7. Generate application key
+php artisan key:generate
+
+# 8. Jalankan migrasi dan seeder
+php artisan migrate:fresh --seed
+
+# 9. Buat symlink storage untuk foto profil & barang
+php artisan storage:link
+
+# 10. Jalankan server backend dan asset bundler (di terminal terpisah)
+php artisan serve
+npm run dev
+
+# 11. Buka di browser
+# http://127.0.0.1:8000
+```
+
+---
+
+## 🔀 Alur Kontribusi
+
+1. Buat branch dari branch utama.
 2. Lakukan perubahan kecil dan terfokus.
-3. Tulis pesan commit yang jelas.
-4. Ajukan pull request untuk direview.
-
-## Catatan
-
-README ini akan terus diperbarui seiring progres implementasi fitur. Stack teknologi dan instruksi setup akan ditambahkan pada tahap pengembangan lebih lanjut.
-
-
+3. Tulis pesan commit yang jelas dengan prefix standar (`feat:`, `fix:`, `refactor:`, `docs:`).
+4. Ajukan pull request untuk direview sebelum merge.

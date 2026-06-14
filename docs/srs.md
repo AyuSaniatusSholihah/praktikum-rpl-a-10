@@ -59,8 +59,9 @@ Sistem ini merupakan aplikasi web mandiri yang digunakan untuk mengelola penyewa
 
 ### 2.2 Fungsi Produk
 Fungsi utama sistem:
-- Registrasi dan login pengguna  
+- Registrasi dan login pengguna (termasuk via Google OAuth)  
 - Reset password dengan OTP  
+- Manajemen profil (nama, foto, tanggal lahir, jenis kelamin)
 - Pencarian dan filter barang sewaan
 - Penyewaan dan simulasi pembayaran sewa barang 
 - Pengelolaan katalog barang oleh pemilik
@@ -94,7 +95,11 @@ Fungsi utama sistem:
     Sistem memungkinkan pengguna untuk login menggunakan email dan password serta mereset password melalui OTP yang dikirim ke email.  
     **Prioritas:** High | **Ref:** US-02  
 
-- **FR-03:** Pencarian dan Filter Barang
+- **FR-03:** Manajemen Profil
+    Sistem memungkinkan pengguna untuk mengubah data diri seperti nama, foto profil, nomor telepon, alamat, tanggal lahir, dan jenis kelamin.
+    **Prioritas:** Medium | **Ref:** US-02C
+
+- **FR-04:** Pencarian dan Filter Barang
     Sistem memungkinkan pengguna untuk mencari barang berdasarkan kata kunci serta memfilter berdasarkan kategori & lokasi terdekat.  
     **Prioritas:** High | **Ref:** US-03  
 
@@ -119,10 +124,16 @@ Fungsi utama sistem:
     **Prioritas:** High | **Ref:** US-07  
 
 - **FR-09:** Monitoring oleh Admin
-    Sistem memungkinkan admin untuk melihat dashboard berisi jumlah pengguna, barang, transaksi, serta melakukan pengelolaan akun pengguna.   
+    Sistem memungkinkan admin untuk melihat dashboard berisi jumlah pengguna, barang, transaksi, serta melakukan pengelolaan akun pengguna (termasuk fitur *ban*).   
     **Prioritas:** High | **Ref:** US-08  
 
----
+- **FR-10:** Review Platform (Testimonial)
+    Sistem memungkinkan pengguna memberikan ulasan terkait pengalaman menggunakan platform SEWAIN yang akan ditampilkan di landing page.
+    **Prioritas:** Low | **Ref:** US-07B
+
+- **FR-11:** Activity Log
+    Sistem secara otomatis mencatat riwayat aktivitas krusial pengguna (login, transaksi, dll) untuk keperluan audit.
+    **Prioritas:** Low | **Ref:** N/A
 
 ## BAB IV - Non-Functional Requirements (NFR)
 

@@ -25,6 +25,23 @@ As a user, I want login menggunakan email dan password serta reset password mela
 
 ---
 
+### 🟢 US-02B – Login Google (OAuth)
+**User Story**
+As a user, I want login menggunakan akun Google saya, so that saya tidak perlu mengingat password baru untuk mendaftar dan masuk
+
+**Acceptance Criteria**
+- Given saya memilih login dengan Google, When saya mengizinkan akses, Then akun saya otomatis terdaftar/masuk ke sistem
+
+---
+
+### 🟢 US-02C – Manajemen Profil
+**User Story**
+As a user, I want mengedit informasi profil saya seperti nama, alamat, nomor telepon, tanggal lahir, jenis kelamin, dan foto profil, so that identitas saya di platform tetap akurat
+
+**Acceptance Criteria**
+- Given saya di halaman profil, When saya mengubah data dan menyimpannya, Then data terbaru tersimpan dan tampil di profil
+- Given saya mengunggah foto profil, When disimpan, Then foto saya muncul di berbagai halaman seperti riwayat sewa dan ulasan
+
 ### 🟢 US-03 – Pencarian & Filter Barang
 **User Story**  
 As a user, I want mencari barang berdasarkan kata kunci dan filter harga/lokasi, so that saya dapat menemukan barang dengan cepat  
@@ -72,6 +89,13 @@ As a user, I want memberikan review setelah menyewa, so that saya dapat memberik
 - Given transaksi selesai, When isi review, Then review tersimpan  
 
 ---
+
+### 🟢 US-07B – Review Platform SEWAIN (Testimonial)
+**User Story**
+As a user, I want memberikan ulasan tentang pengalaman saya menggunakan website SEWAIN, so that pengguna lain dapat melihat testimonial saya di halaman utama
+
+**Acceptance Criteria**
+- Given saya menulis ulasan web, When dikirim, Then ulasan tersebut berpotensi tampil di landing page platform
 
 ## 👤 User (Owner)
 
@@ -132,5 +156,14 @@ As an admin, I want membekukan akun user yang memiliki review buruk atau laporan
 **Acceptance Criteria**
 - Given terdapat review buruk atau laporan, When admin melakukan pengecekan, Then akun dapat dibekukan  
 - Given akun dibekukan, When user login, Then akses ditolak  
+
+---
+
+### 🔴 US-14 – Activity Log
+**User Story**
+As an admin, I want melihat log aktivitas penting yang dilakukan oleh pengguna, so that saya dapat melacak riwayat tindakan untuk keperluan audit atau troubleshooting
+
+**Acceptance Criteria**
+- Given admin memantau sistem, When pengguna melakukan aksi penting (login, transaksi), Then aktivitas tersebut terekam di database secara otomatis
 
 ---

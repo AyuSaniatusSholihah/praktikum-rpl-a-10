@@ -18,6 +18,9 @@
 | 14 | Menambahkan Barang ke Keranjang Sewa (User) | Penyewa dapat memilih dan mengumpulkan barang yang akan disewa sebelum melanjutkan checkout dan pembayaran | Should Have |
 | 15 | AI Chatbot | Sistem menyediakan chatbot untuk membantu pengguna | Could Have |
 | 16 | History Sewa | Menampilkan riwayat penyewaan pengguna | Could Have |
-| 17 | Notifikasi | Memberikan notifikasi terkait status transaksi | Won’t Have |
-| 18 | Pembayaran QRIS/E-Wallet | Mendukung pembayaran digital seperti QRIS | Won’t Have |
-| 19 | Lokasi Spesifik | Filter lokasi berdasarkan jarak spesifik | Won’t Have |
+| 17 | Review Website SEWAIN | Pengguna dapat memberikan ulasan tentang platform SEWAIN (Testimonial) | Could Have |
+| 18 | Aktivitas Log (Activity Log) | Sistem mencatat aktivitas pengguna (misal: login, transaksi) | Could Have |
+| 19 | Login Google (OAuth) | Pengguna dapat mendaftar dan login menggunakan akun Google | Could Have |
+| 20 | Notifikasi | Memberikan notifikasi terkait status transaksi | Won’t Have |
+| 21 | Pembayaran QRIS/E-Wallet | Mendukung pembayaran digital seperti QRIS | Won’t Have |
+| 22 | Lokasi Spesifik | Filter lokasi berdasarkan jarak spesifik | Won’t Have |
