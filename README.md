@@ -260,7 +260,7 @@ praktikum-rpl-a-10/
 
 ```bash
 # 1. Clone repositori
-git clone <url-repo>
+git clone <https://github.com/AyuSaniatusSholihah/praktikum-rpl-a-10.git>
 
 # 2. Masuk ke direktori aplikasi
 cd src
