@@ -17,6 +17,7 @@ class ProfileController extends Controller
     // ===== HALAMAN PROFILE MENU =====
     public function index()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $katalogCount = $user->barangs()->count();
@@ -81,6 +82,7 @@ class ProfileController extends Controller
     // ===== MY RENTALS (sebagai penyewa) =====
     public function rentals()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $aktif = $user->transaksiPenyewaan()
@@ -100,6 +102,7 @@ class ProfileController extends Controller
 
     public function rentalDetail($id)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $trx = $user->transaksiPenyewaan()->with(['barang.user', 'pembayaran'])->findOrFail($id);
 
@@ -108,6 +111,7 @@ class ProfileController extends Controller
 
     public function pengembalian($id)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $trx = $user->transaksiPenyewaan()->with('barang')->findOrFail($id);
 
@@ -117,6 +121,7 @@ class ProfileController extends Controller
     // ===== SIMPAN PENGEMBALIAN + REVIEW (rating & ulasan) KE DATABASE =====
     public function storePengembalian(Request $request, $id)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $trx = $user->transaksiPenyewaan()->with('barang')->findOrFail($id);
 
@@ -161,6 +166,7 @@ class ProfileController extends Controller
 
     public function cancelRental(Request $request, $id)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $trx = $user->transaksiPenyewaan()->with('barang.user')->findOrFail($id);
 
@@ -203,6 +209,7 @@ class ProfileController extends Controller
 
     public function confirmation($id)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $trx = $user->transaksiPenyewaan()->with('barang')->findOrFail($id);
 
@@ -212,6 +219,7 @@ class ProfileController extends Controller
     // ===== RENTALS OWNER (barang milik user yang disewa orang lain) =====
     public function owner()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $aktif = TransaksiPenyewaan::whereHas('barang', fn ($q) => $q->where('user_id', $user->id))
@@ -231,6 +239,7 @@ class ProfileController extends Controller
 
     public function ownerDetail($id)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $trx = TransaksiPenyewaan::whereHas('barang', fn ($q) => $q->where('user_id', $user->id))
             ->with(['barang.user', 'user', 'pembayaran', 'review.user'])
@@ -241,6 +250,7 @@ class ProfileController extends Controller
 
     public function acceptPengembalian(Request $request, $id)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $trx = TransaksiPenyewaan::whereHas('barang', fn ($q) => $q->where('user_id', $user->id))
             ->with('barang')
@@ -308,6 +318,7 @@ class ProfileController extends Controller
     // ===== MY WALLET =====
     public function wallet()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $transaksi = TransaksiPenyewaan::where(function($q) use ($user) {

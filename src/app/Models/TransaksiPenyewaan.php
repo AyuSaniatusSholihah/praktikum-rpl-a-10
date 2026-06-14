@@ -17,12 +17,14 @@ class TransaksiPenyewaan extends Model
         'tanggal_sewa',
         'tanggal_kembali_rencana',
         'tanggal_kembali_aktual',
+        'waktu_sewa',
+        'waktu_kembali_rencana',
         'status',
         'foto_buktipengembalian',
         'tanggal_verifikasipengembalian',
         'total_harga',
         'jam_terlambat',
-        'total_denda'
+        'total_denda',
     ];
 
     protected $casts = [
