@@ -921,7 +921,7 @@ document.addEventListener('click', () => {
             rev  : `<div>@forelse($product->reviews as $r)
                         <div style="display:flex;gap:12px;padding:16px 0;{{ !$loop->last ? 'border-bottom:1px solid #f0f0f0' : '' }}">
                             <div style="width:44px;height:44px;border-radius:50%;background:#d6d6d6;flex-shrink:0;overflow:hidden">
-                                <img src="{{ 'https://ui-avatars.com/api/?name='.urlencode($r->user->name ?? 'U') }}" style="width:100%;height:100%;object-fit:cover"/>
+                                <img src="{{ ($r->user && $r->user->foto_profil) ? asset('storage/' . $r->user->foto_profil) : 'https://ui-avatars.com/api/?name='.urlencode($r->user->name ?? 'U') }}" style="width:100%;height:100%;object-fit:cover" onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($r->user->name ?? 'U') }}'"/>
                             </div>
                             <div style="flex:1">
                                 <div style="font-weight:600">{{ $r->user->name ?? 'Anonim' }}</div>
