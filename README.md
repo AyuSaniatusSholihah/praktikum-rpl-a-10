@@ -1,7 +1,5 @@
 # 🏪 SEWAIN — Platform Penyewaan Barang Digital
 
-![MVP Status](https://img.shields.io/badge/Status-MVP-brightgreen)
-
 Repositori ini digunakan untuk pengembangan proyek mata kuliah **Rekayasa Perangkat Lunak (RPL)** kelompok A-10.
 
 ## 👥 Anggota Kelompok
