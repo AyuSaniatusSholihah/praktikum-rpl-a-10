@@ -51,55 +51,31 @@
      <div class="search-field">
        <label>Location</label>
        <div class="value">
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+         <x-icons.location />
          <input type="text" name="loc" value="{{ request('loc') }}" placeholder="Lokasi" autocomplete="off" style="border:none;background:transparent;outline:none;font:inherit;color:inherit;width:100%;padding:0;" />
        </div>
      </div>
      <div class="search-field">
        <label>Find</label>
        <div class="value">
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+         <x-icons.search />
          <input type="text" name="find" value="{{ request('find') }}" placeholder="Cari barang..." autocomplete="off" style="border:none;background:transparent;outline:none;font:inherit;color:inherit;width:100%;padding:0;" />
        </div>
      </div>
      <div class="search-field">
        <label>Sewa Up</label>
        <div class="value">
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-          <!-- titik-titik tanggal -->
-          <circle cx="8"  cy="14" r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="12" cy="14" r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="16" cy="14" r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="8"  cy="18" r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="12" cy="18" r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="16" cy="18" r="0.8" fill="#55959E" stroke="none"/>
-        </svg>
+         <x-icons.calendar />
          17 July 2024
-         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+         <x-icons.chev class="chev" />
        </div>
      </div>
      <div class="search-field">
        <label>Return</label>
        <div class="value">
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-          <!-- titik-titik tanggal -->
-          <circle cx="8"  cy="14" r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="12" cy="14" r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="16" cy="14" r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="8"  cy="18" r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="12" cy="18" , r="0.8" fill="#55959E" stroke="none"/>
-          <circle cx="16" cy="18" r="0.8" fill="#55959E" stroke="none"/>
-        </svg>
+         <x-icons.calendar />
          20 July 2024
-         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+         <x-icons.chev class="chev" />
        </div>
      </div>
      <button class="btn-search" type="submit">Search</button>
@@ -236,30 +212,9 @@
    <h2 class="section-title">Rent Items</h2>
    <p class="section-subtitle">Temukan berbagai barang pilihan yang siap mendukung aktivitasmu.<br/>Proses sewa mudah, barang berkualitas, dan siap antar kapan saja.</p>
    <div class="products-grid" id="rent-items-grid">
-     @foreach($barangs->take(6) as $barang)
-     <article class="product-card" onclick="location.href='{{ route('product', $barang->id) }}'">
-       <div class="product-img"><img src="{{ $barang->foto_barang ? asset('storage/' . $barang->foto_barang) : 'https://placehold.co/400x300?text=No+Image' }}" alt="{{ $barang->nama_barang }}" /></div>
-       @php
-           $reviewCount = $barang->reviews()->count();
-           $avgRating = $reviewCount > 0 ? round($barang->reviews()->avg('rating'), 1) : 0;
-           $stars = '';
-           for($i=1; $i<=5; $i++) {
-               $stars .= ($i <= round($avgRating)) ? '★' : '☆';
-           }
-           if ($reviewCount == 0) $stars = '★★★★★';
-       @endphp
-       <div class="head-row">
-         <h4>{{ $barang->nama_barang }}</h4>
-         <span class="rating">{{ $stars }}</span>
-       </div>
-       <div class="loc">
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-right:4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-         {{ $barang->lokasi }}
-       </div>
-       <div class="reviews">({{ $reviewCount }}) Customer Reviews</div>
-       <div class="price">Rp {{ number_format($barang->harga_sewa, 0, ',', '.') }}/hari</div>
-     </article>
-     @endforeach
+      @foreach($barangs->take(6) as $barang)
+      <x-product-card :barang="$barang" />
+      @endforeach
    </div>
    <button class="btn-view-more" onclick="location.href='{{ route('rentals') ?? '#' }}'">View More</button>
  </div>
@@ -458,66 +413,7 @@ function closeReviewModal() {
 })();
 </script>
 </x-slot:scripts>
-@auth
-<div id="reviewModal" onclick="if(event.target===this)closeReviewModal()" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(0,0,0,0.5); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:20px;">
-    <div style="width:100%; max-width:600px; max-height:90vh; overflow-y:auto;">
-
-  <h2 class="dash-section-title" style="margin-bottom:4px; color:#21394F; font-family:'Volkhov'; font-size:25px; font-weight:800;">Beri Ulasan untuk SEWAIN</h2>
-  <p class="dash-section-sub" style="margin-bottom:16px; color:rgba(255,255,255,0.7); font-family:'Poppins'; font-size:13px;">Bagikan pengalamanmu memakai website SEWAIN.</p>
-
-        @if (session('success'))
-            <div style="background:#d4edda; color:#155724; padding:14px 16px; border-radius:8px; margin-bottom:16px; font-family:'Poppins',sans-serif;">
-                ✓ {{ session('success') }}
-            </div>
-        @endif
-
-        <div class="dash-content-card" style="position:relative;">
-            @php
-                $fotoProfil = (auth()->user()->foto_profil)
-                    ? asset('storage/' . auth()->user()->foto_profil)
-                    : asset('assets/img/default-avatar.svg');
-            @endphp
-
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-                <div class="profile-avatar">
-                    <img src="{{ $fotoProfil }}" alt="Profile" onerror="this.style.display='none'"/>
-                </div>
-                <button onclick="closeReviewModal()" style="width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.15); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">✕</button>
-            </div>
-
-            <div class="rd-form-grid" style="margin-bottom:24px; padding-left:0 !important;">
-                <div class="rd-field"><label>Nama Account User</label><div class="rd-value">{{ auth()->user()->name }}</div></div>
-                <div class="rd-field"><label>Email</label><div class="rd-value">{{ auth()->user()->email }}</div></div>
-            </div>
-
-            <div class="return-box-title" style="text-align:center; margin-left:0 !important;">FORM ULASAN WEBSITE SEWAIN</div>
-
-            <div class="return-box" style="margin-left:0 !important;">
-                <form method="POST" action="{{ route('review-web.store') }}" id="webReviewFormModal">
-                    @csrf
-                    <div class="return-box-field-label">Rating</div>
-                    <div class="return-box-stars" id="ratingStarsModal" style="font-size:26px; color:#FACA43; cursor:pointer; user-select:none; letter-spacing:3px; margin-bottom:14px;">
-                        <span data-val="1">☆</span><span data-val="2">☆</span><span data-val="3">☆</span><span data-val="4">☆</span><span data-val="5">☆</span>
-                    </div>
-                    <input type="hidden" name="rating" id="ratingInputModal" value="0">
-                    <div class="return-box-field-label">Ulasan</div>
-                    <textarea class="return-box-textarea" name="ulasan" placeholder="Tulis ulasanmu tentang SEWAIN di sini...">{{ old('ulasan') }}</textarea>
-                </form>
-            </div>
-
-            <div style="display:flex; justify-content:center; margin-top:20px;">
-                <button type="submit" form="webReviewFormModal" title="Kirim ulasan"
-                    style="width:64px; height:64px; border-radius:50%; background:#6A87A1; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(106,135,161,0.45); transition:transform .15s ease;"
-                    onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
-                    <svg width="30" height="26" viewBox="0 0 59 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left:4px;">
-                        <path d="M0 49.3333V0L58.5833 24.6667L0 49.3333ZM6.16667 40.0833L42.7042 24.6667L6.16667 9.25V20.0417L24.6667 24.6667L6.16667 29.2917V40.0833ZM6.16667 40.0833V24.6667V9.25V20.0417V29.2917V40.0833Z" fill="#ffffff"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-@endauth
+<x-modals.review-modal />
 </x-layout>
 
 

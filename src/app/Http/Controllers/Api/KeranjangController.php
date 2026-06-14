@@ -3,190 +3,67 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Keranjang;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Traits\ApiResponseTrait;
+use App\Services\KeranjangService;
+use App\Http\Requests\Keranjang\StoreKeranjangRequest;
+use App\Http\Requests\Keranjang\UpdateKeranjangRequest;
 
 class KeranjangController extends Controller
 {
+    use ApiResponseTrait;
+
+    protected $keranjangService;
+
+    public function __construct(KeranjangService $keranjangService)
+    {
+        $this->keranjangService = $keranjangService;
+    }
+
     public function index(Request $request)
     {
-        $items = $request->user()
-            ->keranjang()
-            ->with('barang.kategori')
-            ->get()
-            ->map(function (Keranjang $item) {
-                $subtotal = (float) $item->jumlah * (float) $item->barang->harga_sewa;
-
-                return [
-                    'id' => $item->id,
-                    'barang' => $item->barang,
-                    'jumlah' => $item->jumlah,
-                    'tanggal_sewa' => optional($item->tanggal_sewa)->toDateString(),
-                    'tanggal_kembali_rencana' => optional($item->tanggal_kembali_rencana)->toDateString(),
-                    'subtotal' => $subtotal,
-                ];
-            });
-
-        return response()->json([
-            'status' => 'success',
-            'data' => [
-                'items' => $items,
-                'total_estimasi' => $items->sum('subtotal'),
-            ],
-        ]);
+        $data = $this->keranjangService->getItems($request->user());
+        return $this->successResponse($data);
     }
 
-    public function store(Request $request)
+    public function store(StoreKeranjangRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'barang_id' => 'required|exists:barangs,id',
-            'jumlah' => 'required|integer|min:1',
-            'tanggal_sewa' => 'required|date',
-            'tanggal_kembali_rencana' => 'required|date|after_or_equal:tanggal_sewa',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'errors' => $validator->errors(),
-            ], 422);
+        try {
+            $item = $this->keranjangService->addItem($request->user(), $request->validated());
+            return $this->successResponse($item, 'Barang berhasil ditambahkan ke keranjang', 201);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
         }
-
-        $validated = $validator->validated();
-
-        $barang = \App\Models\Barang::find($validated['barang_id']);
-        if (!$barang || $barang->status !== 'tersedia' || $barang->stok <= 0) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Barang tidak tersedia atau stok habis.',
-            ], 400);
-        }
-
-        // Hitung total jumlah barang ini yang sudah ada di keranjang user
-        $jumlahDiKeranjang = Keranjang::where('user_id', $request->user()->id)
-            ->where('barang_id', $validated['barang_id'])
-            ->sum('jumlah');
-
-        if (($jumlahDiKeranjang + $validated['jumlah']) > $barang->stok) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Jumlah barang di keranjang melebihi stok yang tersedia. Stok saat ini: ' . $barang->stok,
-            ], 400);
-        }
-
-        $item = Keranjang::firstOrNew([
-            'user_id' => $request->user()->id,
-            'barang_id' => $validated['barang_id'],
-            'tanggal_sewa' => $validated['tanggal_sewa'],
-            'tanggal_kembali_rencana' => $validated['tanggal_kembali_rencana'],
-        ]);
-
-        $item->jumlah = ($item->exists ? $item->jumlah : 0) + $validated['jumlah'];
-        $item->save();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Barang berhasil ditambahkan ke keranjang',
-            'data' => $item->load('barang.kategori'),
-        ], 201);
     }
 
-    public function update(Request $request, int $id)
+    public function update(UpdateKeranjangRequest $request, int $id)
     {
-        $validator = Validator::make($request->all(), [
-            'jumlah' => 'sometimes|integer|min:1',
-            'tanggal_sewa' => 'sometimes|date',
-            'tanggal_kembali_rencana' => 'sometimes|date',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $item = $request->user()->keranjang()->find($id);
-
-        if (!$item) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Item keranjang tidak ditemukan',
-            ], 404);
-        }
-
-        $validated = $validator->validated();
-
-        if (array_key_exists('jumlah', $validated)) {
-            $barang = $item->barang;
-            
-            // Hitung total jumlah barang ini di keranjang user kecuali item yang sedang diupdate
-            $jumlahLainnya = $request->user()->keranjang()
-                ->where('barang_id', $item->barang_id)
-                ->where('id', '!=', $item->id)
-                ->sum('jumlah');
-
-            if (($jumlahLainnya + $validated['jumlah']) > $barang->stok) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Jumlah barang melebihi stok yang tersedia. Stok saat ini: ' . $barang->stok,
-                ], 400);
+        try {
+            $item = $this->keranjangService->updateItem($request->user(), $id, $request->validated());
+            return $this->successResponse($item, 'Item keranjang berhasil diperbarui');
+        } catch (\Exception $e) {
+            $code = $e->getCode() ?: 400;
+            // Handle specific cases
+            if (strpos($e->getMessage(), 'Tanggal kembali rencana harus') !== false) {
+                $code = 422;
             }
+            return $this->errorResponse($e->getMessage(), $code == 0 ? 400 : $code);
         }
-
-        if (array_key_exists('tanggal_sewa', $validated) && array_key_exists('tanggal_kembali_rencana', $validated)) {
-            if ($validated['tanggal_kembali_rencana'] < $validated['tanggal_sewa']) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Tanggal kembali rencana harus sama atau setelah tanggal sewa',
-                ], 422);
-            }
-        } elseif (array_key_exists('tanggal_sewa', $validated) && $validated['tanggal_kembali_rencana'] ?? false) {
-            if ($validated['tanggal_kembali_rencana'] < $validated['tanggal_sewa']) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Tanggal kembali rencana harus sama atau setelah tanggal sewa',
-                ], 422);
-            }
-        }
-
-        $item->fill($validated);
-        $item->save();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Item keranjang berhasil diperbarui',
-            'data' => $item->load('barang.kategori'),
-        ]);
     }
 
     public function destroy(Request $request, int $id)
     {
-        $item = $request->user()->keranjang()->find($id);
-
-        if (!$item) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Item keranjang tidak ditemukan',
-            ], 404);
+        try {
+            $this->keranjangService->removeItem($request->user(), $id);
+            return $this->successResponse(null, 'Item keranjang berhasil dihapus');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 404);
         }
-
-        $item->delete();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Item keranjang berhasil dihapus',
-        ]);
     }
 
     public function clear(Request $request)
     {
-        $request->user()->keranjang()->delete();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Keranjang berhasil dikosongkan',
-        ]);
+        $this->keranjangService->clearCart($request->user());
+        return $this->successResponse(null, 'Keranjang berhasil dikosongkan');
     }
 }
