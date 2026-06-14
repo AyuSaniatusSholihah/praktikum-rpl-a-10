@@ -92,10 +92,17 @@
                 <div>
                     <div class="return-box-field-label">Review dari Penyewa</div>
                     @if($trx->review)
-                        <div class="return-box-stars">
-                            <span class="star-on">{{ str_repeat('★', (int) $trx->review->rating) }}</span><span class="star-off">{{ str_repeat('★', max(0, 5 - (int) $trx->review->rating)) }}</span>
+                        <div style="display:flex; gap:12px; align-items:flex-start;">
+                            <div style="width:44px; height:44px; border-radius:50%; background:#d6d6d6; flex-shrink:0; overflow:hidden">
+                                <img src="{{ ($trx->review->user && $trx->review->user->foto_profil) ? asset('storage/' . $trx->review->user->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($trx->review->user->name ?? 'U') }}" style="width:100%; height:100%; object-fit:cover"/>
+                            </div>
+                            <div style="flex:1">
+                                <div class="return-box-stars">
+                                    <span class="star-on">{{ str_repeat('★', (int) $trx->review->rating) }}</span><span class="star-off">{{ str_repeat('★', max(0, 5 - (int) $trx->review->rating)) }}</span>
+                                </div>
+                                <div class="return-box-textarea" style="white-space:pre-wrap; margin-top:6px;">{{ $trx->review->komentar ?: 'Tidak ada ulasan tertulis.' }}</div>
+                            </div>
                         </div>
-                        <div class="return-box-textarea" style="white-space:pre-wrap;">{{ $trx->review->komentar ?: 'Tidak ada ulasan tertulis.' }}</div>
                     @else
                         <div style="color:#8da4be; font-size:13px; padding:8px 0;">Penyewa belum memberi ulasan.</div>
                     @endif
