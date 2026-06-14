@@ -138,6 +138,13 @@ class KatalogUploadController extends Controller
 
         $product->update($data);
 
+        // Jika owner menambah stok → barang otomatis tersedia kembali di katalog.
+        // Jika stok kembali habis (= 0) → tandai tidak_tersedia.
+        $statusBaru = ($request->stok > 0) ? 'tersedia' : 'tidak_tersedia';
+        if ($product->status !== $statusBaru) {
+            $product->update(['status' => $statusBaru]);
+        }
+
         return redirect()->route('katalog')->with('success', 'Barang berhasil diperbarui!');
     }
 
