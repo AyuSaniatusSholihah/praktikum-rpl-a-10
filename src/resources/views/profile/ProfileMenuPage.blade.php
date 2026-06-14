@@ -58,13 +58,13 @@
                 <input type="tel" name="phone_number" id="accPhone" value="{{ old('phone_number', $user->phone_number) }}"/>
                 </div>
                 <div class="profile-field">
-                <label for="accBirth">Tanggal Lahir</label>
-                <input type="text" name="tanggal_lahir" id="accBirth" value="{{ old('tanggal_lahir', $user->tanggal_lahir) }}" placeholder="Contoh: Bandung, 17 September 1995"/>
+                <label for="accTanggalLahir">Tanggal Lahir</label>
+                <input type="date" name="tanggal_lahir" id="accTanggalLahir" value="{{ old('tanggal_lahir', $user->tanggal_lahir) }}"/>
                 </div>
                 <div class="profile-field">
-                <label for="accGender">Jenis Kelamin</label>
-                <select name="jenis_kelamin" id="accGender">
-                    <option value="" disabled {{ old('jenis_kelamin', $user->jenis_kelamin) ? '' : 'selected' }}>Pilih Jenis Kelamin</option>
+                <label for="accJenisKelamin">Jenis Kelamin</label>
+                <select name="jenis_kelamin" id="accJenisKelamin" style="width:100%; padding:10px 14px; border:1px solid #E2E8F0; border-radius:12px; font-family:'Inter', sans-serif; font-size:14px; background:#FAFAFA; color:#1E293B;">
+                    <option value="">Pilih Jenis Kelamin</option>
                     <option value="Laki-laki" {{ old('jenis_kelamin', $user->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                     <option value="Perempuan" {{ old('jenis_kelamin', $user->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                 </select>

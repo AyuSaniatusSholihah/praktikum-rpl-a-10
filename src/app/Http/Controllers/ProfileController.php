@@ -42,7 +42,7 @@ class ProfileController extends Controller
             'username'     => 'nullable|string|max:100|unique:users,username,' . $user->id,
             'phone_number' => 'nullable|string|max:20',
             'alamat'         => 'nullable|string|max:255',
-            'tanggal_lahir'  => 'nullable|string|max:255',
+            'tanggal_lahir'  => 'nullable|date',
             'jenis_kelamin'  => 'nullable|in:Laki-laki,Perempuan',
             'foto_profil'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'password'       => 'nullable|string|min:8',

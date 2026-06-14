@@ -12,6 +12,8 @@ classDiagram
         -string email
         -string phone_number
         -string alamat
+        -string tanggal_lahir
+        -string jenis_kelamin
         -decimal saldo
         -string foto_profil
         -boolean is_banned
@@ -29,6 +31,7 @@ classDiagram
         +reviews() HasMany~Review~
         +orders() HasMany~Order~
         +webReviews() HasMany~WebReview~
+        +activityLogs() HasMany~ActivityLog~
     }
 
     class Kategori {

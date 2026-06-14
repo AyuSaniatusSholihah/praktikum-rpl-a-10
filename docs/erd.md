@@ -10,6 +10,8 @@ erDiagram
         VARCHAR email "UNIQUE, NOT NULL"
         VARCHAR phone_number "nullable"
         VARCHAR alamat "nullable"
+        VARCHAR tanggal_lahir "nullable"
+        VARCHAR jenis_kelamin "nullable"
         DECIMAL saldo "DEFAULT 1000000"
         VARCHAR foto_profil "nullable"
         BOOLEAN is_banned "DEFAULT false"

@@ -17,6 +17,8 @@ Menyimpan data semua pengguna sistem, termasuk autentikasi Google OAuth dan OTP.
 | email | VARCHAR | UNIQUE, NOT NULL | Email login |
 | phone_number | VARCHAR | NOT NULL | Nomor telepon |
 | alamat | VARCHAR | NOT NULL | Alamat pengguna |
+| tanggal_lahir | VARCHAR | NULL | Tanggal lahir pengguna |
+| jenis_kelamin | VARCHAR | NULL | Jenis kelamin pengguna |
 | saldo | DECIMAL | DEFAULT 0 | Saldo simulasi pembayaran |
 | foto_profil | VARCHAR | NULL | Foto profil pengguna |
 | is_banned | BOOLEAN | DEFAULT FALSE | Status banned akun |
@@ -144,6 +146,58 @@ Menyimpan ulasan dan rating dari penyewa setelah transaksi selesai.
 
 ---
 
+## Tabel: web_reviews
+
+Menyimpan ulasan pengguna terkait platform SEWAIN.
+
+| Kolom | Tipe Data | Constraint | Keterangan |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID unik review platform |
+| user_id | BIGINT | FK → users.id, NOT NULL | ID pengguna |
+| rating | TINYINT | CHECK (1–5), NOT NULL | Rating (1–5) |
+| ulasan | TEXT | NULL | Ulasan tertulis pengguna |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu data dibuat |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
+
+---
+
+## Tabel: activity_logs
+
+Menyimpan catatan riwayat aktivitas pengguna.
+
+| Kolom | Tipe Data | Constraint | Keterangan |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID log aktivitas |
+| user_id | BIGINT | FK → users.id, NOT NULL | ID pengguna terkait |
+| action | VARCHAR | NOT NULL | Jenis aktivitas (contoh: login) |
+| description | TEXT | NULL | Detail deskripsi aktivitas |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu aktivitas dicatat |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
+
+---
+
+## Tabel: orders
+
+Menyimpan data ringkasan order ketika checkout, sebelum pembayaran lunas/transaksi selesai dibuat.
+
+| Kolom | Tipe Data | Constraint | Keterangan |
+|-------|-----------|------------|------------|
+| id | BIGINT | PK, AUTO_INCREMENT | ID unik order |
+| user_id | BIGINT | FK → users.id, NULL | ID pengguna pembuat order |
+| first_name | VARCHAR | NOT NULL | Nama depan pemesan |
+| last_name | VARCHAR | NOT NULL | Nama belakang pemesan |
+| email | VARCHAR | NOT NULL | Email pemesan |
+| phone | VARCHAR | NOT NULL | Nomor telepon pemesan |
+| address | TEXT | NULL | Alamat pengiriman |
+| city | VARCHAR | NULL | Kota pengiriman |
+| kode_pos | VARCHAR | NULL | Kode pos |
+| shipping_method | VARCHAR | NULL | Metode pengiriman/pengambilan |
+| cart_json | TEXT | NULL | Data keranjang dalam format JSON |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu order dibuat |
+| updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Waktu update terakhir |
+
+---
+
 ## Relasi Antar Tabel
 
 | Relasi | Kardinalitas | Keterangan |
@@ -152,11 +206,14 @@ Menyimpan ulasan dan rating dari penyewa setelah transaksi selesai.
 | users → keranjangs | 1 : N | Satu pengguna dapat memiliki banyak item keranjang |
 | users → transaksi_penyewaans | 1 : N | Satu pengguna dapat melakukan banyak transaksi sewa |
 | users → reviews | 1 : N | Satu pengguna dapat memberikan banyak review |
+| users → web_reviews | 1 : N | Satu pengguna dapat memberikan banyak ulasan platform |
+| users → activity_logs | 1 : N | Satu pengguna dapat memiliki banyak catatan aktivitas |
+| users → orders | 1 : N | Satu pengguna dapat membuat banyak order checkout |
 | kategoris → barangs | 1 : N | Satu kategori memiliki banyak barang |
 | barangs → keranjangs | 1 : N | Satu barang dapat masuk ke banyak keranjang |
 | barangs → transaksi_penyewaans | 1 : N | Satu barang dapat disewa dalam banyak transaksi |
 | barangs → reviews | 1 : N | Satu barang dapat memiliki banyak review |
-| pembayarans → transaksi_penyewaans | 1 : 1 | Satu pembayaran hanya untuk satu transaksi |
+| pembayarans → transaksi_penyewaans | 1 : N | 1 pembayaran dapat mencakup banyak transaksi multi-barang |
 | transaksi_penyewaans → reviews | 1 : 1 | Satu transaksi hanya memiliki satu review |
 
 ---
