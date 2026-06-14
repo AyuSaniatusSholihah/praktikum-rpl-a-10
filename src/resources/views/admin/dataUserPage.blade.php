@@ -1,4 +1,4 @@
-<x-admin-layout title="Data Users - SEWAIN Admin" headerTitle="Data User">
+<x-admin-layout title="Data Users - SEWAIN Admin" headerTitle="Data User" scrollable>
 <!-- ═══════════════════════════════════════════ -->
     <!-- USERS LIST PAGE -->
     <!-- ═══════════════════════════════════════════ -->
@@ -7,6 +7,9 @@
         <div class="user-card" onclick="location.href='{{ route('admin.users.detail', $u->id) }}'">
           <img src="{{ $u->foto_profil ? asset('storage/' . $u->foto_profil) : asset('assets/img/default-avatar.svg') }}" alt="{{ $u->name }}" onerror="this.src='{{ asset('assets/img/default-avatar.svg') }}'">
           <div class="user-card-info">
+            @if(($u->barangs_count ?? $u->barangs()->count() ?? 0) > 0)
+                <span class="owner-badge">OWNER</span>
+            @endif
             <h4>{{ $u->name }}</h4>
             <p>{{ $u->email }}</p>
             <button class="btn-view-more">View More</button>

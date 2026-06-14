@@ -308,9 +308,7 @@ namaCounter.textContent = (namaInput.value.length) + ' / 100';
  /* ============ DELETE LISTING ============ */
 document.getElementById('btnDelete').addEventListener('click', (e) => {
   e.preventDefault();
-  if (confirm('Yakin mau hapus listing ini? Aksi ini tidak bisa dibatalkan.')) {
-    document.getElementById('delete-form-{{ $product->id }}').submit();
-  }
+  showSewainConfirm('Hapus Listing', 'Yakin mau hapus listing ini? Aksi ini tidak bisa dibatalkan.', 'delete-form-{{ $product->id }}');
 });
 
 /* ============ SEARCHABLE CATEGORY SELECT ============ */

@@ -1,4 +1,4 @@
-<x-admin-layout title="Item Detail - SEWAIN Admin">
+<x-admin-layout title="Item Detail - SEWAIN Admin" scrollable>
 <!-- ITEM DETAIL PAGE -->
     <section class="page-section" id="page-item-detail">
       <button class="btn-back" onclick="location.href='{{ route('admin.items') }}'">
@@ -30,10 +30,18 @@
 
             <!-- KOLOM KANAN: SEMUA konten masuk sini -->
             <div style="flex:1; min-width:0;">
-
               <!-- Nama + status -->
-                <div style="display:flex; align-items:center; margin-bottom:16px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
                   <div class="detail-title">{{ $item->nama_barang }}</div>
+                  <form id="form-delete-{{ $item->id }}" action="{{ route('admin.items.delete', $item->id) }}" method="POST" style="margin:0;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="btn-delete" title="Buang item dari katalog" onclick="showAdminConfirm('Buang Item', 'Buang item ini dari katalog? Tindakan ini tidak dapat dibatalkan.', 'form-delete-{{ $item->id }}')">
+                      <svg width="100" height="100" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.5312 3.23438H13.6562V1.4375C13.6562 0.644629 13.0116 0 12.2188 0H5.03125C4.23838 0 3.59375 0.644629 3.59375 1.4375V3.23438H0.71875C0.321191 3.23438 0 3.55557 0 3.95312V4.67188C0 4.7707 0.0808594 4.85156 0.179688 4.85156H1.53633L2.09111 16.5986C2.12705 17.3646 2.76045 17.9688 3.52637 17.9688H13.7236C14.4918 17.9688 15.1229 17.3668 15.1589 16.5986L15.7137 4.85156H17.0703C17.1691 4.85156 17.25 4.7707 17.25 4.67188V3.95312C17.25 3.55557 16.9288 3.23438 16.5312 3.23438ZM12.0391 3.23438H5.21094V1.61719H12.0391V3.23438Z" fill="#6A87A1"/>
+                      </svg>
+                    </button>
+                  </form>
                 </div>
 
                 <div class="item-detail-grid">
@@ -75,7 +83,7 @@
             <img class="review-avatar" src="{{ optional($review->user)->foto_profil ? asset('storage/' . $review->user->foto_profil) : asset('assets/img/default-avatar.svg') }}" alt="" onerror="this.src='{{ asset('assets/img/default-avatar.svg') }}'">
             <div style="flex:1; min-width:0;">
               <div class="review-name">{{ optional($review->user)->name ?? 'User' }}</div>
-              <div class="review-subtitle">{{ '@' . (optional($review->user)->username ?? 'user') }}</div>
+              <div class="review-subtitle">{{ optional($review->user)->name ?? 'User' }}</div>
             </div>
               <div style="text-align:right; margin-left: auto;">
                 <div class="review-date">{{ optional($review->created_at)->translatedFormat('d F Y') }}</div>

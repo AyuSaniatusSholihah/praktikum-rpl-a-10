@@ -42,7 +42,7 @@
             <div class="rd-thumb" style="position:relative;">
                 <img src="{{ $foto }}" alt="{{ $trx->barang->nama_barang ?? 'Barang' }}" onerror="this.style.display='none'"/>
                 <span id="statusBadge" style="
-                    position:absolute; top:6px; left:6px;
+                    position:absolute; top:2px; left:-15px;
                     background:{{ $badgeBg }};
                     color:#fff; font-family:'Inter',sans-serif;
                     font-size:10px; padding:3px 8px;
@@ -116,9 +116,12 @@
                         <polyline points="20 6 9 17 4 12"/>
                     </svg>
                 </div>
-                <h3>PENGEMBALIAN SELESAI!</h3>
-                <p>Barang telah dikembalikan & diverifikasi.<br>
-                    <strong>Status: PENGEMBALIAN DISETUJUI ✓ (Completed Rent)</strong>
+                <h3>ACCEPT RETURN CONFIRMED!</h3>
+                <p>
+                    Terima Kasih telah menggunakan Website SEWAIN sebagai platform penyewaan Anda!
+                </p>
+                <p>Status Return Rent anda saat ini:<br>
+                    <strong>COMPLETED RENT ✓</strong>
                 </p>
             </div>
         @else

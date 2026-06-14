@@ -27,6 +27,8 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'alamat',
+        'tanggal_lahir',
+        'jenis_kelamin',
         'saldo',
         'foto_profil',
         'is_banned',

@@ -1,4 +1,4 @@
-<x-admin-layout title="Financial Wallet - SEWAIN Admin" headerTitle="Financial Wallet">
+<x-admin-layout title="Financial Wallet - SEWAIN Admin" headerTitle="Financial Wallet" pageId="page-financial-wallet">
 <!-- ═══════════════════════════════════════════ -->
     <!-- FINANCIAL WALLET PAGE -->
     <!-- ═══════════════════════════════════════════ -->

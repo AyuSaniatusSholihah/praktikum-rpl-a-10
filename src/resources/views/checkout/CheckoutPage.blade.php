@@ -33,8 +33,13 @@
     <form id="checkoutForm" action="{{ route('checkout.post') }}" method="POST">
         @csrf
         <input type="hidden" name="shipping_method" id="shipping_method" value="cod" />
-        @if(isset($barangId))
+        @if(isset($barangId) && $cartItems->isNotEmpty())
             <input type="hidden" name="single_barang_id" value="{{ $barangId }}" />
+            <input type="hidden" name="jumlah" value="{{ $cartItems->first()->jumlah }}" />
+            <input type="hidden" name="tanggal_sewa" value="{{ $cartItems->first()->tanggal_sewa }}" />
+            <input type="hidden" name="waktu_sewa" value="{{ $cartItems->first()->waktu_sewa ?? '08:00:00' }}" />
+            <input type="hidden" name="tanggal_kembali_rencana" value="{{ $cartItems->first()->tanggal_kembali_rencana }}" />
+            <input type="hidden" name="waktu_kembali_rencana" value="{{ $cartItems->first()->waktu_kembali_rencana ?? '08:00:00' }}" />
         @endif
         <main class="checkout-main">
             <div class="form-side">
@@ -260,7 +265,7 @@
                         $price = $item->barang->harga_sewa ?? 0;
                         $subtotal = $price * $item->jumlah * $durasi;
                         $jaminan = round($price * $item->jumlah / 2);
-                        $shipping = 20000; // biaya kirim flat per item (harus sama dengan CheckoutController)
+                        $shipping = 0; // default cod (0), delivery (20000) diupdate via JS
                         $rowTotal = $subtotal + $jaminan + $shipping;
                     @endphp
                     <input type="hidden" name="prices[]" value="{{ $price }}" />
@@ -280,14 +285,15 @@
                         <div class="sum-rows">
                             <div class="sum-row"><span class="lbl">Durasi Sewa</span><span class="val">{{ $durasi }} Hari</span></div>
                             <div class="sum-row"><span class="lbl">Subtotal</span><span class="val">Rp {{ number_format($subtotal,0,',','.') }}</span></div>
-                            <div class="sum-row"><span class="lbl">Shipping</span><span class="val">Rp {{ number_format($shipping,0,',','.') }}</span></div>
+                            <div class="sum-row"><span class="lbl">Shipping</span><span class="val shipping-val" data-base="20000">-</span></div>
                             <div class="sum-row"><span class="lbl">Jaminan</span><span class="val">Rp {{ number_format($jaminan,0,',','.') }}</span></div>
-                            <div class="sum-row"><span class="lbl" style="font-weight:700;">Total</span><span class="val" style="font-weight:700;">Rp {{ number_format($rowTotal,0,',','.') }}</span></div>
+                            <div class="sum-row"><span class="lbl" style="font-weight:700;">Total</span><span class="val row-total-val" data-subtotal="{{ $subtotal + $jaminan }}" style="font-weight:700;">Rp {{ number_format($rowTotal,0,',','.') }}</span></div>
+                            <div class="sum-row denda"><span class="lbl">#Catatan Denda Pengembalian</span><span class="val">Rp {{ number_format($item->barang->harga_denda_perjam ?? 15000, 0, ',', '.') }}/jam</span></div>
                         </div>
                     </div>
                 @endforeach
 
-                <div class="summary-total"><span class="lbl">Total</span><span class="val">Rp {{ number_format($cartTotal,0,',','.') }}</span></div>
+                <div class="summary-total"><span class="lbl">Total</span><span class="val grand-total-val" data-cart-total="{{ $cartTotal }}">Rp {{ number_format($cartTotal,0,',','.') }}</span></div>
                 <p class="summary-note">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.</p>
                 <div class="action-group">
                     <input type="hidden" name="checkout_cart" id="checkout_cart" />
@@ -302,7 +308,7 @@
     <x-slot:scripts>
         <script>
             // Passing grand total value dari Blade ke JavaScript variabel
-            const grandTotalValue = {{ $cartTotal }};
+            let grandTotalValue = {{ $cartTotal }};
 
             // Helper untuk memformat angka integer ke format mata uang Rupiah
             function formatRupiah(value) {
@@ -366,11 +372,41 @@
                 document.querySelectorAll('.shipping-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
                 el.classList.add('active');
                 document.getElementById('deliverySection').style.display = mode === 'delivery' ? 'block' : 'none';
+                
                 // Set hidden shipping_method value
                 const shippingInput = document.getElementById('shipping_method');
                 if (shippingInput) {
                     shippingInput.value = mode;
                 }
+
+                // Update UI shipping costs
+                let newGrandTotal = 0;
+                let newCartTotalBase = document.querySelector('.grand-total-val').getAttribute('data-cart-total'); // ini base COD (0 shipping)
+                let baseCartTotal = parseInt(newCartTotalBase);
+                let totalShipping = 0;
+
+                document.querySelectorAll('.summary-product').forEach(prod => {
+                    const shipEl = prod.querySelector('.shipping-val');
+                    const totalEl = prod.querySelector('.row-total-val');
+                    const baseShip = parseInt(shipEl.getAttribute('data-base')) || 20000;
+                    const subtotal = parseInt(totalEl.getAttribute('data-subtotal')) || 0;
+                    
+                    let activeShip = mode === 'delivery' ? baseShip : 0;
+                    totalShipping += activeShip;
+                    
+                    if (activeShip > 0) {
+                        shipEl.textContent = formatRupiah(activeShip);
+                    } else {
+                        shipEl.textContent = '-';
+                    }
+                    totalEl.textContent = formatRupiah(subtotal + activeShip);
+                });
+
+                grandTotalValue = baseCartTotal + totalShipping;
+                document.querySelector('.grand-total-val').textContent = formatRupiah(grandTotalValue);
+                
+                // Panggil lagi untuk update nominal form pembayaran (Qris, dsb)
+                initPaymentNominals();
             }
             // Bank dropdown
             function toggleBankDropdown() {

@@ -49,7 +49,7 @@
             <div class="rd-thumb" style="position:relative;">
                 <img src="{{ $foto }}" alt="{{ $trx->barang->nama_barang ?? 'Barang' }}" onerror="this.style.display='none'"/>
                 <span id="statusBadge" style="
-                    position:absolute; top:6px; left:6px;
+                    position:absolute; top: 2px; left:-15px;
                     background:{{ $badgeBg }};
                     color:#fff; font-family:'Inter',sans-serif;
                     font-size:10px; padding:3px 8px;
@@ -124,9 +124,9 @@
                     </div>
                     @elseif($status === 'upcoming')
                     <div style="margin-top: 20px; text-align: right;">
-                        <form action="{{ route('profile.rentals.cancel', $trx->id) }}" method="POST" onsubmit="return confirm('Apakah kamu yakin ingin membatalkan penyewaan ini? Saldo kamu akan dikembalikan.')">
+                        <form id="form-cancel-{{ $trx->id }}" action="{{ route('profile.rentals.cancel', $trx->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-ajukan-return" style="background-color: #9F5556; color: white; border: none; cursor: pointer;">
+                            <button type="button" class="btn-ajukan-return" style="background-color: #9F5556; color: white; border: none; cursor: pointer;" onclick="showSewainConfirm('Batalkan Penyewaan', 'Apakah kamu yakin ingin membatalkan penyewaan ini? Saldo kamu akan dikembalikan.', 'form-cancel-{{ $trx->id }}')">
                                 BATALKAN PENYEWAAN
                             </button>
                         </form>
@@ -147,11 +147,13 @@
                 <p>
                     Terima Kasih telah menggunakan Website SEWAIN sebagai platform penyewaan Anda!
                 </p>
-                <p>Status pengembalian kamu saat ini:<br>
+                <p>Status Return Rent anda saat ini:<br>
                     <strong>{{ $status === 'selesai' ? 'COMPLETED RENT ✓' : 'MENUNGGU VERIFIKASI OWNER' }}</strong>
                 </p>
             </div>
         @endif
     </div>
+
+    <x-sewain-confirm />
 
 </x-profile-layout>

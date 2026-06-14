@@ -486,8 +486,7 @@ function closeReviewModal() {
             </div>
 
             <div class="rd-form-grid" style="margin-bottom:24px; padding-left:0 !important;">
-                <div class="rd-field"><label>Nama Lengkap</label><div class="rd-value">{{ auth()->user()->name }}</div></div>
-                <div class="rd-field"><label>Username</label><div class="rd-value">{{ auth()->user()->username ?? '-' }}</div></div>
+                <div class="rd-field"><label>Nama Account User</label><div class="rd-value">{{ auth()->user()->name }}</div></div>
                 <div class="rd-field"><label>Email</label><div class="rd-value">{{ auth()->user()->email }}</div></div>
             </div>
 

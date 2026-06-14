@@ -695,6 +695,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      line-height: 1;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      box-sizing: border-box;
     }
 
 
@@ -1009,6 +1014,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      line-height: 1;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      box-sizing: border-box;
     }
 
 
@@ -1024,6 +1034,7 @@
       font-weight: 700;
       color: #000000;
       line-height: 1.4;
+      margin-top: 0;
       margin-bottom: 4px;
     }
 
@@ -1362,4 +1373,73 @@
       border-top: 1px solid #ccc;
       font-size: 12px;
       color: #888;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .checkout-main {
+        flex-direction: column;
+        gap: 24px;
+        padding: 24px 20px 48px;
+      }
+
+      .form-side {
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid #e8e8e8;
+        padding-bottom: 24px;
+      }
+
+      .summary-side {
+        flex: none;
+        width: 100%;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .footer-brand {
+        padding-left: 0;
+      }
+
+      .footer-cols {
+        margin: 0;
+        gap: 32px;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      nav {
+        padding: 0 16px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .checkout-main {
+        padding: 16px 16px 40px;
+      }
+
+      .page-header h1 {
+        font-size: 24px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .toggle-options {
+        flex-direction: column;
+      }
+
+      .footer-cols {
+        flex-direction: column;
+        gap: 20px;
+      }
     }

@@ -40,9 +40,11 @@ class ProfileController extends Controller
             'name'         => 'required|string|max:100',
             'username'     => 'nullable|string|max:100|unique:users,username,' . $user->id,
             'phone_number' => 'nullable|string|max:20',
-            'alamat'       => 'nullable|string|max:255',
-            'foto_profil'  => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'password'     => 'nullable|string|min:8|confirmed',
+            'alamat'         => 'nullable|string|max:255',
+            'tanggal_lahir'  => 'nullable|string|max:255',
+            'jenis_kelamin'  => 'nullable|in:Laki-laki,Perempuan',
+            'foto_profil'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'password'       => 'nullable|string|min:8',
         ], [
             'foto_profil.image'  => 'File harus berupa gambar (jpeg, png, jpg, webp).',
             'foto_profil.max'    => 'Ukuran foto maksimal 2 MB.',
@@ -52,10 +54,12 @@ class ProfileController extends Controller
 
         // Catatan: 'email' sengaja TIDAK divalidasi/diupdate -> email terkunci.
         $data = [
-            'name'         => $validated['name'],
-            'username'     => $validated['username'] ?? $user->username,
-            'phone_number' => $validated['phone_number'] ?? $user->phone_number,
-            'alamat'       => $validated['alamat'] ?? $user->alamat,
+            'name'          => $validated['name'],
+            'username'      => $validated['username'] ?? $user->username,
+            'phone_number'  => $validated['phone_number'] ?? $user->phone_number,
+            'alamat'        => $validated['alamat'] ?? $user->alamat,
+            'tanggal_lahir' => $validated['tanggal_lahir'] ?? $user->tanggal_lahir,
+            'jenis_kelamin' => $validated['jenis_kelamin'] ?? $user->jenis_kelamin,
         ];
 
         if ($request->filled('password')) {

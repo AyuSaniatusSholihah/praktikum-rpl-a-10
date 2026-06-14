@@ -99,6 +99,7 @@
       font-weight: 500;
       max-width: 360px;
       line-height: 1.5;
+      margin-top: 0;
       color: var(--black);
     }
 
@@ -393,8 +394,73 @@
       font-family: 'Poppins', sans-serif;
       color: #6A87A1;
       text-decoration: underline;
-      font-size: 20px;    /* ← ubah di sini juga bisa */
+      font-size: 20px;
       font-weight: 700;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .container {
+        padding: 0 24px;
+        margin: 24px auto;
+      }
+
+      .checkout-container {
+        align-items: stretch;
+      }
+
+      .checkout-box {
+        max-width: 100%;
+      }
+
+      .btn-checkout {
+        width: 100%;
+      }
+
+      table {
+        table-layout: auto;
+      }
+
+      th, td {
+        padding: 14px 8px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* Sembunyikan kolom yang tidak penting di tabel */
+      table thead th:nth-child(3),
+      table tbody td:nth-child(3) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        padding: 0 16px;
+      }
+
+      .header-section h1 {
+        font-size: 26px;
+      }
+
+      /* Tabel di-scroll horizontal di HP */
+      .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      table {
+        min-width: 520px;
+      }
+
+      .product-info img {
+        width: 70px;
+        height: 80px;
+      }
+
+      .amount {
+        font-size: 20px;
+      }
     }
 
 

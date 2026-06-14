@@ -48,8 +48,7 @@
 
             {{-- Info user --}}
             <div class="rd-form-grid" style="margin-bottom:24px; width:100%; padding:0;">
-                <div class="rd-field"><label>Nama Lengkap</label><div class="rd-value">{{ $user->name }}</div></div>
-                <div class="rd-field"><label>Username</label><div class="rd-value">{{ $user->username ?? '-' }}</div></div>
+                <div class="rd-field"><label>Nama Account User</label><div class="rd-value">{{ $user->name }}</div></div>
                 <div class="rd-field"><label>Email</label><div class="rd-value">{{ $user->email }}</div></div>
             </div>
 

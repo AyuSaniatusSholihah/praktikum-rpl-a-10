@@ -111,13 +111,24 @@
                 </div>
                 <div>
                     <div class="return-box-field-label">Reviews</div>
+                    
+                    @if ($errors->any())
+                        <div style="background-color: rgba(248, 50, 32, 0.2); border: 1px solid #f83220; color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 13px;">
+                            <ul style="margin: 0; padding-left: 20px;">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('profile.rentals.pengembalian.store', $trx->id) }}" id="returnForm" enctype="multipart/form-data">
                         @csrf
                         <div class="return-box-stars" id="ratingStars" style="font-size:24px; color:#FACA43; cursor:pointer; margin-bottom:8px; user-select:none; letter-spacing:2px;">
                             <span data-val="1">☆</span><span data-val="2">☆</span><span data-val="3">☆</span><span data-val="4">☆</span><span data-val="5">☆</span>
                         </div>
-                        <input type="hidden" name="rating" id="ratingInput" value="0">
-                        <textarea class="return-box-textarea" name="ulasan" placeholder="Tulis ulasan kamu di sini..." style="flex:1; min-height:250px;"></textarea>
+                        <input type="hidden" name="rating" id="ratingInput" value="{{ old('rating', 0) }}">
+                        <textarea class="return-box-textarea" name="ulasan" placeholder="Tulis ulasan kamu di sini..." style="flex:1; min-height:250px;">{{ old('ulasan') }}</textarea>
                     </form>
                 </div>
             </div>
@@ -142,6 +153,9 @@
                 s.addEventListener('mouseenter', () => paint(Number(s.dataset.val)));
             });
             wrap.addEventListener('mouseleave', () => paint(Number(input.value)));
+            
+            // Set initial stars based on old value
+            paint(Number(input.value));
         })();
     </script>
 

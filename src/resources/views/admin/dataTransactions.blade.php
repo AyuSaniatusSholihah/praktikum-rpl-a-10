@@ -1,4 +1,4 @@
-<x-admin-layout title="Data Transactions - SEWAIN Admin" headerTitle="Data Transactions">
+<x-admin-layout title="Data Transactions - SEWAIN Admin" headerTitle="Data Transactions" scrollable>
     <!-- ═══════════════════════════════════════════ -->
     <!-- TRANSACTIONS LIST PAGE -->
     <!-- ═══════════════════════════════════════════ -->

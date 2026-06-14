@@ -151,6 +151,13 @@
     const qtyInput = row.querySelector('.qty-box input');
     const itemQty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
    
+    // Tampilkan indikator loading dan kurangi opacity row
+    btn.disabled = true;
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span style="font-size: 12px; color: #8A8A8A;">...</span>';
+    row.style.opacity = '0.5';
+    row.style.pointerEvents = 'none';
+
     fetch(`/cart/${itemId}`, {
         method: 'DELETE',
         headers: {

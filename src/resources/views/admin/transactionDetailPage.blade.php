@@ -1,4 +1,4 @@
-<x-admin-layout title="Transactions Detail - SEWAIN Admin">
+<x-admin-layout title="Transactions Detail - SEWAIN Admin" scrollable>
 <!-- TRANSACTION DETAIL PAGE -->
     <section class="page-section" id="page-txn-detail">
       <button class="btn-back" onclick="location.href='{{ route('admin.transactions') }}'">
@@ -33,7 +33,7 @@
             <div class="detail-field"><label>ID Transaction</label><input type="text" value="{{ $transaksi->formattedId() }}" readonly></div>
             <div class="detail-field"><label>User</label><input type="text" value="{{ $transaksi->user->name ?? '-' }}" readonly></div>
             <div class="detail-field"><label>Date</label><input type="text" value="{{ optional($transaksi->created_at)->translatedFormat('d F Y, H.i') }}" readonly></div>
-            <div class="detail-field"><label>Wallet</label><input type="text" value="{{ $transaksi->pembayaran ? ucwords($transaksi->pembayaran->metode) . ($transaksi->pembayaran->detail_metode ? ' (' . $transaksi->pembayaran->detail_metode . ')' : '') : '-' }}" readonly></div>
+            <div class="detail-field"><label>Method Payment</label><input type="text" value="{{ $transaksi->pembayaran ? ucwords($transaksi->pembayaran->metode) . ($transaksi->pembayaran->detail_metode ? ' (' . $transaksi->pembayaran->detail_metode . ')' : '') : '-' }}" readonly></div>
           </div>
 
           <!-- KOLOM KANAN FIELD -->

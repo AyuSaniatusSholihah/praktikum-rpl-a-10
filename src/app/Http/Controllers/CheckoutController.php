@@ -16,7 +16,7 @@ use App\Mail\OrderReceiptMail;
 
 class CheckoutController extends Controller
 {
-    public function index($id = null)
+    public function index(Request $request, $id = null)
     {
         if ($id) {
             // Kalau user sudah login, cek apakah item ada di keranjang
@@ -29,11 +29,11 @@ class CheckoutController extends Controller
                 if ($cartItem) {
                     $cartItems = collect([$cartItem]);
                 } else {
-                    $cartItems = $this->makeTempCart($id);
+                    $cartItems = $this->makeTempCart($id, $request);
                 }
             } else {
                 // Guest: langsung buat temp cart dari barang_id
-                $cartItems = $this->makeTempCart($id);
+                $cartItems = $this->makeTempCart($id, $request);
             }
         } else {
             // Tanpa id: ambil dari keranjang (hanya untuk user yang login)
@@ -65,7 +65,7 @@ class CheckoutController extends Controller
             $harga    = $item->barang->harga_sewa ?? 0;
             $subtotal = $harga * $item->jumlah * $days;
             $jaminan  = (int) round($harga * $item->jumlah / 2);
-            $shipping = 20000;
+            $shipping = 0; // Default is COD
             $cartTotal += $subtotal + $jaminan + $shipping;
         }
 
@@ -98,19 +98,8 @@ class CheckoutController extends Controller
             }
 
             if ($cartItems->isEmpty()) {
-                $barang = Barang::find($request->single_barang_id);
-                if (!$barang) {
-                    return redirect()->route('rentals')->with('error', 'Produk tidak ditemukan');
-                }
-                $cartItems = collect([
-                    (object)[
-                        'barang_id'              => $barang->id,
-                        'barang'                 => $barang,
-                        'jumlah'                 => 1,
-                        'tanggal_sewa'           => now()->toDateString(),
-                        'tanggal_kembali_rencana'=> now()->addDay()->toDateString(),
-                    ]
-                ]);
+                // Berarti Checkout via "Rent Now" (temp cart)
+                $cartItems = $this->makeTempCart($request->single_barang_id, $request);
             }
         } else {
             // Checkout dari keranjang penuh — hanya untuk user login
@@ -151,7 +140,7 @@ class CheckoutController extends Controller
             $harga    = $item->barang->harga_sewa ?? 0;
             $subtotal = $harga * $item->jumlah * $days;
             $jaminan  = (int) round($harga * $item->jumlah / 2);
-            $shipping = 20000;
+            $shipping = ($request->shipping_method === 'delivery') ? 20000 : 0;
             $cartTotal += $subtotal + $jaminan + $shipping;
         }
 
@@ -295,7 +284,7 @@ class CheckoutController extends Controller
     }
 
     /** Buat temporary cart dari satu barang_id */
-    private function makeTempCart($id): \Illuminate\Support\Collection
+    private function makeTempCart($id, Request $request): \Illuminate\Support\Collection
     {
         $barang = Barang::find($id);
         if (!$barang) {
@@ -308,9 +297,12 @@ class CheckoutController extends Controller
         return collect([
             (object)[
                 'barang'                 => $barang,
-                'jumlah'                 => 1,
-                'tanggal_sewa'           => now()->toDateString(),
-                'tanggal_kembali_rencana'=> now()->addDay()->toDateString(),
+                'barang_id'              => $barang->id,
+                'jumlah'                 => $request->input('jumlah', 1),
+                'tanggal_sewa'           => $request->input('tanggal_sewa', now()->toDateString()),
+                'waktu_sewa'             => $request->input('waktu_sewa', '08:00:00'),
+                'tanggal_kembali_rencana'=> $request->input('tanggal_kembali_rencana', now()->addDay()->toDateString()),
+                'waktu_kembali_rencana'  => $request->input('waktu_kembali_rencana', '08:00:00'),
             ]
         ]);
     }

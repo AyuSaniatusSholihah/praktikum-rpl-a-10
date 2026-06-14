@@ -144,9 +144,8 @@
 
                 {{-- RIGHT: DETAILS --}}
                 <div class="product-detail-col">
-                    <div class="brand-label">SEWAIN</div>
-
                     <h1 class="product-title">{{ $product->nama_barang }}</h1>
+                    <div class="brand-label">SEWAIN</div>
 
                     <div class="product-rating">
                         <span class="stars">
@@ -178,15 +177,18 @@
                 <svg width="19" height="19" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
                 <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM6.66667 14.1665C6.50185 14.1665 6.34073 14.1176 6.20369 14.0261C6.06665 13.9345 5.95984 13.8043 5.89677 13.6521C5.83369 13.4998 5.81719 13.3322 5.84935 13.1706C5.8815 13.0089 5.96087 12.8605 6.07741 12.7439C6.19395 12.6274 6.34244 12.548 6.50409 12.5159C6.66574 12.4837 6.8333 12.5002 6.98557 12.5633C7.13784 12.6263 7.26799 12.7332 7.35956 12.8702C7.45113 13.0072 7.5 13.1684 7.5 13.3332C7.5 13.5542 7.4122 13.7661 7.25592 13.9224C7.09964 14.0787 6.88768 14.1665 6.66667 14.1665ZM13.3333 14.1665H10C9.77899 14.1665 9.56702 14.0787 9.41074 13.9224C9.25446 13.7661 9.16667 13.5542 9.16667 13.3332C9.16667 13.1122 9.25446 12.9002 9.41074 12.7439C9.56702 12.5876 9.77899 12.4998 10 12.4998H13.3333C13.5543 12.4998 13.7663 12.5876 13.9226 12.7439C14.0789 12.9002 14.1667 13.1122 14.1667 13.3332C14.1667 13.5542 14.0789 13.7661 13.9226 13.9224C13.7663 14.0787 13.5543 14.1665 13.3333 14.1665ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
                 </svg>
+                @php
+                    $todayStr = now()->format('Y-m-d');
+                    $mulaiStr = $product->tanggal_item_mulai?->format('Y-m-d') ?? $todayStr;
+                    $minStart = $mulaiStr > $todayStr ? $mulaiStr : $todayStr;
+                @endphp
                 <input type="date" class="date-hidden" id="dateStart"
-                       min="{{ $product->tanggal_item_mulai?->format('Y-m-d') }}"
+                       min="{{ $minStart }}"
                        max="{{ $product->tanggal_item_tidak_tersedia?->format('Y-m-d') }}"
-                       value="{{ $product->tanggal_item_mulai?->format('Y-m-d') ?? now()->format('Y-m-d') }}" />
+                       value="{{ $minStart }}" />
             </div>
             <span id="displayStart">
-                {{ $product->tanggal_item_mulai
-                    ? \Carbon\Carbon::parse($product->tanggal_item_mulai)->translatedFormat('j F Y')
-                    : now()->translatedFormat('j F Y') }}
+                {{ \Carbon\Carbon::parse($minStart)->translatedFormat('j F Y') }}
             </span>
         </div>
         <div class="time-row" style="position:relative;">
@@ -211,15 +213,17 @@
                 <svg width="19" height="19" viewBox="0 0 20 20" style="position:relative; left:-8px;" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
                 <path d="M15 3.33317H14.1667V2.49984C14.1667 2.27882 14.0789 2.06686 13.9226 1.91058C13.7663 1.7543 13.5543 1.6665 13.3333 1.6665C13.1123 1.6665 12.9004 1.7543 12.7441 1.91058C12.5878 2.06686 12.5 2.27882 12.5 2.49984V3.33317H7.5V2.49984C7.5 2.27882 7.4122 2.06686 7.25592 1.91058C7.09964 1.7543 6.88768 1.6665 6.66667 1.6665C6.44565 1.6665 6.23369 1.7543 6.07741 1.91058C5.92113 2.06686 5.83333 2.27882 5.83333 2.49984V3.33317H5C4.33696 3.33317 3.70107 3.59656 3.23223 4.0654C2.76339 4.53424 2.5 5.17013 2.5 5.83317V15.8332C2.5 16.4962 2.76339 17.1321 3.23223 17.6009C3.70107 18.0698 4.33696 18.3332 5 18.3332H15C15.663 18.3332 16.2989 18.0698 16.7678 17.6009C17.2366 17.1321 17.5 16.4962 17.5 15.8332V5.83317C17.5 5.17013 17.2366 4.53424 16.7678 4.0654C16.2989 3.59656 15.663 3.33317 15 3.33317ZM6.66667 14.1665C6.50185 14.1665 6.34073 14.1176 6.20369 14.0261C6.06665 13.9345 5.95984 13.8043 5.89677 13.6521C5.83369 13.4998 5.81719 13.3322 5.84935 13.1706C5.8815 13.0089 5.96087 12.8605 6.07741 12.7439C6.19395 12.6274 6.34244 12.548 6.50409 12.5159C6.66574 12.4837 6.8333 12.5002 6.98557 12.5633C7.13784 12.6263 7.26799 12.7332 7.35956 12.8702C7.45113 13.0072 7.5 13.1684 7.5 13.3332C7.5 13.5542 7.4122 13.7661 7.25592 13.9224C7.09964 14.0787 6.88768 14.1665 6.66667 14.1665ZM13.3333 14.1665H10C9.77899 14.1665 9.56702 14.0787 9.41074 13.9224C9.25446 13.7661 9.16667 13.5542 9.16667 13.3332C9.16667 13.1122 9.25446 12.9002 9.41074 12.7439C9.56702 12.5876 9.77899 12.4998 10 12.4998H13.3333C13.5543 12.4998 13.7663 12.5876 13.9226 12.7439C14.0789 12.9002 14.1667 13.1122 14.1667 13.3332C14.1667 13.5542 14.0789 13.7661 13.9226 13.9224C13.7663 14.0787 13.5543 14.1665 13.3333 14.1665ZM15.8333 9.1665H4.16667V5.83317C4.16667 5.61216 4.25446 5.4002 4.41074 5.24392C4.56702 5.08764 4.77899 4.99984 5 4.99984H5.83333V5.83317C5.83333 6.05418 5.92113 6.26615 6.07741 6.42243C6.23369 6.57871 6.44565 6.6665 6.66667 6.6665C6.88768 6.6665 7.09964 6.57871 7.25592 6.42243C7.4122 6.26615 7.5 6.05418 7.5 5.83317V4.99984H12.5V5.83317C12.5 6.05418 12.5878 6.26615 12.7441 6.42243C12.9004 6.57871 13.1123 6.6665 13.3333 6.6665C13.5543 6.6665 13.7663 6.57871 13.9226 6.42243C14.0789 6.26615 14.1667 6.05418 14.1667 5.83317V4.99984H15C15.221 4.99984 15.433 5.08764 15.5893 5.24392C15.7455 5.4002 15.8333 5.61216 15.8333 5.83317V9.1665Z" fill="#181A18"/>
                 </svg>
+                @php
+                    $endStr = $product->tanggal_item_tidak_tersedia?->format('Y-m-d') ?? now()->addDay()->format('Y-m-d');
+                    if ($endStr < $minStart) $endStr = $minStart;
+                @endphp
                 <input type="date" class="date-hidden" id="dateEnd"
-                       min="{{ $product->tanggal_item_mulai?->format('Y-m-d') }}"
+                       min="{{ $minStart }}"
                        max="{{ $product->tanggal_item_tidak_tersedia?->format('Y-m-d') }}"
-                       value="{{ $product->tanggal_item_tidak_tersedia?->format('Y-m-d') ?? now()->addDay()->format('Y-m-d') }}" />
+                       value="{{ $endStr }}" />
             </div>
             <span id="displayEnd">
-                {{ $product->tanggal_item_tidak_tersedia
-                    ? \Carbon\Carbon::parse($product->tanggal_item_tidak_tersedia)->translatedFormat('j F Y')
-                    : now()->addDay()->translatedFormat('j F Y') }}
+                {{ \Carbon\Carbon::parse($endStr)->translatedFormat('j F Y') }}
             </span>
         </div>
         <div class="time-row" style="position:relative;">
@@ -540,6 +544,14 @@
                 el.querySelector('.minicart-remove').addEventListener('click', () => {
                     const c = getCart();
                     const targetItem = c[index];
+                    
+                    // UX Improvement: Disable btn & fade out
+                    const removeBtn = el.querySelector('.minicart-remove');
+                    removeBtn.disabled = true;
+                    removeBtn.style.opacity = '0.5';
+                    el.style.opacity = '0.5';
+                    el.style.pointerEvents = 'none';
+
                     if (targetItem.cart_item_id) {
                         fetch(`/cart/${targetItem.cart_item_id}`, {
                             method: 'DELETE',
@@ -777,6 +789,12 @@
         }
         document.getElementById('dateStart').addEventListener('change', function () {
             document.getElementById('displayStart').textContent = formatDate(this.value);
+            const dateEndEl = document.getElementById('dateEnd');
+            dateEndEl.min = this.value; // Set minimal tanggal kembali = tanggal mulai
+            if (dateEndEl.value < this.value) {
+                dateEndEl.value = this.value;
+                document.getElementById('displayEnd').textContent = formatDate(this.value);
+            }
             syncTimeIfDifferentDate();
         });
         document.getElementById('dateEnd').addEventListener('change', function () {

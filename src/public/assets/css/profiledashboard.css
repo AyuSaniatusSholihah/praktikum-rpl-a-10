@@ -10,12 +10,12 @@
     max-width: 1280px;
     margin: 0 auto;
     overflow: hidden;
-    /* ← ganti visible → hidden */
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
     display: grid;
     grid-template-columns: 232px 1fr;
-    min-height: 640px;
-    align-items: start;
+    height: 700px;
+    max-height: 85vh;
+    align-items: stretch;
 }
 
 .profile-page .dash-panel {
@@ -42,8 +42,8 @@
     gap: 8px;
     align-self: stretch;
     min-height: 100%;
-    /* ← ganti height: 100vh */
-    /* hapus position: sticky, top: 0, overflow-y: auto */
+    overflow-y: auto;
+    height: 100%;
 }
 
 .dash-profile-mini {
@@ -178,6 +178,8 @@
     flex-direction: column;
     gap: 16px;
     background: #4D6674;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .dash-content-card {
@@ -553,7 +555,7 @@
     width: 100px;
     height: 100px;
     border-radius: 10px;
-    overflow: hidden;
+    overflow: visible;
     background: #ededed;
     flex-shrink: 0;
 }
@@ -584,7 +586,8 @@
     border-radius: 8px !important;
     overflow: hidden !important;
     margin-bottom: 12px;
-    color: #484848 !important; /* reset dari dark theme */
+    color: #484848 !important;
+    /* reset dari dark theme */
 }
 
 /* Reset semua elemen di dalam receipt supaya ga kepengaruh dark theme */
@@ -1685,16 +1688,40 @@
 @media (max-width: 900px) {
     .dash-panel {
         grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
     }
 
     .dash-sidebar {
         flex-direction: row;
         flex-wrap: wrap;
+        height: auto;
+        min-height: auto;
+        padding: 16px;
+        gap: 4px;
+    }
+
+    .dash-profile-mini {
+        width: 100%;
+        padding-bottom: 12px;
+        margin-bottom: 8px;
     }
 
     .dash-nav {
         flex-direction: row;
         flex-wrap: wrap;
+        gap: 4px;
+        flex: none;
+        width: 100%;
+    }
+
+    .dash-nav a {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .dash-logout {
+        width: 100%;
     }
 
     .wallet-top {
@@ -1702,7 +1729,7 @@
     }
 
     .wallet-trans-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
     }
 
     .rd-form-grid {
@@ -1721,5 +1748,70 @@
 
     .return-form-grid {
         grid-template-columns: 1fr;
+    }
+
+    .txn-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .dash-page {
+        padding: 16px 0 40px;
+    }
+
+    .dash-panel {
+        border-radius: 12px;
+        margin: 0 8px;
+    }
+
+    .dash-content {
+        padding: 16px 12px;
+    }
+
+    .dash-content-card {
+        padding: 20px 16px 24px;
+        border-radius: 12px;
+    }
+
+    .dash-section-title {
+        font-size: 18px;
+    }
+
+    .wallet-trans-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-card {
+        grid-template-columns: 70px 1fr;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .dash-card .dc-thumb {
+        width: 70px;
+        height: 70px;
+    }
+
+    .dash-card .dc-title {
+        font-size: 12px;
+    }
+
+    .dash-card .dc-price {
+        font-size: 12px;
+    }
+
+    .btn-ajukan-return {
+        position: static;
+        width: 100%;
+        margin-top: 12px;
+    }
+
+    .rental-detail-header {
+        flex-wrap: wrap;
+    }
+
+    .rental-detail-header h3 {
+        font-size: 18px;
     }
 }

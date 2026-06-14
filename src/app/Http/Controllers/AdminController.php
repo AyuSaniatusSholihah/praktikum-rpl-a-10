@@ -175,6 +175,15 @@ class AdminController extends Controller
         return view('admin.itemDetailPage', compact('item'));
     }
 
+    public function deleteItem($id)
+    {
+        $this->ensureAdmin();
+        $item = Barang::findOrFail($id);
+        $item->delete();
+        
+        return redirect()->route('admin.items')->with('success', 'Barang berhasil dihapus.');
+    }
+
     public function transactions(Request $request)
     {
         $this->ensureAdmin();

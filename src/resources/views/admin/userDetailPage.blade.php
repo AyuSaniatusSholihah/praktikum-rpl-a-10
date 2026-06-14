@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Detail - SEWAIN Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -57,7 +56,7 @@
   </div>
 </nav>
 
-<div class="admin-panel">
+<div class="admin-panel panel-scrollable">
 <div class="admin-layout">
   <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
@@ -125,7 +124,7 @@
 </aside>
 
   <!-- MAIN CONTENT -->
-  <main class="main-content">
+  <main class="main-content main-scrollable">
 <!-- USER DETAIL PAGE -->
     <section class="page-section" id="page-user-detail">
 
@@ -155,7 +154,10 @@
           <div class="detail-header">
 
             <!-- KOLOM KIRI: foto doang -->
-            <div style="position:relative; flex-shrink:0;">
+            <div style="position:relative; flex-shrink:0; display:inline-block;">
+              @if(($user->barangs_count ?? $user->barangs()->count() ?? 0) > 0)
+                  <span style="position:absolute; top:-10px; left:-10px; font-family:'Volkhov',serif; font-size:10px; background:#CAE6FF; color:#000; border:1px solid #B3CAF4; padding:2px 8px; border-radius:20px; z-index:10; letter-spacing:0.5px;">OWNER</span>
+              @endif
               <img src="{{ $user->foto_profil ? asset('storage/' . $user->foto_profil) : asset('assets/img/default-avatar.svg') }}" alt="{{ $user->name }}" class="detail-avatar" id="detail-avatar" onerror="this.src='{{ asset('assets/img/default-avatar.svg') }}'">
             </div>
 
@@ -165,17 +167,19 @@
               <!-- Nama + BAN -->
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
                 <div class="detail-title" id="detail-name">{{ $user->name }}</div>
-                <form action="{{ route('admin.users.ban', $user->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ $user->is_banned ? 'Unban user ini?' : 'Ban user ini? User tidak dapat melakukan aktivitas apapun di SEWAIN.' }}')">
+                <form id="form-ban-{{ $user->id }}" action="{{ route('admin.users.ban', $user->id) }}" method="POST" style="margin:0;">
                   @csrf
-                  <button type="submit" class="btn-ban {{ $user->is_banned ? 'btn-unban' : '' }}">{{ $user->is_banned ? 'UNBAN' : 'BAN' }}</button>
+                  <button type="button" class="btn-ban {{ $user->is_banned ? 'btn-unban' : '' }}" onclick="showAdminConfirm('{{ $user->is_banned ? 'Unban User' : 'Ban User' }}', '{{ $user->is_banned ? 'Unban user ini?' : 'Ban user ini? User tidak dapat melakukan aktivitas apapun di SEWAIN.' }}', 'form-ban-{{ $user->id }}')">
+                    {{ $user->is_banned ? 'UNBAN' : 'BAN' }}
+                  </button>
                 </form>
               </div>
 
               <!-- Field grid -->
               <div class="detail-grid">
                 <div class="detail-field">
-                  <label>Username</label>
-                  <input type="text" id="detail-username" value="{{ $user->username ?? '-' }}" readonly>
+                  <label>Nama Lengkap</label>
+                  <input type="text" id="detail-username" value="{{ $user->name }}" readonly>
                 </div>
                 <div class="detail-field">
                   <label>Email</label>
@@ -190,6 +194,14 @@
                   <input type="password" value="••••••••" readonly>
                 </div>
                 <div class="detail-field">
+                  <label>Tempat, Tanggal Lahir</label>
+                  <input type="text" value="{{ $user->tanggal_lahir ?? '-' }}" readonly>
+                </div>
+                <div class="detail-field">
+                  <label>Jenis Kelamin</label>
+                  <input type="text" value="{{ $user->jenis_kelamin ?? '-' }}" readonly>
+                </div>
+                <div class="detail-field">
                   <label>Saldo</label>
                   <input type="text" value="Rp {{ number_format($user->saldo, 0, ',', '.') }}" readonly>
                 </div>
@@ -198,7 +210,7 @@
                   <textarea readonly id="detail-address" style="min-height:120px;">{{ $user->alamat ?? '-' }}</textarea>
                 </div>
                 <div class="detail-field">
-                  <label>Bergabung</label>
+                  <label>Waktu Bergabung</label>
                   <input type="text" value="{{ optional($user->created_at)->translatedFormat('d F Y') }}" readonly>
                 </div>
               </div>
@@ -395,6 +407,7 @@ function adjustTxnShape() {
 setTimeout(adjustTxnShape, 100);
 window.addEventListener('resize', adjustTxnShape);
 </script>
+@include('components.admin-confirm')
 </body>
 </html>
 
