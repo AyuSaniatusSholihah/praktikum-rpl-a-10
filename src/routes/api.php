@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\KeranjangController;
 use App\Http\Controllers\Api\TransaksiController;
+use App\Http\Controllers\Api\OwnerTransaksiController;
 use App\Http\Controllers\Api\AdminController;
 
 // Public Routes for Mobile App
@@ -48,10 +49,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/transaksi/{id}/kembalikan', [TransaksiController::class, 'kembalikanBarang']);
 
     // API Transaksi & Pembayaran (Owner)
-    Route::get('/owner/dashboard', [TransaksiController::class, 'ownerDashboard']);
-    Route::get('/owner/transaksi/{id}', [TransaksiController::class, 'ownerTransaksiDetail']);
-    Route::get('/owner/pengembalian', [TransaksiController::class, 'listPengembalian']);
-    Route::post('/transaksi/{id}/verifikasi-pengembalian', [TransaksiController::class, 'verifikasiPengembalian']);
+    Route::get('/owner/dashboard', [OwnerTransaksiController::class, 'dashboard']);
+    Route::get('/owner/transaksi/{id}', [OwnerTransaksiController::class, 'transaksiDetail']);
+    Route::get('/owner/pengembalian', [OwnerTransaksiController::class, 'listPengembalian']);
+    Route::post('/transaksi/{id}/verifikasi-pengembalian', [OwnerTransaksiController::class, 'verifikasiPengembalian']);
 
     // API Admin Dashboard & Management
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);

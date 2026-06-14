@@ -12,11 +12,7 @@
                 <div class="search-field">
                     <label>Location</label>
                     <div class="value">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
+                        <x-icons.location />
                         <select class="search-select" id="searchLocation">
                             <option value="">Choose Location</option>
                             @foreach($locations as $loc)
@@ -29,11 +25,7 @@
                 <div class="search-field">
                     <label>Find</label>
                     <div class="value">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"/>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                        </svg>
+                        <x-icons.search />
                         <input type="text" class="search-input" id="searchFind" placeholder="Kamera" />
                     </div>
                 </div>
@@ -41,50 +33,20 @@
                 <div class="search-field">
                     <label>Sewa Up</label>
                     <div class="value">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
-                            <circle cx="8"  cy="14" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="12" cy="14" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="16" cy="14" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="8"  cy="18" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="12" cy="18" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="16" cy="18" r="0.8" fill="#55959E" stroke="none"/>
-                        </svg>
+                        <x-icons.calendar />
                         <span class="date-display" id="displayDateStart">Pilih tanggal</span>
                         <input type="date" class="date-hidden" id="searchDateStart" />
-                        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"/>
-                        </svg>
+                        <x-icons.chev class="chev" />
                     </div>
                 </div>
 
                 <div class="search-field">
                     <label>Return</label>
                     <div class="value">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
-                            <circle cx="8"  cy="14" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="12" cy="14" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="16" cy="14" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="8"  cy="18" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="12" cy="18" r="0.8" fill="#55959E" stroke="none"/>
-                            <circle cx="16" cy="18" r="0.8" fill="#55959E" stroke="none"/>
-                        </svg>
+                        <x-icons.calendar />
                         <span class="date-display" id="displayDateEnd">Pilih tanggal</span>
                         <input type="date" class="date-hidden" id="searchDateEnd" />
-                        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"/>
-                        </svg>
+                        <x-icons.chev class="chev" />
                     </div>
                 </div>
 
