@@ -21,7 +21,7 @@
 
 @include('components.admin-header')
 
-<div class="admin-panel">
+<div class="admin-panel {{ isset($scrollable) ? 'panel-scrollable' : '' }}">
 <div class="admin-layout">
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
@@ -85,7 +85,7 @@
   </aside>
 
   <!-- MAIN CONTENT -->
-  <main class="main-content">
+  <main class="main-content {{ isset($scrollable) ? 'main-scrollable' : '' }}" {{ isset($pageId) ? 'id=' . $pageId : '' }}>
     @if(isset($headerTitle))
       <div class="page-title">{{ $headerTitle }}</div>
     @endif
@@ -108,6 +108,7 @@
     }
   });
 </script>
+@include('components.admin-confirm')
 {{ $scripts ?? '' }}
 </body>
 </html>

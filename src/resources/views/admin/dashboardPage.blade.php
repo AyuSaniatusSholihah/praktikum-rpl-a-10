@@ -1,4 +1,4 @@
-<x-admin-layout title="Dashboard - SEWAIN Admin" headerTitle="Dashboard">
+<x-admin-layout title="Dashboard - SEWAIN Admin" headerTitle="Dashboard" pageId="page-dashboard">
     <!-- Stat Cards -->
     <div class="stat-cards">
         <x-admin-stat-card label="Total User" value="{{ $stats['total_user'] }}" changeText="Total user terdaftar"
@@ -156,6 +156,9 @@
                 <img src="{{ $u->foto_profil ? asset('storage/' . $u->foto_profil) : asset('assets/img/default-avatar.svg') }}"
                     alt="{{ $u->name }}" onerror="this.src='{{ asset('assets/img/default-avatar.svg') }}'">
                 <div class="user-card-info">
+                @if(($u->barangs_count ?? $u->barangs()->count() ?? 0) > 0)
+                    <span class="owner-badge">OWNER</span>
+                @endif
                     <h4>{{ $u->name }}</h4>
                     <p>{{ $u->email }}</p>
                     <button class="btn-view-more"

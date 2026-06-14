@@ -49,5 +49,7 @@
 
 {{ $scripts ?? '' }}
 
+@include('components.sewain-confirm')
+
 </body>
 </html>

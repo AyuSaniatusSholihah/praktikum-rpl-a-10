@@ -161,6 +161,27 @@ nav {
     height: auto;
 }
 
+/* ── SCROLLABLE DATA PAGES ── */
+.panel-scrollable {
+    height: calc(100vh - 56px - 72px);
+    max-height: 900px;
+}
+
+.panel-scrollable .admin-layout {
+    height: 100%;
+}
+
+.panel-scrollable .sidebar {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.main-scrollable {
+    overflow-y: auto !important;
+    height: 100% !important;
+    padding-right: 15px !important; /* compensate for scrollbar width so content matches dashboard */
+}
+
 /* ── SIDEBAR ── */
 .sidebar {
     width: var(--sidebar-w);
@@ -443,6 +464,12 @@ table.data-table tr:last-child td {
     stroke: #6A87A1;
 }
 
+#page-item-detail .btn-delete svg {
+    width: 30px;
+    /* ganti sesuai keinginan */
+    height: 30px;
+}
+
 .btn-delete:hover svg {
     stroke: var(--danger);
 }
@@ -636,8 +663,9 @@ table.data-table tr:last-child td {
 /* ── USERS GRID ── */
 .users-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(310px, 1fr));
+    gap: 16px;
 }
 
 .user-card {
@@ -1114,6 +1142,10 @@ table.data-table tr:last-child td {
 }
 
 /* ── REVIEWS (item detail) ── */
+.admin-layout #reviews-section {
+    padding-left: 0;
+}
+
 #reviews-section .reviews-header h3 {
     font-family: 'Abril Fatface', serif;
     color: #E6E8EF;
@@ -1702,8 +1734,20 @@ table.data-table tr:last-child td {
         grid-template-columns: 1fr 1fr;
     }
 
+    .wallet-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
     .users-grid {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-panel {
+        margin: 16px;
     }
 }
 
@@ -1740,6 +1784,10 @@ table.data-table tr:last-child td {
         grid-template-columns: 1fr;
     }
 
+    .wallet-stats {
+        grid-template-columns: 1fr;
+    }
+
     .users-grid {
         grid-template-columns: 1fr 1fr;
     }
@@ -1747,11 +1795,54 @@ table.data-table tr:last-child td {
     .mobile-menu-btn {
         display: flex !important;
     }
+
+    .item-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .catalog-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .txn-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-panel {
+        margin: 8px;
+        border-radius: 12px;
+    }
 }
 
 @media (max-width: 480px) {
     .users-grid {
         grid-template-columns: 1fr;
+    }
+
+    .catalog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .section-header h3 {
+        font-size: 16px;
+    }
+
+    .detail-header {
+        grid-template-columns: 70px 1fr;
+    }
+
+    .detail-title {
+        font-size: 20px;
     }
 }
 
@@ -1870,4 +1961,98 @@ footer {
 
 .profile-dropdown .dropdown-menu button:hover {
     background: #fef2f2 !important;
+}
+
+/* ===== ADMIN TOAST CONFIRM ===== */
+#adminToast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    z-index: 99999;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+    padding: 18px 24px 18px 20px;
+    min-width: 320px;
+    max-width: 420px;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), opacity 0.4s ease;
+    pointer-events: none;
+}
+#adminToast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+#adminToast .toast-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+}
+#adminToast .toast-icon.warning  { background: #fff7ed; color: #f97316; }
+#adminToast .toast-icon.info     { background: #eff6ff; color: #3b82f6; }
+#adminToast .toast-icon.error    { background: #fef2f2; color: #ef4444; }
+#adminToast .toast-body { flex: 1; }
+#adminToast .toast-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #181A18;
+    margin-bottom: 4px;
+}
+#adminToast .toast-msg {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+}
+.toast-action-btn {
+    margin-top: 12px;
+    display: inline-block;
+    padding: 7px 18px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: #dc2626;
+    color: #fff;
+    margin-right: 8px;
+}
+.toast-action-btn:hover { background: #b91c1c; }
+.toast-cancel-btn {
+    margin-top: 12px;
+    display: inline-block;
+    padding: 7px 18px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+}
+.toast-cancel-btn:hover { background: #f9fafb; }
+#adminToast .toast-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
 }

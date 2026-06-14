@@ -145,6 +145,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/users/{id}/ban', [\App\Http\Controllers\AdminController::class, 'toggleBan'])->name('users.ban');
     Route::get('/items', [\App\Http\Controllers\AdminController::class, 'items'])->name('items');
     Route::get('/items/{id}', [\App\Http\Controllers\AdminController::class, 'itemDetail'])->name('items.detail');
+    Route::delete('/items/{id}/delete', [\App\Http\Controllers\AdminController::class, 'deleteItem'])->name('items.delete');
     Route::get('/transactions', [\App\Http\Controllers\AdminController::class, 'transactions'])->name('transactions');
     Route::get('/transactions/{id}', [\App\Http\Controllers\AdminController::class, 'transactionDetail'])->name('transactions.detail');
 });

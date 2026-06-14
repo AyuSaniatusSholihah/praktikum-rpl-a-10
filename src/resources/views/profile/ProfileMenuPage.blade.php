@@ -50,20 +50,24 @@
                 <input type="email" id="accEmail" value="{{ $user->email }}" readonly title="Email tidak dapat diubah di sini"/>
                 </div>
                 <div class="profile-field">
-                <label for="accPass">Password Baru</label>
+                <label for="accPass">Password</label>
                 <input type="password" name="password" id="accPass" placeholder="••••••••" autocomplete="new-password"/>
-                </div>
-                <div class="profile-field">
-                <label for="accPassConf">Konfirmasi Password Baru</label>
-                <input type="password" name="password_confirmation" id="accPassConf" placeholder="••••••••" autocomplete="new-password"/>
                 </div>
                 <div class="profile-field">
                 <label for="accPhone">Nomor Telepon</label>
                 <input type="tel" name="phone_number" id="accPhone" value="{{ old('phone_number', $user->phone_number) }}"/>
                 </div>
                 <div class="profile-field">
-                <label for="accUsername">Username</label>
-                <input type="text" name="username" id="accUsername" value="{{ old('username', $user->username) }}"/>
+                <label for="accBirth">Tanggal Lahir</label>
+                <input type="text" name="tanggal_lahir" id="accBirth" value="{{ old('tanggal_lahir', $user->tanggal_lahir) }}" placeholder="Contoh: Bandung, 17 September 1995"/>
+                </div>
+                <div class="profile-field">
+                <label for="accGender">Jenis Kelamin</label>
+                <select name="jenis_kelamin" id="accGender">
+                    <option value="" disabled {{ old('jenis_kelamin', $user->jenis_kelamin) ? '' : 'selected' }}>Pilih Jenis Kelamin</option>
+                    <option value="Laki-laki" {{ old('jenis_kelamin', $user->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="Perempuan" {{ old('jenis_kelamin', $user->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                </select>
                 </div>
                 <div class="profile-field">
                 <label for="accAddress">Alamat</label>

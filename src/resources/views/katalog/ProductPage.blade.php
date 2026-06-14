@@ -659,6 +659,23 @@
                     });
 
                     el.querySelector('.minicart-remove').addEventListener('click', () => {
+                        const c = getCart();
+                        const targetItem = c[index];
+
+                        // UX Improvement: Disable btn & fade out
+                        const removeBtn = el.querySelector('.minicart-remove');
+                        removeBtn.disabled = true;
+                        removeBtn.style.opacity = '0.5';
+                        el.style.opacity = '0.5';
+                        el.style.pointerEvents = 'none';
+
+                        if (targetItem.cart_item_id) {
+                            fetch(`/cart/${targetItem.cart_item_id}`, {
+                                method: 'DELETE',
+                                headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }
+                            });
+                        }
+                        
                         el.style.transition = 'opacity .2s, transform .2s';
                         el.style.opacity = '0';
                         el.style.transform = 'translateX(20px)';
