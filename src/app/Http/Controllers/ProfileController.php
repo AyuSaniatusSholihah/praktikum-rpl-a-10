@@ -42,8 +42,6 @@ class ProfileController extends Controller
             'username'     => 'nullable|string|max:100|unique:users,username,' . $user->id,
             'phone_number' => 'nullable|string|max:20',
             'alamat'         => 'nullable|string|max:255',
-            'tanggal_lahir'  => 'nullable|string|max:255',
-            'jenis_kelamin'  => 'nullable|in:Laki-laki,Perempuan',
             'foto_profil'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'password'       => 'nullable|string|min:8',
         ], [
@@ -59,8 +57,6 @@ class ProfileController extends Controller
             'username'      => $validated['username'] ?? $user->username,
             'phone_number'  => $validated['phone_number'] ?? $user->phone_number,
             'alamat'        => $validated['alamat'] ?? $user->alamat,
-            'tanggal_lahir' => $validated['tanggal_lahir'] ?? $user->tanggal_lahir,
-            'jenis_kelamin' => $validated['jenis_kelamin'] ?? $user->jenis_kelamin,
         ];
 
         if ($request->filled('password')) {
