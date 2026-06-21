@@ -118,13 +118,15 @@ Daftar bug krusial yang ditemukan selama rangkaian eksekusi praktikum pengujian 
 * **Label:** `bug`, `severity: high`, `component: transaction-backend`
 * **Assigned To:** Alfa
 * **Ditemukan pada:** TC-13
-* **Deskripsi:** Kerusakan logika pada backend sistem transaksi. Aplikasi tidak memeriksa ketersediaan rentang tanggal barang yang disewa, sehingga mengizinkan dua penyewa berbeda memesan barang yang sama di jadwal yang bertabrakan.
+* **Deskripsi:** Kerusakan logika pada backend sistem transaksi. Aplikasi mengurangi stok secara instan/permanen di database tanpa validasi berbasis rentang tanggal (schedule-based). Hal ini memicu dua masalah besar:
+  1. **Double Booking:** Jika barang memiliki Stok = 2, lalu Penyewa A menyewa 1 unit (1-5 Juli) dan Penyewa B menyewa 1 unit (3-7 Juli - overlap), sistem membiarkan ini karena stok di DB masih sisa 1. Namun jika Penyewa C ingin menyewa 1 unit di tanggal 2-4 Juli (yang seharusnya masih ada 1 unit fisik tersisa karena Penyewa B belum pakai), Penyewa C akan ditolak dengan error "Stok Habis" karena stok global di DB sudah 0 akibat terkurangi transaksi Penyewa B di tanggal 10.
+  2. **Salah Blokir Tanggal Aman:** Jika barang memiliki Stok = 1, sewa di tanggal 1-5 Juli akan membuat stok menjadi 0. Penyewa lain yang ingin menyewa di tanggal 10-15 Juli (tidak bentrok) akan langsung ditolak karena stok di database saat itu berstatus 0 (habis).
 * **Langkah Reproduksi:**
   1. Penyewa A menyewa Tenda X untuk tanggal 1–5 Juli 2026 dan menyelesaikan pembayaran.
   2. Penyewa B masuk menggunakan akun lain, membuka produk Tenda X, lalu memilih tanggal sewa yang tabrakan yaitu 3–6 Juli 2026.
   3. Penyewa B klik Tambah ke Keranjang dan melakukan checkout.
-* **Expected Result:** Sistem memvalidasi tanggal sewa dan menolak penambahan barang ke keranjang karena status tanggal telah ter-booking.
-* **Actual Result:** Transaksi Penyewa B berhasil diproses, mengakibatkan bentrok jadwal peminjaman item.
+* **Expected Result:** Sistem memvalidasi ketersediaan barang berdasarkan rentang tanggal yang dipilih dan menolak transaksi jika jumlah unit yang dipesan melebihi stok yang tersedia pada tanggal tersebut.
+* **Actual Result:** Sistem mengizinkan checkout overlap (Double Booking) dan di sisi lain memblokir penyewaan di tanggal aman yang tidak overlap karena pengurangan stok dilakukan secara global seketika.
 
 ### BUG-03: Stok barang tidak bertambah kembali setelah owner konfirmasi pengembalian
 * **Label:** `bug`, `severity: high`, `component: backend-logic`, `status: fixed`
