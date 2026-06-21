@@ -13,8 +13,8 @@
 | Platform Diuji | Web (Laravel) & Mobile (Android – Kotlin) |
 | Tester | Nia, Alfa, Ghazi |
 | Metode | Cross-Testing (melingkar antar anggota) |
-| Total Test Case | 20 |
-| Status Ringkasan | ✅ Pass: 17 &nbsp;\|&nbsp; ❌ Fail: 3 |
+| Total Test Case | 21 |
+| Status Ringkasan | ✅ Pass: 16 &nbsp;\|&nbsp; ❌ Fail: 5 |
 
 ---
 
@@ -111,8 +111,9 @@ Untuk memastikan pengujian dilakukan secara objektif dan menghindari *developer 
 | Test ID | Skenario Pengujian | Pre-Condition | Langkah-Langkah (Steps) | Input Data | Expected Result | Actual Result | Status | Severity | Tester | Bug Ref | Screenshot |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | TC-16 | **[Happy Path]** Pengembalian barang tepat waktu (tanpa denda) | Transaksi aktif, tanggal pengembalian ≤ tanggal jatuh tempo | 1. Login sebagai Penyewa <br>2. Buka **Riwayat Sewa** <br>3. Pilih transaksi aktif <br>4. Klik **Kembalikan Barang** <br>5. Unggah foto bukti pengembalian <br>6. Beri rating dan komentar <br>7. Submit | foto: *(upload)* <br>rating: `5` <br>komentar: `"Barang kondisi baik"` | Status transaksi berubah menjadi `Menunggu Konfirmasi Owner`. Tidak ada denda ditampilkan. | Pengembalian terekam dan status berubah dengan benar. | ✅ Pass | - | Nia | - | `[Screenshot TC-16]` |
-| TC-17 | **[Happy Path]** Konfirmasi pengembalian oleh Owner | Penyewa sudah submit pengembalian | 1. Login sebagai Owner <br>2. Buka menu **Pengembalian** <br>3. Pilih transaksi yang menunggu konfirmasi <br>4. Klik **Konfirmasi Pengembalian** (kondisi OK) | status_kondisi: `ok` | Status transaksi berubah menjadi `Selesai`. Stok barang bertambah kembali. | Konfirmasi berhasil, status selesai dan stok terupdate. | ✅ Pass | - | Nia | - | `[Screenshot TC-17]` |
+| TC-17 | **[Happy Path]** Konfirmasi pengembalian oleh Owner | Penyewa sudah submit pengembalian | 1. Login sebagai Owner <br>2. Buka menu **Pengembalian** <br>3. Pilih transaksi yang menunggu konfirmasi <br>4. Klik **Konfirmasi Pengembalian** (kondisi OK) | status_kondisi: `ok` | Status transaksi berubah menjadi `Selesai`. **Stok barang bertambah kembali** sesuai jumlah yang disewa. | Status transaksi berubah jadi `Selesai` ✅, namun **stok barang tidak bertambah kembali** ❌. Barang tampak `tersedia` di katalog tapi penyewa baru tidak bisa checkout karena stok tetap 0. | ❌ Fail | 🔴 High | Nia | [BUG-04](#bug-04) | `[Screenshot TC-17]` |
 | TC-18 | **[Happy Path]** Pengembalian terlambat — denda terhitung otomatis | Tanggal pengembalian aktual lebih dari `tanggal_kembali_rencana` | 1. Login sebagai Penyewa <br>2. Kembalikan barang yang sudah melewati jatuh tempo <br>3. Amati tampilan detail transaksi | - | Sistem menampilkan kalkulasi denda: `jam_terlambat × harga_denda_perjam`. Total denda tampil di detail transaksi. | Kalkulasi denda muncul dan nilainya sesuai dengan rumus yang ditetapkan. | ✅ Pass | - | Nia | - | `[Screenshot TC-18]` |
+| TC-21 | **[Unhappy Path]** Stok barang tidak bertambah setelah owner konfirmasi pengembalian | Transaksi berstatus `tunggu verifikasi pengembalian`, barang memiliki stok awal > 0, stok berkurang saat checkout | 1. Login sebagai Penyewa, checkout 1 unit Barang X (stok awal: 2) <br>2. Submit pengembalian dengan foto bukti <br>3. Login sebagai Owner <br>4. Buka detail transaksi → Klik **ACCEPT PENGEMBALIAN** <br>5. Cek stok Barang X di katalog Owner | jumlah_sewa: `1` <br>stok_awal: `2` | Status transaksi menjadi `Selesai`. **Stok Barang X kembali menjadi 2** (stok awal). Barang tetap tampil sebagai `Tersedia` di katalog. | Setelah konfirmasi, status transaksi menjadi `Selesai` dan status barang berubah jadi `tersedia`, **namun stok barang tetap 1** (tidak bertambah kembali). Barang seolah tersedia di katalog tapi penyewa baru tidak bisa checkout karena stok tidak sesuai. | ❌ Fail | 🔴 High | Nia | [BUG-04](#bug-04) | `[Screenshot TC-21]` |
 
 ---
 
@@ -227,6 +228,68 @@ Sistem **menerima request** Penyewa B tanpa error. Transaksi baru berhasil dibua
 
 ---
 
+### BUG-04
+
+> **GitHub Issue:** `#[No. Issue] – [BUG] Stok barang tidak bertambah kembali setelah owner konfirmasi pengembalian`  
+> **Label:** `bug`, `severity: high`, `component: transaction`, `component: backend`  
+> **Assigned to:** Nia  
+> **Ditemukan pada TC:** TC-21  
+> **Fix pada:** [`ProfileController.php` – `acceptPengembalian()`](../src/app/Http/Controllers/ProfileController.php)
+
+#### Deskripsi
+Saat owner mengklik **ACCEPT PENGEMBALIAN** untuk mengonfirmasi barang yang dikembalikan penyewa, fungsi `acceptPengembalian()` di `ProfileController` hanya mengubah **status** barang menjadi `'tersedia'`, tetapi **tidak menambah kembali stok** barang sesuai jumlah unit yang disewa (`$trx->jumlah`). Akibatnya, barang tampak tersedia di katalog namun stoknya tetap berkurang permanen — sehingga penyewa baru tidak bisa melakukan checkout meski barang sudah "tersedia".
+
+#### Root Cause
+Di fungsi `acceptPengembalian()` ([`ProfileController.php`](../src/app/Http/Controllers/ProfileController.php)), kode lama hanya melakukan:
+
+```php
+// ❌ Kode lama (bug)
+if ($trx->barang) {
+    $trx->barang->update(['status' => 'tersedia']);
+}
+```
+
+Stok tidak dikembalikan, padahal saat checkout stok dikurangi: `$barang->stok -= $item->jumlah`.
+
+#### Steps to Reproduce
+1. Login sebagai **Owner**, tambahkan Barang X dengan stok = 2.
+2. Login sebagai **Penyewa**, checkout Barang X dengan jumlah = 1.
+3. Cek stok Barang X → seharusnya menjadi **1**.
+4. Penyewa submit pengembalian (upload foto, beri rating).
+5. Login kembali sebagai **Owner**, buka detail transaksi, klik **ACCEPT PENGEMBALIAN**.
+6. Cek stok Barang X di katalog Owner.
+
+#### Expected Result
+Setelah konfirmasi pengembalian:
+- Status transaksi → `Selesai`
+- **Stok Barang X → kembali menjadi 2** (bertambah sesuai `$trx->jumlah`)
+- Status barang → `tersedia`
+- Penyewa baru dapat checkout Barang X dengan normal
+
+#### Actual Result
+- Status transaksi → `Selesai` ✅
+- **Stok Barang X → tetap 1** ❌ (tidak bertambah kembali)
+- Status barang → `tersedia` ✅ (terlihat tersedia di katalog)
+- Penyewa baru yang mencoba checkout **gagal** dengan error *"Stok barang tidak mencukupi"* meski barang tampak tersedia
+
+#### Fix Applied
+```php
+// ✅ Kode baru (setelah fix)
+if ($trx->barang) {
+    $trx->barang->stok += $trx->jumlah;
+    $trx->barang->status = ($trx->barang->stok > 0) ? 'tersedia' : 'tidak_tersedia';
+    $trx->barang->save();
+}
+```
+
+#### Severity
+🔴 **High** — Bug pada alur bisnis inti (siklus sewa-kembali) yang secara permanen merusak stok barang dan memblokir transaksi baru.
+
+#### Screenshot / Evidence
+`[Lampirkan screenshot atau screen recording di sini]`
+
+---
+
 ## 📌 Template GitHub Issue: `[SUBMISSION] P9 Evidence`
 
 > Salin template berikut dan buat sebagai GitHub Issue baru.
@@ -240,9 +303,9 @@ Sistem **menerima request** Penyewa B tanpa error. Transaksi baru berhasil dibua
 ## 📊 Ringkasan Pengujian
 | Kategori | Jumlah |
 |---|---|
-| Total Test Case | 20 |
-| ✅ Pass | 17 |
-| ❌ Fail | 3 |
+| Total Test Case | 21 |
+| ✅ Pass | 16 |
+| ❌ Fail | 5 |
 
 ## 🐞 Daftar Bug yang Ditemukan
 
@@ -251,11 +314,12 @@ Sistem **menerima request** Penyewa B tanpa error. Transaksi baru berhasil dibua
 | BUG-01 | OTP Reset Password tidak memvalidasi kadaluarsa | 🔴 High | #[No. Issue] |
 | BUG-02 | Pencarian tidak tampilkan pesan "Tidak Ditemukan" | 🟡 Medium | #[No. Issue] |
 | BUG-03 | Tidak ada validasi overlap tanggal sewa (double booking) | 🔴 High | #[No. Issue] |
+| BUG-04 | Stok barang tidak bertambah setelah owner konfirmasi pengembalian | 🔴 High | #[No. Issue] |
 
 ## 👥 Pembagian Tugas Pengujian
 - **Alfa** → Menguji fitur Autentikasi & Profil (TC-01–TC-06) yang dibuat Nia
 - **Ghazi** → Menguji fitur Katalog, Pencarian & Transaksi (TC-07–TC-15) yang dibuat Alfa
-- **Nia** → Menguji fitur Pengembalian & Dashboard Admin (TC-16–TC-20) yang dibuat Ghazi
+- **Nia** → Menguji fitur Pengembalian & Dashboard Admin (TC-16–TC-21) yang dibuat Ghazi
 
 ## ✅ Checklist Kelengkapan P9
 - [x] Dokumen test-cases.md dengan ≥ 10 test case manual dan hasil eksekusi
