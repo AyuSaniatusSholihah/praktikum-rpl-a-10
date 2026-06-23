@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('fotoproduk2')->nullable()->after('fotoproduk1');
             $table->string('fotoproduk3')->nullable()->after('fotoproduk2');
             $table->string('fotoproduk4')->nullable()->after('fotoproduk3');
+
+            $table->string('whatsapp')->nullable()->after('lokasi');
+            $table->text('additional_information')->nullable()->after('deskripsi');
         });
     }
 

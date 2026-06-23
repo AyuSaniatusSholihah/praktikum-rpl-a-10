@@ -26,6 +26,8 @@ class ProfileController extends Controller
             'username' => 'sometimes|string|max:100|unique:users,username,' . $user->id,
             'phone_number' => 'sometimes|string|min:9|max:15|regex:/^\+?[0-9]+$/',
             'alamat' => 'nullable|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
             'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ], [
             'phone_number.regex' => 'Nomor HP hanya boleh berisi angka dan diawali dengan + (opsional).',
