@@ -63,6 +63,7 @@
     overflow: visible;
     background: transparent;
     border: none;
+    flex-shrink: 0;
 }
 
 .dash-profile-mini .avatar img {
@@ -77,6 +78,7 @@
     font-weight: 600;
     color: #fff;
     line-height: 1.3;
+    word-break: break-word;
 }
 
 
@@ -549,6 +551,7 @@
     align-items: center;
     gap: 18px;
     flex-wrap: nowrap;
+    margin-bottom: 0;
 }
 
 .rental-detail-header .rd-thumb {
@@ -564,6 +567,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 10px;
 }
 
 .rental-detail-header h3 {
@@ -578,6 +582,10 @@
    RECEIPT — persis sama dengan ConfirmPage / Print Receipt
    Harus override dark .dash-content-card theme
    ============================================================ */
+
+.rental-detail-body {
+    margin-left: 118px;
+}
 
 /* Wrapper: sama persis dengan .receipt-card di checkout.css */
 .receipt-item {
@@ -802,11 +810,7 @@
     margin-bottom: 24px;
 }
 
-.rd-form-grid,
-#reviews-section {
-    padding-left: calc(70px + 18px);
-    /* lebar foto + gap */
-}
+
 
 .rd-field label {
     font-family: 'Abril Fatface', serif;
@@ -995,7 +999,6 @@
     padding: 44px 28px;
     margin-top: 24px;
     text-align: center;
-    margin-left: calc(70px + 18px);
 }
 
 .confirmed-box .check {
@@ -1809,6 +1812,10 @@
 
     .rental-detail-header {
         flex-wrap: wrap;
+    }
+
+    .rental-detail-body {
+        margin-left: 0;
     }
 
     .rental-detail-header h3 {

@@ -50,6 +50,7 @@
             <h3>{{ $trx->barang->nama_barang ?? 'Barang dihapus' }}</h3>
         </div>
 
+        <div class="rental-detail-body">
         <div class="rd-form-grid" style="margin-bottom:24px;">
             <div class="rd-field"><label>ID Transaksi</label><div class="rd-value">{{ $trx->formattedId() }}</div></div>
             <div class="rd-field"><label>Tanggal Sewa</label><div class="rd-value">{{ optional($trx->tanggal_sewa)->format('d F Y') ?? '-' }}</div></div>
@@ -138,6 +139,7 @@
                     KIRIM PENGEMBALIAN
                 </button>
             </div>
+        </div>
         </div>
     </div>
 
