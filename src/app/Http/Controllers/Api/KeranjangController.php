@@ -29,8 +29,9 @@ class KeranjangController extends Controller
     public function store(StoreKeranjangRequest $request)
     {
         try {
-            $item = $this->keranjangService->addItem($request->user(), $request->validated());
-            return $this->successResponse($item, 'Barang berhasil ditambahkan ke keranjang', 201);
+            $this->keranjangService->addItem($request->user(), $request->validated());
+            $data = $this->keranjangService->getItems($request->user());
+            return $this->successResponse($data, 'Barang berhasil ditambahkan ke keranjang', 201);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 400);
         }
@@ -39,8 +40,9 @@ class KeranjangController extends Controller
     public function update(UpdateKeranjangRequest $request, int $id)
     {
         try {
-            $item = $this->keranjangService->updateItem($request->user(), $id, $request->validated());
-            return $this->successResponse($item, 'Item keranjang berhasil diperbarui');
+            $this->keranjangService->updateItem($request->user(), $id, $request->validated());
+            $data = $this->keranjangService->getItems($request->user());
+            return $this->successResponse($data, 'Item keranjang berhasil diperbarui');
         } catch (\Exception $e) {
             $code = $e->getCode() ?: 400;
             // Handle specific cases
@@ -55,7 +57,8 @@ class KeranjangController extends Controller
     {
         try {
             $this->keranjangService->removeItem($request->user(), $id);
-            return $this->successResponse(null, 'Item keranjang berhasil dihapus');
+            $data = $this->keranjangService->getItems($request->user());
+            return $this->successResponse($data, 'Item keranjang berhasil dihapus');
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 404);
         }

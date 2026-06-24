@@ -20,6 +20,7 @@ class Barang extends Model
         'harga_denda_perjam',
         'stok',
         'lokasi',
+        'whatsapp',
         'foto_barang',
         'fotoproduk1',
         'fotoproduk2',

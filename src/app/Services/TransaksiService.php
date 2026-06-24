@@ -14,37 +14,92 @@ class TransaksiService
     /**
      * Checkout seluruh barang di keranjang menjadi transaksi penyewaan.
      */
-    public function checkout($user)
+    public function checkout($user, $keranjangIds = null)
     {
-        $cartItems = $user->keranjang()->with('barang')->get();
+        $query = $user->keranjang()->with('barang');
+        if (is_array($keranjangIds) && !empty($keranjangIds)) {
+            $query->whereIn('id', $keranjangIds);
+        }
+        $cartItems = $query->get();
 
         if ($cartItems->isEmpty()) {
-            throw new \Exception('Keranjang belanja Anda kosong, tidak ada yang bisa di-checkout.');
+            throw new \Exception('Keranjang belanja Anda kosong atau item tidak ditemukan, tidak ada yang bisa di-checkout.');
         }
 
         return DB::transaction(function () use ($user, $cartItems) {
             $transactions = [];
+            $totalBayar = 0;
+            $requiredStok = [];
 
+            // 1. Hitung total bayar dan agregasi stok yang dibutuhkan per barang
             foreach ($cartItems as $item) {
                 $barang = $item->barang;
-
-                if ($barang->stok < $item->jumlah) {
-                    throw new \Exception("Stok barang '{$barang->nama_barang}' tidak mencukupi. Stok tersedia: {$barang->stok}.");
-                }
-
                 $tanggalSewa = Carbon::parse($item->tanggal_sewa);
                 $tanggalKembali = Carbon::parse($item->tanggal_kembali_rencana);
                 $durasiHari = max(1, $tanggalSewa->diffInDays($tanggalKembali));
-                
+                $totalBayar += ((float) $barang->harga_sewa * $item->jumlah * $durasiHari);
+
+                if (!isset($requiredStok[$barang->id])) {
+                    $requiredStok[$barang->id] = 0;
+                }
+                $requiredStok[$barang->id] += $item->jumlah;
+            }
+
+            // 2. Cek apakah total stok yang diminta mencukupi
+            foreach ($cartItems as $item) {
+                $barang = $item->barang;
+                if ($barang->stok < $requiredStok[$barang->id]) {
+                    throw new \Exception("Stok barang '{$barang->nama_barang}' tidak mencukupi. Stok tersedia: {$barang->stok}, Anda meminta: {$requiredStok[$barang->id]}.");
+                }
+            }
+
+            // 2. Cek Saldo dan Kurangi Saldo User
+            if ($user->saldo < $totalBayar) {
+                throw new \Exception("Saldo Anda tidak mencukupi untuk melakukan checkout. Saldo saat ini: Rp " . number_format($user->saldo, 0, ',', '.'));
+            }
+            $user->saldo -= $totalBayar;
+            $user->save();
+
+            // 3. Buat Pembayaran
+            $pembayaran = Pembayaran::create([
+                'metode' => 'transfer bank',
+                'detail_metode' => 'Saldo Aplikasi (Checkout API)',
+                'tanggal_bayar' => now(),
+                'jumlah_bayar' => $totalBayar,
+            ]);
+
+            // 4. Proses Transaksi
+            foreach ($cartItems as $item) {
+                $barang = $item->barang;
+                $tanggalSewa = Carbon::parse($item->tanggal_sewa);
+                $tanggalKembali = Carbon::parse($item->tanggal_kembali_rencana);
+                $durasiHari = max(1, $tanggalSewa->diffInDays($tanggalKembali));
                 $totalHarga = (float) $barang->harga_sewa * $item->jumlah * $durasiHari;
+
+                // Kurangi Stok
+                $barang->stok -= $item->jumlah;
+                if ($barang->stok <= 0) {
+                    $barang->status = 'tidak_tersedia';
+                }
+                $barang->save();
+
+                // Tambah saldo ke pemilik barang
+                $owner = $barang->user;
+                if ($owner) {
+                    $owner->saldo += $totalHarga;
+                    $owner->save();
+                }
+
+                $status = $tanggalSewa->startOfDay()->greaterThan(Carbon::today()) ? 'upcoming' : 'aktif';
 
                 $transaksi = TransaksiPenyewaan::create([
                     'user_id' => $user->id,
                     'barang_id' => $item->barang_id,
+                    'pembayaran_id' => $pembayaran->id,
                     'jumlah' => $item->jumlah,
                     'tanggal_sewa' => $item->tanggal_sewa,
                     'tanggal_kembali_rencana' => $item->tanggal_kembali_rencana,
-                    'status' => 'upcoming',
+                    'status' => $status,
                     'total_harga' => $totalHarga,
                     'jam_terlambat' => 0,
                     'total_denda' => 0,
@@ -80,7 +135,15 @@ class TransaksiService
 
         $totalBayar = $transaksis->sum('total_harga');
 
-        return DB::transaction(function () use ($transaksis, $paymentData, $totalBayar) {
+        if ($user->saldo < $totalBayar) {
+            throw new \Exception("Saldo Anda tidak mencukupi untuk melakukan pembayaran. Saldo saat ini: Rp " . number_format($user->saldo, 0, ',', '.'));
+        }
+
+        return DB::transaction(function () use ($user, $transaksis, $paymentData, $totalBayar) {
+            // Kurangi saldo user (penyewa)
+            $user->saldo -= $totalBayar;
+            $user->save();
+
             $pembayaran = Pembayaran::create([
                 'metode' => $paymentData['metode'],
                 'detail_metode' => $paymentData['detail_metode'],
@@ -104,6 +167,13 @@ class TransaksiService
                     $barang->status = 'tidak_tersedia';
                 }
                 $barang->save();
+
+                // Tambah saldo ke pemilik barang
+                $owner = $barang->user;
+                if ($owner) {
+                    $owner->saldo += $transaksi->total_harga;
+                    $owner->save();
+                }
 
                 $transaksi->pembayaran_id = $pembayaran->id;
                 $transaksi->status = 'aktif';
@@ -196,11 +266,28 @@ class TransaksiService
         $dendaKerusakan = $isTolak ? (float) $data['denda_kerusakan'] : 0;
 
         DB::transaction(function () use ($transaksi, $isTolak, $dendaKerusakan) {
+            $totalDendaAkhir = $transaksi->total_denda + $dendaKerusakan;
+
             $transaksi->update([
                 'status' => 'selesai',
                 'tanggal_verifikasipengembalian' => now(),
-                'total_denda' => $transaksi->total_denda + $dendaKerusakan
+                'total_denda' => $totalDendaAkhir
             ]);
+
+            // Jika ada denda (keterlambatan atau kerusakan), potong saldo penyewa, tambah ke owner
+            if ($totalDendaAkhir > 0) {
+                $renter = $transaksi->user;
+                if ($renter) {
+                    $renter->saldo -= $totalDendaAkhir;
+                    $renter->save();
+                }
+
+                $owner = $transaksi->barang->user;
+                if ($owner) {
+                    $owner->saldo += $totalDendaAkhir;
+                    $owner->save();
+                }
+            }
 
             if (!$isTolak) {
                 $barang = $transaksi->barang;

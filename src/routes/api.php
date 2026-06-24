@@ -15,6 +15,8 @@ Route::post('/verify-otp', [ApiAuthController::class, 'verifyOtp']);
 Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('/google-login', [ApiAuthController::class, 'googleLogin']); // Endpoint untuk Google Login dari Android
 Route::get('/katalog-publik', [App\Http\Controllers\Api\KatalogController::class, 'katalogPublik']);
+Route::get('/katalog-publik/{id}', [App\Http\Controllers\Api\KatalogController::class, 'showPublicDetail']);
+Route::get('/kategori', [App\Http\Controllers\Api\KatalogController::class, 'getKategori']);
 
 // Protected Routes for Mobile App (Requires Sanctum Token)
 Route::middleware('auth:sanctum')->group(function () {
@@ -24,13 +26,15 @@ Route::middleware('auth:sanctum')->group(function () {
             'user' => $request->user()
         ]);
     });
-    
+    Route::post('/transaksi/{id}/cancel', [App\Http\Controllers\Api\TransaksiController::class, 'cancel']);
+
+
     Route::post('/logout', [ApiAuthController::class, 'logout']);
-    
+
     // API Profil Pengguna
     Route::get('/profile', [App\Http\Controllers\Api\ProfileController::class, 'show']);
-    Route::post('/profile', [App\Http\Controllers\Api\ProfileController::class, 'update']);
-    
+    Route::match(['post', 'put'], '/profile', [App\Http\Controllers\Api\ProfileController::class, 'update']);
+
     // CRUD API untuk Katalog Barang (Khusus User tersebut)
     Route::apiResource('katalog', App\Http\Controllers\Api\KatalogController::class);
 
