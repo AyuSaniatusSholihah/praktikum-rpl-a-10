@@ -1250,6 +1250,13 @@
       body {
         background: #fff !important;
       }
+
+      /* Paksa browser cetak warna biru pada logo */
+      .receipt-logo span {
+        color: var(--blue) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
     }
 
     /* ── Footer ── */

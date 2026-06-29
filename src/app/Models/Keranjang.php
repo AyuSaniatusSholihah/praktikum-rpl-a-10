@@ -15,6 +15,8 @@ class Keranjang extends Model
         'jumlah',
         'tanggal_sewa',
         'tanggal_kembali_rencana',
+        'waktu_sewa',
+        'waktu_kembali_rencana',
     ];
 
     protected $casts = [

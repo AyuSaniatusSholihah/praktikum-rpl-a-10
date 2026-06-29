@@ -40,7 +40,12 @@ class CheckoutController extends Controller
             if (!Auth::check()) {
                 return redirect()->route('rentals')->with('error', 'Silakan pilih barang terlebih dahulu.');
             }
-            $cartItems = Keranjang::where('user_id', Auth::id())->with('barang')->get();
+            $query = Keranjang::where('user_id', Auth::id())->with('barang');
+            if ($request->has('items')) {
+                $itemIds = explode(',', $request->items);
+                $query->whereIn('id', $itemIds);
+            }
+            $cartItems = $query->get();
         }
 
         if ($cartItems->isEmpty()) {
@@ -106,7 +111,12 @@ class CheckoutController extends Controller
             if (!$isLoggedIn) {
                 return redirect()->route('rentals')->with('error', 'Silakan login untuk checkout dari keranjang.');
             }
-            $cartItems = Keranjang::where('user_id', Auth::id())->with('barang')->get();
+            $query = Keranjang::where('user_id', Auth::id())->with('barang');
+            if ($request->has('items')) {
+                $itemIds = explode(',', $request->items);
+                $query->whereIn('id', $itemIds);
+            }
+            $cartItems = $query->get();
         }
 
         if ($cartItems->isEmpty()) {

@@ -749,7 +749,8 @@
 .rec-row .val {
     color: #484848 !important;
     font-weight: 500 !important;
-    text-align: right;
+    text-align: left;
+    width: 95px;
     font-family: 'Poppins', sans-serif !important;
 }
 
@@ -800,6 +801,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
 }
 
 
@@ -1308,10 +1311,7 @@
     background: #E8F4FB;
     border-radius: 16px;
     padding: 28px;
-    /* ← sama semua sisinya */
     margin-top: 20px;
-    margin-left: calc(70px + 18px);
-    /* ← hapus margin-left */
 }
 
 .return-box-title {
@@ -1322,7 +1322,6 @@
     margin-bottom: 16px;
     margin-top: 24px;
     letter-spacing: 0.06em;
-    margin-left: calc(70px + 18px);
 }
 
 .return-box-bottom {

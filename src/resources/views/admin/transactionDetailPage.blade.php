@@ -103,8 +103,8 @@
               <div class="rec-row"><span class="lbl">Durasi Sewa</span><span class="val">{{ $durasi }} Hari</span></div>
               <div class="rec-row"><span class="lbl">Subtotal</span><span class="val">Rp {{ number_format($subtotal, 0, ',', '.') }}</span></div>
               <div class="rec-row"><span class="lbl">Jaminan</span><span class="val">Rp {{ number_format($jaminan, 0, ',', '.') }}</span></div>
-              <div class="rec-row total-row"><span class="lbl">Total</span><span class="val">Rp {{ number_format($transaksi->total_harga ?? 0, 0, ',', '.') }}</span></div>
-              <div class="rec-row denda"><span class="lbl">#Catatan Denda</span><span class="val">Rp {{ number_format(optional($transaksi->barang)->harga_denda_perjam ?? 0, 0, ',', '.') }}/jam</span></div>
+              <div class="rec-row total-row"><span class="lbl" style="font-weight:700;">Total</span><span class="val">Rp {{ number_format($transaksi->total_harga ?? 0, 0, ',', '.') }}</span></div>
+              <div class="rec-row denda"><span class="lbl">#Catatan Denda Pengembalian</span><span class="val">Rp {{ number_format(optional($transaksi->barang)->harga_denda_perjam ?? 0, 0, ',', '.') }}/jam</span></div>
             </div>
             </div>
 

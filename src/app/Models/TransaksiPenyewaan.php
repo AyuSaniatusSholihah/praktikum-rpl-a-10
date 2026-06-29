@@ -30,7 +30,7 @@ class TransaksiPenyewaan extends Model
     protected $casts = [
         'tanggal_sewa' => 'date',
         'tanggal_kembali_rencana' => 'date',
-        'tanggal_kembali_aktual' => 'date',
+        'tanggal_kembali_aktual' => 'datetime',
         'tanggal_verifikasipengembalian' => 'datetime',
     ];
 
