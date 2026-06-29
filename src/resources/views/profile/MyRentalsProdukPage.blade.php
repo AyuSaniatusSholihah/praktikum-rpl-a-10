@@ -40,7 +40,7 @@
 
     <div class="dash-content-card" style="position:relative;">
         <div class="profile-avatar" style="position:absolute; top:24px; right:32px; z-index:2;">
-            <img src="{{ $fotoProfil }}" alt="Profile" onerror="this.style.display='none'"/>
+            <img src="{{ $fotoProfil }}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'"/>
         </div>
 
         <h2 class="dash-section-title">My Rentals</h2>
@@ -161,3 +161,4 @@
     <x-sewain-confirm />
 
 </x-profile-layout>
+

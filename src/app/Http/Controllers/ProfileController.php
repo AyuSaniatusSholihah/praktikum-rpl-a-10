@@ -314,9 +314,11 @@ class ProfileController extends Controller
             $user->save();
         }
 
-        // Barang kembali tersedia
+        // Barang kembali tersedia — kembalikan stok sesuai jumlah yang disewa
         if ($trx->barang) {
-            $trx->barang->update(['status' => 'tersedia']);
+            $trx->barang->stok += $trx->jumlah;
+            $trx->barang->status = ($trx->barang->stok > 0) ? 'tersedia' : 'tidak_tersedia';
+            $trx->barang->save();
         }
 
         $msg = 'Pengembalian disetujui. Transaksi selesai & barang kembali tersedia.';

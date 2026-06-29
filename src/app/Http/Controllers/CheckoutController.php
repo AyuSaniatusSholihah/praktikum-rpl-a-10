@@ -62,17 +62,8 @@ class CheckoutController extends Controller
             }
         }
 
-        $cartTotal = 0;
-        foreach ($cartItems as $item) {
-            $days = Carbon::parse($item->tanggal_sewa)->diffInDays(Carbon::parse($item->tanggal_kembali_rencana));
-            if ($days == 0) $days = 1;
-            $item->duration_days = $days;
-            $harga    = $item->barang->harga_sewa ?? 0;
-            $subtotal = $harga * $item->jumlah * $days;
-            $jaminan  = (int) round($harga * $item->jumlah / 2);
-            $shipping = 0; // Default is COD
-            $cartTotal += $subtotal + $jaminan + $shipping;
-        }
+        $cartTotal = $this->calculateCartTotal($cartItems, 'cod'); // Default COD untuk tampilan keranjang
+
 
         return view('checkout.CheckoutPage', compact('cartItems', 'cartTotal'))->with('barangId', $id);
     }
@@ -133,74 +124,30 @@ class CheckoutController extends Controller
         }
 
         // ---- Cek stok ----
-        foreach ($cartItems as $item) {
-            $barang = $item->barang;
-            if (!$barang || $barang->stok < $item->jumlah) {
-                $nama = $barang ? $barang->nama_barang : 'Barang';
-                $stok = $barang ? $barang->stok : 0;
-                return redirect()->back()->with('error', "Stok barang '{$nama}' tidak mencukupi. Stok tersedia: {$stok}.");
-            }
-        }
+        $this->verifyStockAvailability($cartItems);
 
         // ---- Hitung total ----
-        $cartTotal = 0;
-        foreach ($cartItems as $item) {
-            $days = Carbon::parse($item->tanggal_sewa)->diffInDays(Carbon::parse($item->tanggal_kembali_rencana));
-            if ($days == 0) $days = 1;
-            $harga    = $item->barang->harga_sewa ?? 0;
-            $subtotal = $harga * $item->jumlah * $days;
-            $jaminan  = (int) round($harga * $item->jumlah / 2);
-            $shipping = ($request->shipping_method === 'delivery') ? 20000 : 0;
-            $cartTotal += $subtotal + $jaminan + $shipping;
-        }
+        $cartTotal = $this->calculateCartTotal($cartItems, $request->shipping_method);
 
         // ---- Cek dan Kurangi Saldo Pembeli ----
         if ($isLoggedIn) {
-            /** @var \App\Models\User $user */
-            $user = Auth::user();
-            if ($user->saldo < $cartTotal) {
-                return redirect()->back()->with('error', 'Saldo Anda tidak mencukupi untuk melakukan checkout. Saldo saat ini: Rp ' . number_format($user->saldo, 0, ',', '.'));
-            }
-            // Kurangi saldo
-            $user->saldo -= $cartTotal;
-            $user->save();
+            $this->processUserBalancePayment(Auth::user(), $cartTotal);
         }
 
         // ---- Mapping metode pembayaran ----
-        $rawMetode   = $request->payment_method;
-        $metode      = 'transfer bank';
-        $detailMetode = $rawMetode;
-
-        if ($rawMetode === 'qris') {
-            $metode      = 'qris';
-            $detailMetode = 'QRIS';
-        } elseif ($rawMetode === 'ewallet') {
-            $metode      = 'e-wallet';
-            $detailMetode = 'E-Wallet';
-        } elseif ($rawMetode === 'transfer') {
-            $metode      = 'transfer bank';
-            $detailMetode = 'Transfer Bank';
-        } elseif ($rawMetode === 'credit' || $rawMetode === 'Credit Card') {
-            $metode      = 'transfer bank';
-            $detailMetode = 'Credit Card';
-        }
+        $paymentDetails = $this->mapPaymentMethod($request->payment_method);
 
         // ---- Buat Pembayaran ----
         $pembayaran = Pembayaran::create([
-            'metode'       => $metode,
-            'detail_metode'=> $detailMetode,
+            'metode'       => $paymentDetails['metode'],
+            'detail_metode'=> $paymentDetails['detail_metode'],
             'tanggal_bayar'=> Carbon::now(),
             'jumlah_bayar' => $cartTotal,
         ]);
 
         // ---- Nama customer ----
-        if ($isLoggedIn) {
-            $firstName = Auth::user()->name;
-            $lastName  = '';
-        } else {
-            $firstName = $request->first_name;
-            $lastName  = $request->last_name ?? '';
-        }
+        $firstName = $isLoggedIn ? Auth::user()->name : $request->first_name;
+        $lastName  = $isLoggedIn ? '' : ($request->last_name ?? '');
 
         // ---- Buat Order ----
         $order = Order::create([
@@ -217,74 +164,19 @@ class CheckoutController extends Controller
 
         // ---- Activity Log (hanya kalau login) ----
         if ($isLoggedIn) {
-            ActivityLog::create([
-                'user_id'     => Auth::id(),
-                'action'      => 'order_created',
-                'description' => 'Order created with total: ' . $cartTotal,
-            ]);
-            ActivityLog::create([
-                'user_id'     => Auth::id(),
-                'action'      => 'payment_made',
-                'description' => 'Payment for cart total: ' . $cartTotal,
-            ]);
+            ActivityLog::create(['user_id' => Auth::id(), 'action' => 'order_created', 'description' => 'Order created with total: ' . $cartTotal]);
+            ActivityLog::create(['user_id' => Auth::id(), 'action' => 'payment_made', 'description' => 'Payment for cart total: ' . $cartTotal]);
         }
 
         // ---- Buat TransaksiPenyewaan ----
-        $transaksiIds = [];
-        foreach ($cartItems as $item) {
-            $days     = Carbon::parse($item->tanggal_sewa)->diffInDays(Carbon::parse($item->tanggal_kembali_rencana));
-            if ($days == 0) $days = 1;
-            $subtotal = ($item->barang->harga_sewa ?? 0) * $item->jumlah * $days;
-
-            // Kurangi stok dan update status barang
-            $barang = $item->barang;
-            if ($barang) {
-                $barang->stok -= $item->jumlah;
-                if ($barang->stok <= 0) {
-                    $barang->status = 'tidak_tersedia';
-                }
-                $barang->save();
-
-                // Tambah saldo ke pemilik barang
-                $owner = $barang->user;
-                if ($owner) {
-                    $owner->saldo += $subtotal;
-                    $owner->save();
-                }
-            }
-
-            $tanggalSewa = Carbon::parse($item->tanggal_sewa)->startOfDay();
-            $status      = $tanggalSewa->greaterThan(Carbon::today()) ? 'upcoming' : 'aktif';
-
-            $trx = TransaksiPenyewaan::create([
-                'user_id'                => $isLoggedIn ? Auth::id() : null,
-                'barang_id'              => $item->barang_id ?? $item->barang->id,
-                'pembayaran_id'          => $pembayaran->id,
-                'jumlah'                 => $item->jumlah,
-                'tanggal_sewa'           => $item->tanggal_sewa,
-                'tanggal_kembali_rencana'=> $item->tanggal_kembali_rencana,
-                'waktu_sewa'             => $item->waktu_sewa ?? '08:00:00',
-                'waktu_kembali_rencana'  => $item->waktu_kembali_rencana ?? '08:00:00',
-                'status'                 => $status,
-                'total_harga'            => $subtotal,
-            ]);
-
-            $transaksiIds[] = $trx->id;
-
-            // Hapus dari keranjang kalau user login
-            if ($item instanceof Keranjang) {
-                $item->delete();
-            }
-        }
+        $transaksiIds = $this->processCartItemsAndCreateTransactions($cartItems, $pembayaran->id, $isLoggedIn);
 
         // Simpan pembayaran_id di session supaya halaman konfirmasi bisa ditampilkan ke guest
         session(['last_pembayaran_id' => $pembayaran->id, 'last_order_id' => $order->id]);
 
         // ---- Kirim Email Receipt ----
         try {
-            $transaksis = TransaksiPenyewaan::whereIn('id', $transaksiIds)
-                ->with(['barang.user'])
-                ->get();
+            $transaksis = TransaksiPenyewaan::whereIn('id', $transaksiIds)->with(['barang.user'])->get();
             Mail::to($request->email)->send(new OrderReceiptMail($order, $pembayaran, $transaksis));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("Failed to send receipt email: " . $e->getMessage());
@@ -297,11 +189,7 @@ class CheckoutController extends Controller
     private function makeTempCart($id, Request $request): \Illuminate\Support\Collection
     {
         $barang = Barang::find($id);
-        if (!$barang) {
-            return collect();
-        }
-        // Cegah owner checkout barangnya sendiri
-        if (Auth::check() && $barang->user_id === Auth::id()) {
+        if (!$barang || (Auth::check() && $barang->user_id === Auth::id())) {
             return collect();
         }
         return collect([
@@ -315,5 +203,111 @@ class CheckoutController extends Controller
                 'waktu_kembali_rencana'  => $request->input('waktu_kembali_rencana', '08:00:00'),
             ]
         ]);
+    }
+
+    private function calculateItemSubtotal($item)
+    {
+        $days = Carbon::parse($item->tanggal_sewa)->diffInDays(Carbon::parse($item->tanggal_kembali_rencana));
+        if ($days == 0) $days = 1;
+        $harga = $item->barang->harga_sewa ?? 0;
+        $subtotal = $harga * $item->jumlah * $days;
+        return ['days' => $days, 'subtotal' => $subtotal];
+    }
+
+    private function calculateCartTotal($cartItems, $shippingMethod)
+    {
+        $cartTotal = 0;
+        foreach ($cartItems as $item) {
+            $calc = $this->calculateItemSubtotal($item);
+            $jaminan  = (int) round(($item->barang->harga_sewa ?? 0) * $item->jumlah / 2);
+            $shipping = ($shippingMethod === 'delivery') ? 20000 : 0;
+            $cartTotal += $calc['subtotal'] + $jaminan + $shipping;
+        }
+        return $cartTotal;
+    }
+
+    private function verifyStockAvailability($cartItems)
+    {
+        foreach ($cartItems as $item) {
+            $barang = $item->barang;
+            if (!$barang || $barang->stok < $item->jumlah) {
+                $nama = $barang ? $barang->nama_barang : 'Barang';
+                $stok = $barang ? $barang->stok : 0;
+                throw new \Illuminate\Http\Exceptions\HttpResponseException(redirect()->back()->with('error', "Stok barang '{$nama}' tidak mencukupi. Stok tersedia: {$stok}."));
+            }
+        }
+    }
+
+    private function processUserBalancePayment($user, $cartTotal)
+    {
+        if ($user->saldo < $cartTotal) {
+            throw new \Illuminate\Http\Exceptions\HttpResponseException(redirect()->back()->with('error', 'Saldo Anda tidak mencukupi untuk melakukan checkout. Saldo saat ini: Rp ' . number_format($user->saldo, 0, ',', '.')));
+        }
+        $user->saldo -= $cartTotal;
+        $user->save();
+    }
+
+    private function mapPaymentMethod($rawMetode)
+    {
+        $metode = 'transfer bank';
+        $detailMetode = $rawMetode;
+
+        if ($rawMetode === 'qris') {
+            $metode = 'qris';
+            $detailMetode = 'QRIS';
+        } elseif ($rawMetode === 'ewallet') {
+            $metode = 'e-wallet';
+            $detailMetode = 'E-Wallet';
+        } elseif ($rawMetode === 'transfer') {
+            $detailMetode = 'Transfer Bank';
+        } elseif (in_array(strtolower($rawMetode), ['credit', 'credit card'])) {
+            $detailMetode = 'Credit Card';
+        }
+
+        return ['metode' => $metode, 'detail_metode' => $detailMetode];
+    }
+
+    private function processCartItemsAndCreateTransactions($cartItems, $pembayaranId, $isLoggedIn)
+    {
+        $transaksiIds = [];
+        foreach ($cartItems as $item) {
+            $calc = $this->calculateItemSubtotal($item);
+            $subtotal = $calc['subtotal'];
+
+            $barang = $item->barang;
+            if ($barang) {
+                $barang->stok -= $item->jumlah;
+                if ($barang->stok <= 0) $barang->status = 'tidak_tersedia';
+                $barang->save();
+
+                if ($owner = $barang->user) {
+                    $owner->saldo += $subtotal;
+                    $owner->save();
+                }
+            }
+
+            $tanggalSewa = Carbon::parse($item->tanggal_sewa)->startOfDay();
+            $status = $tanggalSewa->greaterThan(Carbon::today()) ? 'upcoming' : 'aktif';
+
+            $trx = TransaksiPenyewaan::create([
+                'user_id'                => $isLoggedIn ? Auth::id() : null,
+                'barang_id'              => $item->barang_id ?? $item->barang->id,
+                'pembayaran_id'          => $pembayaranId,
+                'jumlah'                 => $item->jumlah,
+                'tanggal_sewa'           => $item->tanggal_sewa,
+                'tanggal_kembali_rencana'=> $item->tanggal_kembali_rencana,
+                'waktu_sewa'             => $item->waktu_sewa ?? '08:00:00',
+                'waktu_kembali_rencana'  => $item->waktu_kembali_rencana ?? '08:00:00',
+                'status'                 => $status,
+                'total_harga'            => $subtotal,
+            ]);
+
+            $transaksiIds[] = $trx->id;
+
+            if ($item instanceof Keranjang) {
+                $item->delete();
+            }
+        }
+        return $transaksiIds;
     }
 }
