@@ -2,11 +2,15 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+    // RefreshDatabase dibutuhkan agar migration in-memory SQLite dijalankan
+    // sebelum test ini mengakses route yang query database.
+    use RefreshDatabase;
+
     /**
      * A basic test example.
      */
