@@ -9,18 +9,26 @@ return new class extends Migration
     /**
      * Tambahkan kolom additional_information (informasi tambahan produk)
      * untuk ditampilkan di tab "Additional Information" di halaman produk.
+     *
+     * Catatan: Kolom ini sudah ditambahkan di migration fotoproduk (2026_06_07_090000).
+     * Guard `hasColumn` mencegah error "duplicate column" saat test suite berjalan
+     * dengan SQLite in-memory yang menjalankan seluruh migration fresh dari awal.
      */
     public function up(): void
     {
         Schema::table('barangs', function (Blueprint $table) {
-            $table->text('additional_information')->nullable()->after('deskripsi');
+            if (!Schema::hasColumn('barangs', 'additional_information')) {
+                $table->text('additional_information')->nullable()->after('deskripsi');
+            }
         });
     }
 
     public function down(): void
     {
         Schema::table('barangs', function (Blueprint $table) {
-            $table->dropColumn('additional_information');
+            if (Schema::hasColumn('barangs', 'additional_information')) {
+                $table->dropColumn('additional_information');
+            }
         });
     }
 };
