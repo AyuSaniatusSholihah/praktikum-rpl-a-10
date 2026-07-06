@@ -195,6 +195,7 @@
                             <div class="form-group">
                                 <label for="jaminan">Harga Jaminan (Rp)</label>
                                 <input type="number" name="harga_jaminan" id="jaminan" placeholder="ex: 50000" value="{{ old('harga_jaminan') }}" required/>
+                                <small style="color: #8A8A8A; font-size: 12px; margin-top: 4px; display: block;">*Note: Sistem akan otomatis menghitung jaminan sebesar setengah (1/2) dari total harga sewa pada saat checkout.</small>
                             </div>
 
                             <div class="form-group">

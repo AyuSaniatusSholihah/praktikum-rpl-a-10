@@ -33,6 +33,9 @@
     <form id="checkoutForm" action="{{ route('checkout.post') }}" method="POST">
         @csrf
         <input type="hidden" name="shipping_method" id="shipping_method" value="cod" />
+        @if(request()->has('items'))
+            <input type="hidden" name="items" value="{{ request('items') }}" />
+        @endif
         @if(isset($barangId) && $cartItems->isNotEmpty())
             <input type="hidden" name="single_barang_id" value="{{ $barangId }}" />
             <input type="hidden" name="jumlah" value="{{ $cartItems->first()->jumlah }}" />

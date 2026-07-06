@@ -110,7 +110,7 @@
             <strong class="amount">Rp {{ number_format($cartTotal, 0, ',', '.') }}</strong>
         </div>
         <div class="action-group">
-            <a href="{{ route('checkout') }}" class="btn-checkout" onclick="return goCheckout()">Checkout</a>
+            <a href="{{ route('checkout') }}" class="btn-checkout" onclick="return goCheckout(event)">Checkout</a>
             <button class="view-cart-link">View Cart</button>
         </div>
       </div>
@@ -232,13 +232,25 @@
     }
 
 
-    function goCheckout() {
+    function goCheckout(e) {
+      if (e) e.preventDefault();
       const checked = document.querySelectorAll('.item-check:checked');
       if (checked.length === 0) {
         alert('Pilih minimal 1 item untuk checkout!');
         return false;
       }
-      return true;
+
+      let ids = [];
+      checked.forEach(cb => {
+          const row = cb.closest('tr');
+          if (row && row.dataset.id) {
+              ids.push(row.dataset.id);
+          }
+      });
+
+      const url = "{{ route('checkout') }}" + "?items=" + ids.join(',');
+      window.location.href = url;
+      return false;
     }
     </script>
 </x-slot:scripts>
