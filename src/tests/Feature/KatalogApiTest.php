@@ -143,7 +143,7 @@ class KatalogApiTest extends TestCase
         $this->assertEquals($this->user->id, $barang->user_id);
         
         // Cek apakah file foto benar-benar tersimpan di storage
-        Storage::disk('public')->assertExists($barang->foto_barang);
+        $this->assertTrue(Storage::disk('public')->exists($barang->foto_barang));
     }
 
     /**
@@ -252,7 +252,7 @@ class KatalogApiTest extends TestCase
         ]);
 
         // Pastikan foto lama ada
-        Storage::disk('public')->assertExists($barang->foto_barang);
+        $this->assertTrue(Storage::disk('public')->exists($barang->foto_barang));
         $oldPhotoPath = $barang->foto_barang;
 
         $newPhoto = UploadedFile::fake()->image('foto_baru.jpg');
@@ -275,8 +275,8 @@ class KatalogApiTest extends TestCase
         $this->assertEquals(75000, $barang->harga_sewa);
 
         // Pastikan foto lama sudah dihapus dan foto baru ada
-        Storage::disk('public')->assertMissing($oldPhotoPath);
-        Storage::disk('public')->assertExists($barang->foto_barang);
+        $this->assertFalse(Storage::disk('public')->exists($oldPhotoPath));
+        $this->assertTrue(Storage::disk('public')->exists($barang->foto_barang));
     }
 
     /**
@@ -303,7 +303,7 @@ class KatalogApiTest extends TestCase
             'status' => 'tersedia'
         ]);
 
-        Storage::disk('public')->assertExists($barang->foto_barang);
+        $this->assertTrue(Storage::disk('public')->exists($barang->foto_barang));
         $photoPath = $barang->foto_barang;
 
         $response = $this->deleteJson("/api/katalog/{$barang->id}");
@@ -316,6 +316,6 @@ class KatalogApiTest extends TestCase
         $this->assertDatabaseMissing('barangs', ['id' => $barang->id]);
 
         // Pastikan foto di storage juga dihapus
-        Storage::disk('public')->assertMissing($photoPath);
+        $this->assertFalse(Storage::disk('public')->exists($photoPath));
     }
 }
