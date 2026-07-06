@@ -155,7 +155,7 @@ class ProfileController extends Controller
         // Tandai pengembalian sedang menunggu verifikasi owner
         $trx->update([
             'status'                 => 'tunggu verifikasi pengembalian',
-            'tanggal_kembali_aktual' => $trx->tanggal_kembali_aktual ?? now(),
+            'tanggal_kembali_aktual' => now(), // selalu gunakan waktu aktual saat user klik kirim
             'foto_buktipengembalian' => $fotoPath,
         ]);
 
@@ -289,9 +289,23 @@ class ProfileController extends Controller
             'total_denda'                    => $totalDenda,
         ]);
 
+        // Hitung jaminan yang perlu dikembalikan ke penyewa (rumus sama seperti saat checkout)
+        $hargaSewa = $trx->barang->harga_sewa ?? 0;
+        $jumlah    = $trx->jumlah ?? 1;
+        $jaminan   = (int) round($hargaSewa * $jumlah / 2);
+
+        // Kembalikan jaminan ke saldo penyewa (Pilihan B: jaminan ditahan sistem, dikembalikan saat selesai)
+        if ($jaminan > 0 && $trx->user_id) {
+            $penyewa = \App\Models\User::find($trx->user_id);
+            if ($penyewa) {
+                $penyewa->saldo += $jaminan;
+                $penyewa->save();
+            }
+        }
+
         // Potong denda dari saldo penyewa dan tambahkan ke owner
         if ($totalDenda > 0 && $trx->user_id) {
-            $penyewa = \App\Models\User::find($trx->user_id);
+            $penyewa = $penyewa ?? \App\Models\User::find($trx->user_id);
             if ($penyewa) {
                 $penyewa->saldo -= $totalDenda;
                 $penyewa->save();
@@ -308,6 +322,7 @@ class ProfileController extends Controller
         }
 
         $msg = 'Pengembalian disetujui. Transaksi selesai & barang kembali tersedia.';
+        $msg .= ' Jaminan Rp ' . number_format($jaminan, 0, ',', '.') . ' telah dikembalikan ke saldo penyewa.';
         if ($totalDenda > 0) {
             $msg .= ' Penyewa terlambat ' . $jamTerlambat . ' jam penuh. Denda Rp ' . number_format($totalDenda, 0, ',', '.') . ' otomatis ditambahkan ke saldo Anda.';
         }

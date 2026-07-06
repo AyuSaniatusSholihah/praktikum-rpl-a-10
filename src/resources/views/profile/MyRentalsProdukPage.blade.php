@@ -33,6 +33,7 @@
     }
     $hargaPerHari = $trx->barang->harga_sewa ?? 0;
     $subtotal     = $hargaPerHari * $durasi;
+    $jaminan      = ($trx->barang->harga_jaminan ?? 0);
 @endphp
 
 <x-profile-layout active="rentals" pageTitle="Detail Sewa">
@@ -66,7 +67,7 @@
             <div class="rd-field"><label>User</label><div class="rd-value">{{ $user->name }}</div></div>
             <div class="rd-field"><label>Denda</label><div class="rd-value">-</div></div>
             <div class="rd-field"><label>Tanggal Sewa</label><div class="rd-value">{{ optional($trx->tanggal_sewa)->format('d F Y') ?? '-' }}, {{ $trx->waktu_sewa ? \Carbon\Carbon::parse($trx->waktu_sewa)->format('H.i') : '08.00' }} WIB</div></div>
-            <div class="rd-field"><label>Tanggal Pengambilan</label><div class="rd-value">{{ optional($trx->tanggal_kembali_rencana)->format('d F Y') ?? '-' }}, {{ $trx->waktu_kembali_rencana ? \Carbon\Carbon::parse($trx->waktu_kembali_rencana)->format('H.i') : '08.00' }} WIB</div></div>
+            <div class="rd-field"><label>Tanggal Pengembalian</label><div class="rd-value">{{ optional($trx->tanggal_kembali_rencana)->format('d F Y') ?? '-' }}, {{ $trx->waktu_kembali_rencana ? \Carbon\Carbon::parse($trx->waktu_kembali_rencana)->format('H.i') : '08.00' }} WIB</div></div>
         </div>
 
         <div id="reviews-section">
@@ -112,9 +113,10 @@
                     <div class="rec-rows">
                         <div class="rec-row"><span class="lbl">Durasi Sewa</span><span class="val">{{ $durasi }} Hari</span></div>
                         <div class="rec-row"><span class="lbl">Subtotal</span><span class="val">Rp {{ number_format($subtotal, 0, ',', '.') }}</span></div>
-                        <div class="rec-row"><span class="lbl">Shipping</span><span class="val">Rp 0</span></div>
+                        <div class="rec-row"><span class="lbl">Shipping</span><span class="val">-</span></div>
+                        <div class="rec-row"><span class="lbl">Jaminan</span><span class="val">Rp {{ number_format($jaminan, 0, ',', '.') }}</span></div>
                         <div class="rec-row total-row"><span class="lbl" style="font-weight:700;">Total</span><span class="val">Rp {{ number_format($trx->total_harga ?? $subtotal, 0, ',', '.') }}</span></div>
-                        <div class="rec-row denda"><span class="lbl">#Catatan Denda</span><span class="val">Rp 15.000/jam</span></div>
+                        <div class="rec-row denda"><span class="lbl">#Catatan Denda Pengembalian</span><span class="val">Rp {{ number_format(optional($trx->barang)->harga_denda_perjam ?? 15000, 0, ',', '.') }}/jam</span></div>
                     </div>
 
                     @if($status === 'aktif')

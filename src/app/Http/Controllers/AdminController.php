@@ -81,12 +81,11 @@ class AdminController extends Controller
 
         $ownerIds = $this->ownerIds();
 
-        // Total Saldo User = total semua transaksi penyewaan (pengeluaran penyewa)
-        $totalSaldoUser  = (float) TransaksiPenyewaan::sum('total_harga');
-        // Total Saldo Owner = total pemasukan owner (transaksi barang-barang milik owner)
-        $totalSaldoOwner = (float) TransaksiPenyewaan::join('barangs', 'transaksi_penyewaans.barang_id', '=', 'barangs.id')
-            ->whereIn('barangs.user_id', $ownerIds)
-            ->sum('transaksi_penyewaans.total_harga');
+        // Total Saldo User = total saldo/dompet seluruh user (baik owner maupun bukan)
+        $totalSaldoUser  = (float) User::where('role', 'user')->sum('saldo');
+        
+        // Total Saldo Owner = total saldo/dompet user (yang punya minimal 1 barang / bertindak sebagai owner)
+        $totalSaldoOwner = (float) User::where('role', 'user')->whereIn('id', $ownerIds)->sum('saldo');
 
         $walletByMethod = $this->totalPerMetode();
 

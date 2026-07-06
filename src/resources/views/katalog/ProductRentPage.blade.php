@@ -795,10 +795,14 @@
                 dateEndEl.value = this.value;
                 document.getElementById('displayEnd').textContent = formatDate(this.value);
             }
+            if (window.pickerStart) window.pickerStart.validate();
+            if (window.pickerEnd) window.pickerEnd.validate();
             syncTimeIfDifferentDate();
         });
         document.getElementById('dateEnd').addEventListener('change', function () {
             document.getElementById('displayEnd').textContent = formatDate(this.value);
+            if (window.pickerStart) window.pickerStart.validate();
+            if (window.pickerEnd) window.pickerEnd.validate();
             syncTimeIfDifferentDate();
         });
 
@@ -815,29 +819,96 @@ function buildTimePicker(hourColId, minColId, dropdownId, displayId, defaultH, d
     const minCol  = document.getElementById(minColId);
     let selH = defaultH, selM = defaultM;
 
-    for (let h = 0; h < 24; h++) {
-        const opt = document.createElement('div');
-        opt.className = 'time-opt' + (h === selH ? ' selected' : '');
-        opt.textContent = String(h).padStart(2, '0');
-        opt.addEventListener('click', () => {
-            selH = h;
-            hourCol.querySelectorAll('.time-opt').forEach(o => o.classList.remove('selected'));
-            opt.classList.add('selected');
-            updateDisplay();
-        });
-        hourCol.appendChild(opt);
+    function getMinTime() {
+        let minH = 0, minM = 0;
+        let ds = document.getElementById('dateStart');
+        let de = document.getElementById('dateEnd');
+        let targetDateVal = (displayId === 'displayTimeEnd' && de) ? de.value : (ds ? ds.value : '');
+
+        if (targetDateVal) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const todayStr = `${yyyy}-${mm}-${dd}`;
+            if (targetDateVal === todayStr) {
+                minH = today.getHours();
+                minM = today.getMinutes();
+            }
+        }
+
+        if (displayId === 'displayTimeEnd' && ds && de && ds.value === de.value) {
+            const startStr = document.getElementById('displayTimeStart').textContent;
+            if (startStr) {
+                const startH = parseInt(startStr.split(':')[0]);
+                const startM = parseInt(startStr.split(':')[1]);
+                if (startH > minH || (startH === minH && startM > minM)) {
+                    minH = startH;
+                    minM = startM;
+                }
+            }
+        }
+        return { h: minH, m: minM };
     }
-    for (let m = 0; m < 60; m += 5) {
-        const opt = document.createElement('div');
-        opt.className = 'time-opt' + (m === selM ? ' selected' : '');
-        opt.textContent = String(m).padStart(2, '0');
-        opt.addEventListener('click', () => {
-            selM = m;
-            minCol.querySelectorAll('.time-opt').forEach(o => o.classList.remove('selected'));
-            opt.classList.add('selected');
+
+    function checkAndSnapTime() {
+        let minT = getMinTime();
+        if (selH < minT.h || (selH === minT.h && selM < minT.m)) {
+            selH = minT.h;
+            selM = Math.ceil(minT.m / 5) * 5;
+            if (selM >= 60) {
+                selM = 0;
+                selH += 1;
+            }
+            if (selH > 23) selH = 23;
             updateDisplay();
-        });
-        minCol.appendChild(opt);
+        }
+    }
+
+    function renderOptions() {
+        hourCol.innerHTML = '';
+        minCol.innerHTML = '';
+        let minT = getMinTime();
+        
+        for (let h = 0; h < 24; h++) {
+            const opt = document.createElement('div');
+            let isDisabled = h < minT.h;
+            opt.className = 'time-opt' + (h === selH ? ' selected' : '');
+            opt.textContent = String(h).padStart(2, '0');
+            if (isDisabled) {
+                opt.style.opacity = '0.3';
+                opt.style.pointerEvents = 'none';
+            } else {
+                opt.addEventListener('click', () => {
+                    selH = h;
+                    if (selH === minT.h && selM < minT.m) {
+                         selM = Math.ceil(minT.m / 5) * 5;
+                         if (selM >= 60) { selM = 0; selH += 1; }
+                         if (selH > 23) selH = 23;
+                    }
+                    renderOptions();
+                    updateDisplay();
+                });
+            }
+            hourCol.appendChild(opt);
+        }
+        for (let m = 0; m < 60; m += 5) {
+            const opt = document.createElement('div');
+            let isDisabled = (selH === minT.h && m < minT.m);
+            opt.className = 'time-opt' + (m === selM ? ' selected' : '');
+            opt.textContent = String(m).padStart(2, '0');
+            if (isDisabled) {
+                opt.style.opacity = '0.3';
+                opt.style.pointerEvents = 'none';
+            } else {
+                opt.addEventListener('click', () => {
+                    selM = m;
+                    renderOptions();
+                    updateDisplay();
+                });
+            }
+            minCol.appendChild(opt);
+        }
     }
 
     function updateDisplay() {
@@ -845,9 +916,28 @@ function buildTimePicker(hourColId, minColId, dropdownId, displayId, defaultH, d
             String(selH).padStart(2,'0') + ':' + String(selM).padStart(2,'0') + ' WIB';
         if (onChange) onChange(selH, selM);
     }
+    
+    checkAndSnapTime(); // check on initialization
+    renderOptions();
+    
+    // Trigger validation and re-render when dropdown is opened to update disabled states
+    const triggerBtn = document.getElementById(displayId.replace('display', 'time').replace('Time', '')); // timeStartTrigger / timeEndTrigger
+    if (triggerBtn) {
+        triggerBtn.addEventListener('click', () => {
+            checkAndSnapTime();
+            renderOptions();
+        });
+    }
+
+    return {
+        validate: () => {
+            checkAndSnapTime();
+            renderOptions();
+        }
+    };
 }
 
-buildTimePicker('hoursStart', 'minsStart', 'dropdownTimeStart', 'displayTimeStart', 8, 0, (h, m) => {
+window.pickerStart = buildTimePicker('hoursStart', 'minsStart', 'dropdownTimeStart', 'displayTimeStart', 8, 0, (h, m) => {
     // Sinkronkan jam selesai dengan jam mulai JIKA tanggalnya berbeda
     const ds = document.getElementById('dateStart').value;
     const de = document.getElementById('dateEnd').value;
@@ -856,7 +946,7 @@ buildTimePicker('hoursStart', 'minsStart', 'dropdownTimeStart', 'displayTimeStar
             String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ' WIB';
     }
 });
-buildTimePicker('hoursEnd',   'minsEnd',   'dropdownTimeEnd',   'displayTimeEnd',   8, 0);
+window.pickerEnd = buildTimePicker('hoursEnd',   'minsEnd',   'dropdownTimeEnd',   'displayTimeEnd',   8, 0);
 
 function toggleDropdown(dropId) {
     document.querySelectorAll('.time-dropdown').forEach(d => {
