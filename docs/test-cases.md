@@ -142,6 +142,46 @@ Daftar bug krusial yang ditemukan selama rangkaian eksekusi praktikum pengujian 
 
 ---
 
+## 🤖 5. Pengujian Otomatis (Praktikum P10: Unit Testing)
+
+> **Skenario:** Pengujian unit testing otomatis menggunakan PHPUnit dengan pola AAA (Arrange-Act-Assert) untuk menguji class helper bisnis kritis dan metode logic di model secara terisolasi.
+
+### Informasi Pengujian P10
+* **Framework:** PHPUnit (Laravel built-in)
+* **Database Testing:** SQLite in-memory (`:memory:`)
+* **Total Unit Test:** 31 Passed (42 assertions)
+* **File Laporan Detail:** [docs/laporan-p10-unit-testing.md](./laporan-p10-unit-testing.md)
+
+### Ringkasan Unit Test (Pola AAA)
+Sebanyak 31 unit test berhasil ditulis dan lulus 100% untuk memverifikasi logika kritis pada helper kalkulator, model transaksi, dan model barang:
+
+| Komponen / Class | Deskripsi Pengujian | Jumlah Test Case | Status |
+|---|---|---|---|
+| **TransaksiCalculator** | Logika kalkulasi bisnis finansial (durasi sewa, total harga, denda keterlambatan dengan pembulatan, refund pembatalan). | 14 Test Cases | ✅ Pass |
+| **TransaksiPenyewaan** | Mapping status transaksi sewa ke label visual dan class CSS badge pada UI. | 8 Test Cases | ✅ Pass |
+| **Barang** | Pengumpulan foto valid (filter null), label status, dan getter nama kota singkat (short location). | 9 Test Cases | ✅ Pass |
+
+### Hasil Run Terminal (`php artisan test --testsuite=Unit`)
+```bash
+   PASS  Tests\Unit\TransaksiCalculatorTest
+  ✓ hitung durasi hari harus mengembalikan 1 untuk sewa sehari penuh
+  ✓ hitung durasi hari harus mengembalikan durasi tepat untuk sewa normal
+  ... (14 passed)
+
+   PASS  Tests\Unit\TransaksiPenyewaanMethodTest
+  ✓ status label returns Active Rent for status aktif
+  ... (8 passed)
+
+   PASS  Tests\Unit\BarangMethodTest
+  ✓ semua foto returns only filled photo paths
+  ... (9 passed)
+
+  Tests:    31 passed (42 assertions)
+  Duration: 0.35s
+```
+
+---
+
 ## 📌 Template GitHub Issue: `[SUBMISSION] P9 Evidence`
 
 ```markdown
@@ -175,3 +215,4 @@ Daftar bug krusial yang ditemukan selama rangkaian eksekusi praktikum pengujian 
 - [x] Pencatatan minimal 3 Bug Report tingkat keparahan High pada GitHub Issues
 - [x] Perbaikan bug (Bug Fixing) terdokumentasikan (BUG-03 FIXED)
 - [x] Bukti screenshot dilampirkan pada masing-masing lembar dokumen kerja
+```
