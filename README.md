@@ -1,4 +1,4 @@
-﻿# 🏪 SEWAIN — Platform Penyewaan Barang Digital
+﻿# 🏪 SEWAIN — Platform Penyewaan Barang 
 
 <div align="center">
 
