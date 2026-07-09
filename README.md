@@ -1,4 +1,4 @@
-﻿# 🏪 SEWAIN — Platform Penyewaan Barang 
+# SEWAIN — Platform Penyewaan Barang 
 
 <div align="center">
 
@@ -18,7 +18,7 @@
 
 ---
 
-## 👥 Anggota Kelompok
+## Anggota Kelompok
 
 | No | Nama | NIM |
 |----|-----------------------------------|-----------|
@@ -28,21 +28,21 @@
 
 ---
 
-## 📌 Tentang Proyek
+## Tentang Proyek
 
-**SEWAIN** adalah platform digital yang menghubungkan **penyewa** dan **pemilik barang** dalam satu ekosistem yang terstruktur dan transparan. Permasalahan utama yang diangkat adalah proses sewa yang masih manual, kurang transparan, dan rentan miskomunikasi.
+**SEWAIN** adalah platform digital yang menghubungkan penyewa dan pemilik barang dalam satu ekosistem yang terstruktur dan transparan. Permasalahan utama yang diangkat adalah proses sewa yang masih manual, kurang transparan, dan rentan miskomunikasi.
 
 Sistem dirancang untuk:
-- 🤝 Mempertemukan penyewa dan pemilik barang dalam satu platform
-- 📊 Menyediakan informasi barang, harga, dan ketersediaan secara jelas dan *real-time*
-- 💳 Mendukung proses transaksi penyewaan yang terstruktur (checkout → pembayaran → pengembalian)
-- ⭐ Meningkatkan kepercayaan pengguna melalui sistem review dan moderasi admin
+- Mempertemukan penyewa dan pemilik barang dalam satu platform
+- Menyediakan informasi barang, harga, dan ketersediaan secara jelas dan real-time
+- Mendukung proses transaksi penyewaan yang terstruktur (checkout, pembayaran, pengembalian)
+- Meningkatkan kepercayaan pengguna melalui sistem review dan moderasi admin
 
 ---
 
-## ✨ Fitur Utama
+## Fitur Utama
 
-### 🟢 Must Have (Semua Selesai ✅)
+### Must Have (Semua Selesai)
 
 | Fitur | Deskripsi |
 |-------|-----------|
@@ -55,7 +55,7 @@ Sistem dirancang untuk:
 | **Dashboard Admin** | Monitor pengguna, barang aktif, transaksi, dan wallet |
 | **Filter Pencarian** | Filter barang berdasarkan harga, kategori, dan lokasi |
 
-### 🔵 Should Have (Semua Selesai ✅)
+### Should Have (Semua Selesai)
 
 | Fitur | Deskripsi |
 |-------|-----------|
@@ -66,17 +66,17 @@ Sistem dirancang untuk:
 | **Moderasi Barang (Admin)** | Admin moderasi barang sebelum tampil di katalog |
 | **Keranjang Sewa (Cart)** | Memilih dan mengumpulkan barang sebelum checkout |
 
-### 🟣 Could Have
+### Could Have
 
 | Fitur | Deskripsi | Status |
 |-------|-----------|--------|
-| **History Sewa** | Menampilkan riwayat penyewaan pengguna | ✅ Selesai |
-| **Review Website** | Testimonial platform di halaman utama | ✅ Selesai |
-| **Aktivitas Log** | Sistem mencatat aktivitas krusial pengguna | ✅ Selesai |
-| **Login Google (OAuth)** | Login mudah menggunakan akun Google | ✅ Selesai |
-| **AI Chatbot** | Chatbot untuk membantu pengguna | ❌ Belum |
+| **History Sewa** | Menampilkan riwayat penyewaan pengguna | Selesai |
+| **Review Website** | Testimonial platform di halaman utama | Selesai |
+| **Aktivitas Log** | Sistem mencatat aktivitas krusial pengguna | Selesai |
+| **Login Google (OAuth)** | Login mudah menggunakan akun Google | Selesai |
+| **AI Chatbot** | Chatbot untuk membantu pengguna | Belum |
 
-### ⚪ Won't Have (Sesuai Backlog)
+### Won't Have (Sesuai Backlog)
 
 | Fitur | Keterangan |
 |-------|------------|
@@ -86,10 +86,10 @@ Sistem dirancang untuk:
 
 ---
 
-## 📸 Screenshot Aplikasi
+## Screenshot Aplikasi
 
 <details>
-<summary><b>🔐 Autentikasi (Register, Login, Lupa Password)</b></summary>
+<summary><b>Autentikasi (Register, Login, Lupa Password)</b></summary>
 
 **Register — Back End & Front End**
 <br>
@@ -114,13 +114,13 @@ Sistem dirancang untuk:
 </details>
 
 <details>
-<summary><b>🏠 Homepage</b></summary>
+<summary><b>Homepage</b></summary>
 
 <img width="100%" alt="Homepage" src="https://github.com/user-attachments/assets/30fa6559-b7d6-4000-8a77-e7cd6adc2a71" />
 </details>
 
 <details>
-<summary><b>👤 User — Penyewa</b></summary>
+<summary><b>User — Penyewa</b></summary>
 
 **Pencarian dan Filter Barang**
 <br>
@@ -148,7 +148,7 @@ Sistem dirancang untuk:
 </details>
 
 <details>
-<summary><b>🏷️ User — Owner</b></summary>
+<summary><b>User — Owner</b></summary>
 
 **Mengelola Katalog Barang**
 <br>
@@ -169,7 +169,7 @@ Sistem dirancang untuk:
 </details>
 
 <details>
-<summary><b>🛡️ Admin</b></summary>
+<summary><b>Admin</b></summary>
 
 **Login Admin**
 <br>
@@ -223,7 +223,7 @@ Sistem dirancang untuk:
 
 ---
 
-## 📁 Struktur Proyek
+## Struktur Proyek
 
 ```
 praktikum-rpl-a-10/
@@ -237,7 +237,6 @@ praktikum-rpl-a-10/
 │   ├── user-stories.md               ← User Stories Detail
 │   ├── user-manual.md                ← Panduan Pengguna
 │   ├── test-cases.md                 ← Rencana Test Case
-│   ├── laporan-p10-unit-testing.md   ← Laporan Unit Testing
 │   ├── laporan-proyek.md             ← Laporan Akhir Proyek
 │   └── uml/                          ← Diagram UML
 └── src/                              ← Root Aplikasi Laravel
@@ -467,7 +466,7 @@ Setelah menjalankan `php artisan migrate:fresh --seed`, cek file `database/seede
 
 ---
 
-## 📄 Dokumentasi Proyek
+## Dokumentasi Proyek
 
 | Dokumen | Deskripsi |
 |---------|-----------|
@@ -478,12 +477,11 @@ Setelah menjalankan `php artisan migrate:fresh --seed`, cek file `database/seede
 | [`docs/data-dictionary.md`](docs/data-dictionary.md) | Kamus Data & Struktur Database |
 | [`docs/user-manual.md`](docs/user-manual.md) | Panduan Penggunaan Aplikasi |
 | [`docs/test-cases.md`](docs/test-cases.md) | Rencana Test Case |
-| [`docs/laporan-p10-unit-testing.md`](docs/laporan-p10-unit-testing.md) | Laporan Unit Testing (PHPUnit AAA) |
 | [`docs/laporan-proyek.md`](docs/laporan-proyek.md) | Laporan Akhir Proyek |
 
 ---
 
-## 🔀 Alur Kontribusi
+## Alur Kontribusi
 
 1. Buat branch baru dari branch `dev`.
 2. Lakukan perubahan kecil dan terfokus.
@@ -497,7 +495,7 @@ Setelah menjalankan `php artisan migrate:fresh --seed`, cek file `database/seede
 
 ---
 
-## ❓ Troubleshooting
+## Troubleshooting
 
 <details>
 <summary><b>Error: Class not found / Autoload error</b></summary>
@@ -554,5 +552,5 @@ npm run build
 ---
 
 <div align="center">
-  <sub>Dibuat dengan ❤️ oleh Kelompok RPL A-10 · Universitas Sebelas Maret · 2025/2026</sub>
+  <sub>Dibuat oleh Kelompok RPL A-10 · Universitas Sebelas Maret · 2025/2026</sub>
 </div>
