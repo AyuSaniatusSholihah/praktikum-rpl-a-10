@@ -17,6 +17,13 @@
    - 4.1 [Analisis Trade-off (3 Keputusan Desain + Alternatif)](#41-analisis-trade-off-3-keputusan-desain--alternatif)
    - 4.2 [Refleksi 3 Prinsip Hooker](#42-refleksi-3-prinsip-hooker)
    - 4.3 [Antisipasi 2 Risiko Implementasi Teknis](#43-antisipasi-2-risiko-implementasi-teknis)
+5. [Bagian 5: README.md Final](#bagian-5-readmemd-final)
+   - 5.1 [Link README.md di GitHub](#51-link-readmemd-di-github)
+   - 5.2 [Penjelasan Perubahan README](#52-penjelasan-perubahan-readme)
+6. [Bagian 6: Release Tag v1.0.0](#bagian-6-release-tag-v100)
+   - 6.1 [Proses Pembuatan Tag](#61-proses-pembuatan-tag)
+   - 6.2 [Fitur yang Dicakup dalam v1.0.0](#62-fitur-yang-dicakup-dalam-v100)
+   - 6.3 [Screenshot Proses & GitHub Releases](#63-screenshot-proses--github-releases)
 
 ---
 
@@ -544,3 +551,159 @@ Dalam proses implementasi kode PHP/Laravel ke depan, dua risiko teknis utama tel
 
 ---
 *Laporan ini disusun oleh Tim 10 (SewaDev) sebagai dokumentasi resmi pengerjaan proyek praktikum Rekayasa Perangkat Lunak.*
+
+---
+
+## Bagian 5: README.md Final
+
+### 5.1 Link README.md di GitHub
+
+File `README.md` final proyek SEWAIN dapat diakses secara publik melalui tautan berikut:
+
+🔗 **https://github.com/AyuSaniatusSholihah/praktikum-rpl-a-10/blob/addreadme/README.md**
+
+---
+
+### 5.2 Penjelasan Perubahan README
+
+Sebagai bagian dari dokumentasi akhir proyek, file `README.md` pada repositori GitHub telah diperbarui secara menyeluruh. Tujuan utama pembaruan ini adalah agar siapapun — termasuk orang yang baru pertama kali melihat proyek — dapat langsung memahami sistem dan menjalankannya secara lokal tanpa kebingungan.
+
+Berikut adalah rincian perubahan yang dilakukan:
+
+#### 1. Badge Status Teknologi
+Ditambahkan **7 badge visual** di bagian header README yang menampilkan stack teknologi utama yang digunakan: Laravel 13, PHP 8.3+, MySQL/MariaDB, Tailwind CSS v4, Vite 8, PHPUnit 12, dan lisensi MIT. Badge ini memungkinkan pembaca mengetahui teknologi proyek secara sekilas tanpa perlu membaca keseluruhan dokumen.
+
+#### 2. Deskripsi Proyek yang Diperjelas
+Bagian deskripsi diperbarui dengan tagline dan poin-poin tujuan sistem yang lebih terstruktur, menggantikan deskripsi lama yang terlalu ringkas.
+
+#### 3. Daftar Fitur Berdasarkan Prioritas Backlog
+Seluruh fitur aplikasi disusun ulang ke dalam **4 tabel terstruktur** sesuai prioritas *product backlog*:
+- 🟢 **Must Have** — 8 fitur wajib, semua selesai
+- 🔵 **Should Have** — 6 fitur penting, semua selesai
+- 🟣 **Could Have** — 5 fitur tambahan, sebagian besar selesai
+- ⚪ **Won't Have** — 3 fitur yang dikeluarkan dari scope proyek
+
+#### 4. Screenshot Aplikasi
+Dokumentasi visual antarmuka dikelompokkan per peran pengguna (Autentikasi, Homepage, Penyewa, Owner, Admin) dalam blok *collapsible* `<details>` agar tidak memenuhi halaman namun tetap mudah diakses.
+
+#### 5. Panduan Instalasi Ramah Pemula
+Panduan instalasi diperluas dari daftar perintah sederhana menjadi **10 langkah terstruktur**, dilengkapi dengan:
+- Tabel prasyarat (PHP, Composer, Node.js, npm, MySQL, Git) beserta perintah verifikasi versi dan tautan unduhan resmi
+- Perintah terpisah untuk Windows (CMD/PowerShell) dan Linux/macOS
+- Contoh konfigurasi file `.env` lengkap dengan komentar penjelasan
+- Tips penggunaan `MAIL_MAILER=log` untuk testing email lokal tanpa konfigurasi SMTP
+- Keterangan bahwa Google OAuth bersifat opsional
+
+#### 6. Dokumentasi Unit Testing
+Ditambahkan bagian baru yang mendokumentasikan **7 test suite** yang tersedia dalam proyek (3 Unit Test, 4 Feature Test) beserta perintah `php artisan test` dan variannya (`--testsuite=Unit`, `--testsuite=Feature`, `--verbose`).
+
+#### 7. Indeks Dokumentasi Proyek
+Ditambahkan tabel referensi yang menghubungkan pembaca ke seluruh dokumen teknis proyek (`srs.md`, `erd.md`, `user-manual.md`, `test-cases.md`, laporan unit testing, laporan proyek) untuk memudahkan navigasi.
+
+#### 8. Bagian Troubleshooting
+Ditambahkan **5 solusi *collapsible*** untuk error umum yang mungkin dihadapi saat setup lokal:
+- Autoload / class not found error
+- Cache dan config error
+- Storage link (foto tidak muncul)
+- Database connection refused saat migrate
+- Vite assets tidak termuat (halaman tanpa style)
+
+> Pembaruan ini di-*commit* dengan pesan `docs: update README dengan badges, panduan instalasi lengkap, unit testing, dan troubleshooting` dan di-*push* ke branch `addreadme` pada repositori GitHub kelompok.
+
+---
+
+## Bagian 6: Release Tag v1.0.0
+
+### 6.1 Proses Pembuatan Tag
+
+Setelah seluruh fitur inti aplikasi SEWAIN selesai diimplementasikan dan diverifikasi, tim melakukan *tagging* versi rilis pertama menggunakan **Git Annotated Tag** dengan perintah berikut:
+
+```bash
+# Membuat annotated tag v1.0.0 dengan pesan deskriptif
+git tag -a v1.0.0 -m "Release v1.0.0 - SEWAIN Platform Penyewaan Barang: fitur autentikasi, katalog barang, penyewaan, pembayaran, pengembalian, review, dashboard admin, dan Google OAuth lengkap"
+
+# Mendorong tag ke remote repository GitHub
+git push origin v1.0.0
+```
+
+Tag berhasil dikirim ke repositori GitHub dengan output:
+```
+To https://github.com/AyuSaniatusSholihah/praktikum-rpl-a-10.git
+ * [new tag]         v1.0.0 -> v1.0.0
+```
+
+Link tag di GitHub: **https://github.com/AyuSaniatusSholihah/praktikum-rpl-a-10/releases/tag/v1.0.0**
+
+---
+
+### 6.2 Fitur yang Dicakup dalam v1.0.0
+
+Release v1.0.0 mencakup seluruh fitur yang telah diimplementasikan pada proyek SEWAIN hingga akhir Sprint 2:
+
+#### 🟢 Must Have (Semua Selesai)
+| Fitur | Deskripsi |
+|-------|-----------|
+| Registrasi & Login | Pembuatan akun dengan verifikasi email OTP dan autentikasi sesi |
+| Katalog Barang (Owner) | Owner dapat menambah, mengedit, dan menghapus barang sewaan |
+| Penyewaan Barang | Penyewa memilih barang, tanggal, durasi, dan melakukan checkout |
+| Pembayaran & Denda | Simulasi pembayaran dan kalkulasi denda otomatis per jam keterlambatan |
+| Pengembalian Barang | Alur pengembalian dengan verifikasi kondisi oleh Owner |
+| Profil Pengguna | Kelola nama, foto, dan informasi akun |
+| Dashboard Admin | Monitor pengguna, barang aktif, transaksi, dan financial wallet |
+| Filter & Pencarian | Filter katalog berdasarkan harga, kategori, dan lokasi |
+
+#### 🔵 Should Have (Semua Selesai)
+| Fitur | Deskripsi |
+|-------|-----------|
+| Review & Rating | Penyewa memberi ulasan dan bintang setelah masa sewa selesai |
+| Lupa Password (OTP) | Reset password via OTP yang dikirim ke email |
+| Keranjang Sewa (Cart) | Mengumpulkan barang sebelum checkout |
+| Konfirmasi Pengembalian | Owner memverifikasi pengembalian dan menentukan denda |
+| Moderasi Barang (Admin) | Admin dapat ban/hapus barang yang melanggar ketentuan |
+
+#### 🟣 Could Have (Sebagian Besar Selesai)
+| Fitur | Status |
+|-------|--------|
+| History Sewa | ✅ Selesai |
+| Login Google (OAuth) | ✅ Selesai |
+| Review Website (Testimonial) | ✅ Selesai |
+| Aktivitas Log | ✅ Selesai |
+| AI Chatbot | ❌ Tidak diimplementasikan (sesuai backlog) |
+
+---
+
+### 6.3 Screenshot Proses & GitHub Releases
+
+#### Screenshot Terminal: git tag & git push
+
+Berikut adalah output terminal saat menjalankan perintah pembuatan dan pengiriman tag:
+
+```
+$ git tag -a v1.0.0 -m "Release v1.0.0 - SEWAIN Platform Penyewaan Barang: fitur autentikasi, katalog barang, penyewaan, pembayaran, pengembalian, review, dashboard admin, dan Google OAuth lengkap"
+
+$ git push origin v1.0.0
+Enumerating objects: 1, done.
+Counting objects: 100% (1/1), done.
+Writing objects: 100% (1/1), 290 bytes | 290.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/AyuSaniatusSholihah/praktikum-rpl-a-10.git
+ * [new tag]         v1.0.0 -> v1.0.0
+```
+
+> *[Tempelkan screenshot terminal di sini]*
+
+#### Screenshot Halaman Tag v1.0.0 di GitHub
+
+Tag `v1.0.0` berhasil terdaftar di repositori GitHub pada tab **Tags** dan dapat diakses di:
+
+🔗 **https://github.com/AyuSaniatusSholihah/praktikum-rpl-a-10/releases/tag/v1.0.0**
+
+Halaman tag menampilkan:
+- Nama tag: `v1.0.0`
+- Commit hash: `2109e2f`
+- Pesan tag: *"Release v1.0.0 - SEWAIN Platform Penyewaan Barang: fitur autentikasi, katalog barang, penyewaan, pembayaran, pengembalian, review, dashboard admin, dan Google OAuth lengkap"*
+- Asset: Source code (zip) dan Source code (tar.gz) tersedia untuk diunduh
+
+> *[Tempelkan screenshot halaman GitHub Tags/Releases di sini]*
+
+> 💡 **Catatan:** Tag v1.0.0 sudah berhasil di-push ke GitHub. Untuk mempublikasikannya sebagai **formal GitHub Release** (dengan release notes), buka repositori → tab **Releases** → klik **"Draft a new release"** → pilih tag `v1.0.0` → klik **"Publish release"**.

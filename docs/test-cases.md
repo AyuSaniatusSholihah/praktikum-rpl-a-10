@@ -142,7 +142,7 @@ Daftar bug krusial yang ditemukan selama rangkaian eksekusi praktikum pengujian 
 
 ---
 
-## 🤖 5. Pengujian Otomatis (Praktikum P10: Unit Testing)
+## 5. Pengujian Otomatis (Praktikum P10: Unit Testing)
 
 > **Skenario:** Pengujian unit testing otomatis menggunakan PHPUnit dengan pola AAA (Arrange-Act-Assert) untuk menguji class helper bisnis kritis dan metode logic di model secara terisolasi.
 
@@ -150,7 +150,6 @@ Daftar bug krusial yang ditemukan selama rangkaian eksekusi praktikum pengujian 
 * **Framework:** PHPUnit (Laravel built-in)
 * **Database Testing:** SQLite in-memory (`:memory:`)
 * **Total Unit Test:** 31 Passed (42 assertions)
-* **File Laporan Detail:** [docs/laporan-p10-unit-testing.md](./laporan-p10-unit-testing.md)
 
 ### Ringkasan Unit Test (Pola AAA)
 Sebanyak 31 unit test berhasil ditulis dan lulus 100% untuk memverifikasi logika kritis pada helper kalkulator, model transaksi, dan model barang:
